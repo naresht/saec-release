@@ -1,0 +1,5 @@
+H09082011USER  IDSuccessful                                                     
+D00010000000000000005500DETAIL RECAP                                            
+D00010000000000000005500DETAIL RECAP                                            
+D00010000000000000005500DETAIL RECAP                                            
+T00003000000000000016500Trailer                                                 

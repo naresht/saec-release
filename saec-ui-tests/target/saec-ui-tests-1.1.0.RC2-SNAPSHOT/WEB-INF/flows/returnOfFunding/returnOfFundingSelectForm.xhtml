@@ -1,0 +1,210 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+	<p:fieldset legend="Details">
+		<h:panelGroup id="searchCriteriaFields">
+			<div id="check_bulk_div_table">
+				<div id="check_bulk_div_tr">
+					<div id="check_rof_div_lft">Reference #:</div>
+					<div id="check_rof_div_rgt">
+						<p:inputMask mask="?999999999" placeHolder=""
+							value="#{returnOfFundingViewModel.referenceNo}" />
+					</div>
+				</div>
+				<div id="check_bulk_div_tr">
+					<div id="check_rof_div_lft">Check/ Wire #:</div>
+					<div id="check_rof_div_rgt">
+						<p:inputText
+							value="#{returnOfFundingViewModel.paymentIdentificationNo}" />
+					</div>
+				</div>
+			</div>
+			<p:spacer height="10" width="100%" />
+			<div id="buttonsection">
+				<p:commandButton id="apply" action="search" value="Search"
+					ajax="false" />
+				<p:commandButton id="resetSearch" action="reset" ajax="false"
+					value="Clear" />
+				<!-- 		<p:commandButton id="exit"  action="exitCreateConfirm" immediate="true"  oncomplete="confirmationExit.show()" value="Exit" /> -->
+			</div>
+		</h:panelGroup>
+		<h:panelGroup id="formFields" rendered="#{returnOfFundingViewModel.flag}">
+			<p:tooltip global="true" targetPosition="topLeft"
+				position="bottomLeft" style="word-wrap:break-word;width:34em;" />
+			<p:spacer height="20" width="100%" />
+			<p:spacer height="20" width="100%" />
+			<p:dataTable id="payments" var="payment"
+				value="#{returnOfFundingViewModel.payments}" scrollable="true"
+				rowIndexVar="rowIndex" height="200">
+
+		        <p:column style="width:16px">  
+		            <p:rowToggler />  
+		        </p:column>
+	        
+				<p:column style="width:35px">
+					<f:facet name="header">
+						<h:outputText value="Zoom" />
+					</f:facet>
+					<p:commandButton update="form:NewheaderPanel" action="summary"
+						onsuccess="accountDialog.show()" title="Account Summary"
+						icon="iconSelect" required="true">
+						<f:param name="id" value="#{payment.payTo.id}" />
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="#" style="width:8px">
+				#{rowIndex+1}
+			</p:column>
+
+				<p:column id="PaymentType" style="width:50px;white-space:normal;">
+					<f:facet name="header">
+						<h:outputText value="Payment Type:" />
+					</f:facet>
+					<h:outputText value="#{payment.paymentType}" />
+				</p:column>
+
+				<p:column id="CheckNumber" style="width:103px;"
+					sortBy="#{payment.identificatonNo}"
+					filterBy="#{payment.identificatonNo}">
+					<f:facet name="header">
+						<h:outputText value="Check/Wire #" />
+					</f:facet>
+					<p:commandLink action="loadPaymentForROF" ajax="false"
+						immediate="true">
+						<h:outputText value="#{payment.identificatonNo}" />
+						<f:param name="id" value="#{payment.id}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column id="Date" style="width:105px"
+					sortBy="#{payment.paymentDate}" filterBy="#{payment.paymentDate}">
+					<f:facet name="header">
+						<h:outputText value="Date" />
+					</f:facet>
+					<h:outputText value="#{payment.paymentDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column id="PayTo" style="width:20px;white-space:normal;">
+					<f:facet name="header">
+						<h:outputText value="Pay To" />
+					</f:facet>
+					<h:outputText value="#{payment.getPayToAsText('&lt;br/&gt;')}"
+						escape="false" />
+				</p:column>
+
+				<p:column id="Amount" style="width:104px"
+					sortBy="#{payment.paymentAmount}"
+					filterBy="#{payment.paymentAmount}">
+					<f:facet name="header">
+						<h:outputText value="Amount" />
+					</f:facet>
+					<h:outputText value="#{payment.paymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+				<p:column id="PaymentStatus" style="width:104px"
+					sortBy="#{payment.statusDescription}"
+					filterBy="#{payment.statusDescription}">
+					<f:facet name="header">
+						<h:outputText value="Payment Status" />
+					</f:facet>
+					<h:outputText value="#{payment.statusDescription}" />
+				</p:column>
+
+				<p:column id="StatusDate" style="width:35px;white-space:normal;">
+					<f:facet name="header">
+						<h:outputText value="Status Date" />
+					</f:facet>
+					<h:outputText value="#{payment.statusChangeDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column id="LetterCode" style="width:32px;white-space:normal;">
+					<f:facet name="header">
+						<h:outputText value="Letter Code" />
+					</f:facet>
+					<h:outputText value="#{payment.letterCode}" />
+				</p:column>
+
+				<p:column id="Audit" style="width:25px;white-space:normal;">
+					<f:facet name="header">
+						<h:outputText value="Audit" />
+					</f:facet>
+					<h:outputText value="#{payment.auditable}" />
+				</p:column>
+
+				<p:column id="SpecialPull" style="width:40px;white-space:normal;">
+					<f:facet name="header">
+						<h:outputText value="Special Pull" />
+					</f:facet>
+					<h:outputText value="#{payment.specialPullCode}" />
+				</p:column>
+
+				<p:column id="GroupMailCode" style="width:33px;white-space:normal;">
+					<f:facet name="header">
+						<h:outputText value="Group Mail Code" />
+					</f:facet>
+					<h:outputText value="#{payment.groupMailCode}">
+						<f:converter converterId="groupMailCodeConverter" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="word-wrap:break-word;width:34em;"
+					sortBy="#{payment.comments}">
+					<f:facet name="header">
+						<h:outputText value="Comments"
+							style="word-wrap:break-word;width:34em;" />
+					</f:facet>
+					<h:outputText id="Comments"
+						style="word-wrap:break-word;width:34em;"
+						title="#{payment.comments}" value="#{payment.comments}" />
+				</p:column>
+				
+				<p:rowExpansion>
+					<app:paymentAmounts/>
+				</p:rowExpansion>
+							
+			</p:dataTable>
+		</h:panelGroup>
+	
+	<p:dialog header="Refine Search" widgetVar="refineSearchDialog" id="refineSearchDialog">
+		<h:outputText value="No match for your entry, please refine your search criteria." />
+		<p:spacer width="100%" height="10" />
+		<p:separator/>
+		<p:commandButton value="OK" immediate="true" oncomplete="refineSearchDialog.hide()" />
+	</p:dialog>
+		
+	</p:fieldset>
+	<div id="buttonsection">
+		<!-- 		<p:commandButton id="reset" type="reset" value="Clear" > -->
+		<!-- 		</p:commandButton>  -->
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<p:confirmDialog id="rofSaveMsg" message="Are you sure you want to save?" modal="true"
+		header="Save" severity="alert" widgetVar="confirmationSave">
+		<p:commandButton id="rofSaveYes" value="Yes" ajax="false" update="formFields msgs"
+			oncomplete="confirmationSave.hide()" action="save" />
+		<p:commandButton id="rofSaveNo" value="No" onclick="confirmationSave.hide()"
+			type="button" />
+	</p:confirmDialog>
+	<p:confirmDialog id="rofExitMsg"
+		message="Are you sure you want to exit without saving?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton id="rofExitYes" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exit" immediate="true" />
+		<p:commandButton id="rofExitNo" value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+	<h:panelGroup id="summary">
+		<ui:include src="../claimant/select/claimantSummaryForm.xhtml" />
+	</h:panelGroup>
+</ui:composition>

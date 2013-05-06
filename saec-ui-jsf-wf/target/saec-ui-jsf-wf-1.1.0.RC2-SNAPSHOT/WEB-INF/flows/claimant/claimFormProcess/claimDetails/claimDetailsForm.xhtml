@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Claim Details">
+		<ui:include src="/WEB-INF/incl/claimantClaimHeader.xhtml">
+				<ui:param name="claimantClaimHeader"
+					value="#{viewModel.getClaimantClaimHeader()}" />
+			</ui:include>
+		<div id="grid" class="contact_info_div_table">
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft"></div>
+				<div id="contact_info_div_rgt">
+					<!-- Dummy Component to get initial Focus in stead of Calendar  -->
+					<h:inputText
+						style="width:0px;height:0px;cursor:none;border:0px solid #ffffff;background-color:#fff;" />
+					<h:outputText value="" />
+				</div>
+			</div>
+			<br /> <br /> <br />
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Claim Identifier:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<h:outputText id="claimIdentifier"
+						value="#{viewModel.claimIdentifier}" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Control Number:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<h:outputText id="controlNo"
+						value="#{(viewModel.claimantClaim.controlNumber!=0) ? (viewModel.claimantClaim.controlNumber) : '' }" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Method of Filing:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<h:outputText id="methodOfFilling"
+						value="#{viewModel.claimantClaim.entryMethod}" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Date Field:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:calendar id="dateField" value="#{viewModel.claimantClaim.dateFiled}" size="10"
+						pattern="MM/dd/yyyy" maxlength="10"
+						disabled="#{!sec:canEditClaimDetails() or (!sec:canEditDataIntakeClaimDetails())}" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Status:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<h:outputText id="status" value="#{viewModel.claimantClaim.status}" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft"></div>
+				<div id="contact_info_div_rgt">
+					<h:outputText value="" />
+				</div>
+			</div>
+
+			<ui:repeat
+				value="#{viewModel.claimantClaim.claimantDistributionsAsList}"
+				var="distribution">
+				<div id="contact_info_div_tr">
+					<div id="contact_info_div_lft">
+						<label>Est Distibution Amt:</label>
+					</div>
+					<div id="contact_info_div_rgt">
+						<table cellpadding="0" cellspacing="10" border="0">
+							<tr>
+								<td width="100">								
+								<h:outputText id="estAmount"  
+										value="#{distribution.distributionAmount}" 
+										style="width:1550px;" >
+										  <f:convertNumber currencySymbol="$" type="currency" /> 							 
+										</h:outputText></td>
+								<td><b>Calc Date:</b></td>
+								<td><h:outputText id="calDate"
+										value="#{distribution.distributionCalculatedDate}">
+										<f:converter converterId="dateConverter" />
+									</h:outputText></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div id="contact_info_div_tr">
+					<div id="contact_info_div_lft">
+						<label>Distribution Type:</label>
+					</div>
+					<div id="contact_info_div_rgt">
+
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td width="100"><h:outputText id="distributionType"
+										value="#{distribution.distributionType}" /></td>
+								<td><b>Category:</b></td>
+								<td><h:outputText id="cat"
+										value="#{distribution.allCategories}" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div id="contact_info_div_tr">
+					<div id="contact_info_div_lft"></div>
+					<div id="contact_info_div_rgt">
+						<h:outputText value="" />
+					</div>
+				</div>
+			</ui:repeat>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Comments: " />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputTextarea id="comments" style="width:300px;height:100px;"
+						effectDuration="400" value="#{viewModel.claimantClaim.comments}"
+						autoResize="false" maxlength="255"
+						disabled="#{!sec:canEditClaimDetails() or !sec:canEditDataIntakeClaimDetails()}" />
+				</div>
+			</div>
+		</div>
+	</p:fieldset>
+
+	<div id="buttonsection">
+		<p:commandButton id="saveClaimDetlsConfirm" action="saveConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save"
+			disabled="#{!sec:canEditClaimDetails() or !sec:canEditDataIntakeClaimDetails()}" />
+		<p:commandButton id="exitClaimDetlsConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml" />
+
+</ui:composition>
+</html>

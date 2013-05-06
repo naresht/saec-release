@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="8.536" errors="0" skipped="1" tests="44" name="com.bfds.saec.domain.PaymentTest">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.6.0_23\jre\bin"/>
+    <property name="java.vm.version" value="19.0-b09"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="IN"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="Service Pack 1"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\MasterBuildLatest\saec"/>
+    <property name="java.runtime.version" value="1.6.0_23-b05"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.6.0_23\jre\lib\endorsed"/>
+    <property name="os.arch" value="x86"/>
+    <property name="java.io.tmpdir" value="C:\Users\dt83019\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 7"/>
+    <property name="classworlds.conf" value="C:\apps\apache-maven-2.2.1\bin\..\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.6.0_23\bin;.;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\apps\apache-tomcat-6.0.36;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files\Java\jdk1.6.0_23\bin;C:\apps\Git\cmd;C:\apps\Git\bin;C:\apps\apache-maven-2.2.1\bin;C:\apps\springsource2.8.1\spring-roo-1.2.2.RELEASE\bin;D:\jad;C:\Users\dt83019\AppData\Local\Mozilla Firefox\"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"/>
+    <property name="os.version" value="6.1"/>
+    <property name="user.home" value="C:\Users\dt83019"/>
+    <property name="user.timezone" value="Asia/Calcutta"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="user.name" value="dt83019"/>
+    <property name="java.class.path" value="C:\apps\apache-maven-2.2.1\bin\..\boot\classworlds-1.1.jar"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="32"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.6.0_23\jre"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.version" value="1.6.0_23"/>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.6.0_23\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.6.0_23\jre\lib\resources.jar;C:\Program Files\Java\jdk1.6.0_23\jre\lib\rt.jar;C:\Program Files\Java\jdk1.6.0_23\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.6.0_23\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.6.0_23\jre\lib\jce.jar;C:\Program Files\Java\jdk1.6.0_23\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.6.0_23\jre\lib\modules\jdk.boot.jar;C:\Program Files\Java\jdk1.6.0_23\jre\classes"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="maven.home" value="C:\apps\apache-maven-2.2.1\bin\.."/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="0" classname="com.bfds.saec.domain.PaymentTest" name="verifyToString"/>
+  <testcase time="0.382" classname="com.bfds.saec.domain.PaymentTest" name="findByMailingControlNo"/>
+  <testcase time="0.241" classname="com.bfds.saec.domain.PaymentTest" name="doStopLift"/>
+  <testcase time="0.109" classname="com.bfds.saec.domain.PaymentTest" name="assignCheckToClaimant"/>
+  <testcase time="0.16" classname="com.bfds.saec.domain.PaymentTest" name="saveClaimantWithCheck"/>
+  <testcase time="0.072" classname="com.bfds.saec.domain.PaymentTest" name="checkShouldCloneItsAddress"/>
+  <testcase time="0.134" classname="com.bfds.saec.domain.PaymentTest" name="checkShouldCopyRegistrationFromItsPayt"/>
+  <testcase time="0.134" classname="com.bfds.saec.domain.PaymentTest" name="theCheckMustCheangeItsAddressType">
+    <skipped/>
+  </testcase>
+  <testcase time="0.064" classname="com.bfds.saec.domain.PaymentTest" name="cashedCheckCannotBeVoided"/>
+  <testcase time="0.064" classname="com.bfds.saec.domain.PaymentTest" name="voidedCheckCannotBeVoided"/>
+  <testcase time="0.064" classname="com.bfds.saec.domain.PaymentTest" name="stoppedCheckCannotBeVoided"/>
+  <testcase time="0.065" classname="com.bfds.saec.domain.PaymentTest" name="outstandingCheckCanBeVoided"/>
+  <testcase time="0.156" classname="com.bfds.saec.domain.PaymentTest" name="doPartialReturnOfFunding"/>
+  <testcase time="0.153" classname="com.bfds.saec.domain.PaymentTest" name="doFullReturnOfFunding"/>
+  <testcase time="0.193" classname="com.bfds.saec.domain.PaymentTest" name="addReturnOfInterestFunding"/>
+  <testcase time="0.216" classname="com.bfds.saec.domain.PaymentTest" name="voidCheck"/>
+  <testcase time="0.158" classname="com.bfds.saec.domain.PaymentTest" name="staleDatedCheckCannotBeVoided"/>
+  <testcase time="0.225" classname="com.bfds.saec.domain.PaymentTest" name="reissueCheck"/>
+  <testcase time="0.065" classname="com.bfds.saec.domain.PaymentTest" name="reverseVoid"/>
+  <testcase time="0.067" classname="com.bfds.saec.domain.PaymentTest" name="reverseStop"/>
+  <testcase time="0.068" classname="com.bfds.saec.domain.PaymentTest" name="reverseStopCannotBeDoneIfCheckSentOnStopFile"/>
+  <testcase time="0.404" classname="com.bfds.saec.domain.PaymentTest" name="getNewCheckForReissue"/>
+  <testcase time="0.336" classname="com.bfds.saec.domain.PaymentTest" name="cannotGetNewCheckForReissueIfStatusInvalid"/>
+  <testcase time="0.367" classname="com.bfds.saec.domain.PaymentTest" name="cannotGetNewCheckForReissueIfPaymentNotCheck"/>
+  <testcase time="0.234" classname="com.bfds.saec.domain.PaymentTest" name="canChangeToWire"/>
+  <testcase time="0.234" classname="com.bfds.saec.domain.PaymentTest" name="canSplit"/>
+  <testcase time="0.234" classname="com.bfds.saec.domain.PaymentTest" name="canSplitRof"/>
+  <testcase time="0.234" classname="com.bfds.saec.domain.PaymentTest" name="cannotSplitRofInterest"/>
+  <testcase time="0.234" classname="com.bfds.saec.domain.PaymentTest" name="canDoReturnOfFunding"/>
+  <testcase time="0.234" classname="com.bfds.saec.domain.PaymentTest" name="isWireApproved"/>
+  <testcase time="0.249" classname="com.bfds.saec.domain.PaymentTest" name="isWireRejected"/>
+  <testcase time="0.234" classname="com.bfds.saec.domain.PaymentTest" name="canUpdateWireInfo"/>
+  <testcase time="0.328" classname="com.bfds.saec.domain.PaymentTest" name="getPayToAsText"/>
+  <testcase time="0.296" classname="com.bfds.saec.domain.PaymentTest" name="stopToWire"/>
+  <testcase time="0.25" classname="com.bfds.saec.domain.PaymentTest" name="createdToWire"/>
+  <testcase time="0.296" classname="com.bfds.saec.domain.PaymentTest" name="voidToWire"/>
+  <testcase time="0.297" classname="com.bfds.saec.domain.PaymentTest" name="checkToWireCoppiedProperties"/>
+  <testcase time="0.343" classname="com.bfds.saec.domain.PaymentTest" name="countPaymentsForAddressResaerchOfClaimant"/>
+  <testcase time="0.281" classname="com.bfds.saec.domain.PaymentTest" name="verifyStopTypes"/>
+  <testcase time="0.377" classname="com.bfds.saec.domain.PaymentTest" name="verifyVoidTypes"/>
+  <testcase time="0.065" classname="com.bfds.saec.domain.PaymentTest" name="testPaymentInitialState"/>
+  <testcase time="0.218" classname="com.bfds.saec.domain.PaymentTest" name="testOutstandToCashedStateChange"/>
+  <testcase time="0.064" classname="com.bfds.saec.domain.PaymentTest" name="testFileFlagsOnPaymentCodeChange"/>
+  <testcase time="0.065" classname="com.bfds.saec.domain.PaymentTest" name="testSentOnBankIssueVoidFileFlagReset"/>
+</testsuite>

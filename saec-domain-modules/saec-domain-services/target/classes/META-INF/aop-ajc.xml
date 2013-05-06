@@ -1,0 +1,11 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.external.service.dto.EventDto_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.external.service.PaymentSearchFilter_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.external.service.dto.EventDto_Roo_ToString"/>
+<aspect name="com.bfds.saec.external.service.PaymentSearchFilter_Roo_ToString"/>
+<aspect name="com.bfds.saec.external.service.dto.PaymentDto_Roo_ToString"/>
+<aspect name="com.bfds.saec.external.service.dto.PaymentDto_Roo_JavaBean"/>
+</aspects>
+</aspectj>
+

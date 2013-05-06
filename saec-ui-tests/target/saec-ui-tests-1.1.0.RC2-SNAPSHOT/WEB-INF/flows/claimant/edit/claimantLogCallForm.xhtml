@@ -1,0 +1,136 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<ui:composition>
+	<h:panelGroup id="callLog">
+		<p:fieldset legend="Details">
+			<div id="call_log_div_table">
+				<div id="call_log_div_tr">
+					<div id="call_log_div_td">
+						<b>Reference #:</b><br />
+						<h:outputText value="#{claimant.claimant.referenceNo}"></h:outputText>
+					</div>
+					<div id="call_log_div_td1">
+						<b>Name:</b><br />
+						<h:outputText escape="false" value="#{claimant.registrationText}" />
+					</div>
+					<div id="call_log_div_td2">
+						<b>Address:</b><br />
+						<h:outputText escape="false" value="#{claimant.addressText}" />
+					</div>
+					<!-- <div id="call_log_div_td3">
+						<b>Payment Amt:</b><br /><h:outputText value="#{item.paymentAmount}"></h:outputText>
+					</div> -->
+					<div id="call_log_div_td4">
+						<b>Date/Time of call:</b><br />
+						<h:outputText value="#{phoneCallModel.call.activityDate}" />
+					</div>
+				</div>
+			</div>
+			<p:spacer width="100%" height="20" />
+			<div id="logCallAlert">
+				<b>Please do not select more than 6 call codes.</b>
+			</div>
+			<p:spacer width="100%" height="10" />
+			<div id="call_log_div_table">
+				<p:message id="callCodeError" for="callCodesList" />
+				<p:dataTable id="callCodesList" var="callCode"
+					value="#{phoneCallModel.allCallCodes}"
+					selection="#{phoneCallModel.selectedCallCodes}"
+					scrollable="false" height="200">
+					<f:facet name="header">
+					</f:facet>
+					<p:column selectionMode="multiple" style="width:18px"/>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Reason Code" />
+						</f:facet>
+						<h:outputText value="#{callCode.code}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Description" />
+						</f:facet>
+						<h:outputText value="#{callCode.description}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+			<p:spacer width="100%" height="10" />
+			<div id="call_log_div_table">
+				<div id="call_log_div_tr">
+					<div id="call_log_div_lft">Comments:</div>
+					<div id="call_log_div_rgt">
+						<p:message for="comments" />
+						<p:inputTextarea id="comments"
+							value="#{phoneCallModel.call.comments}" maxlength="255"
+							style="width:300px;height:100px;" autoResize="false"></p:inputTextarea>
+					</div>
+				</div>
+				<p:spacer width="100%" height="10" />
+				<div id="call_log_div_tr">
+					<div id="call_log_div_lft">Phone Extension:</div>
+					<div id="call_log_div_rgt">
+						<p:inputMask id="claimant_PhoneExtn" value="#{phoneCallModel.phoneExtn}"
+								mask="?999999999999999" placeHolder="" maxlength="15"  />
+					</div>
+				</div>
+				<p:spacer width="100%" height="10" />
+				<div id="call_log_div_tr">
+					<div id="call_log_div_lft">
+						<font color="red">*</font>Call Type:
+					</div>
+					<div id="call_log_div_rgt">
+						<p:message for="claimant_CallType" />
+						<h:selectOneMenu id="claimant_CallType"
+							value="#{phoneCallModel.call.callType}" maxlength="8"
+							required="true">
+							<f:selectItem itemValue="#{phoneCallModel.inboundCallType}"
+								itemLabel="Incoming" />
+							<f:selectItem itemValue="#{phoneCallModel.outboundCallType}"
+								itemLabel="Outgoing" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+			</div>
+		</p:fieldset>
+		<h:panelGroup>
+			<div id="buttonsection">
+				<p:commandButton id="saveLogCallConfirm" action="saveLogCallConfirm"
+					immediate="true" oncomplete="confirmationSave.show()" 
+					disabled="#{!sec:canCreateCallLog()}" value="Save" />
+				<p:commandButton id="cancelCallLogConfirm" immediate="true"
+					value="Cancel" action="cancelLogCall" ajax="false" />
+				<p:commandButton id="exitLogCallConfirm" action="exitLogCallConfirm"
+					immediate="true" oncomplete="confirmationExit.show()" value="Exit"
+					disabled="#{!sec:canExitCallLog()}" />
+			</div>
+		</h:panelGroup>
+	</h:panelGroup>
+
+	<p:confirmDialog  id="callLogExitMess"
+		message="Are you sure you want to exit without saving?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton id="callLogExitMessYes" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exitLogCall" />
+		<p:commandButton id="callLogExitMessNo" value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+	<p:confirmDialog id="callLogSaveMess" message="Are you sure you want to save?" modal="true"
+		header="Save" severity="alert" widgetVar="confirmationSave">
+		<p:commandButton id="callLogSaveMessYes" value="Yes" ajax="false"
+			oncomplete="confirmationSave.hide()" action="saveLogCall"
+			update="callLog" />
+		<p:commandButton id="callLogSaveMessNo" value="No" onclick="confirmationSave.hide()"
+			type="button" />
+	</p:confirmDialog>
+
+</ui:composition>
+</html>
+
+

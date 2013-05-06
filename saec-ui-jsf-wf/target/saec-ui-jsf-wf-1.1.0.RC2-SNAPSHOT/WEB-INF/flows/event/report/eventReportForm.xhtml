@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<h:panelGroup id="claimant_new_fields">
+		<p:growl id="growl" showDetail="false" globalOnly="true" life="20000" />
+		<p:fieldset legend="Event Configuration">
+			<div id="event_config_div_table">
+				<div id="event_config_div_tr">
+					<div id="event_config_div_td">Event Report Config</div>
+				</div>
+				<h:panelGroup id="eventReport_panel">
+					<p:dataTable id="eventReportformList"
+						value="#{eventViewModel.reportCodeList}" var="reportcode"
+						rowIndexVar="rowIndex">
+						<p:column id="select" style="width:8px">
+							<f:facet name="header">
+								<h:selectBooleanCheckbox
+									value="#{eventViewModel.includeAllReportsOnPage}">
+									<f:ajax event="change" immediate="true"
+										listener="#{eventViewModel.toggleReportsSelection()}"
+										render="@form" />
+								</h:selectBooleanCheckbox>
+							</f:facet>
+							<h:selectBooleanCheckbox value="#{reportcode.activeForEvent}">
+								<f:ajax event="change" immediate="true"
+									listener="#{eventViewModel.selectReportForEvent(reportcode.code)}"
+									render="@none" />
+							</h:selectBooleanCheckbox>
+						</p:column>
+						<p:column headerText="#" style="width:8px">
+							#{rowIndex+1}
+						</p:column>
+						<p:column id="code" sortBy="#{reportcode.code}">
+							<f:facet name="header">
+								<h:outputText value="Code" />
+							</f:facet>
+							<h:outputText value="#{reportcode.code}" />
+						</p:column>
+						<p:column id="description" sortBy="#{reportcode.description}">
+							<f:facet name="header">
+								<h:outputText value="Description" />
+							</f:facet>
+							<h:outputText value="#{reportcode.description}" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+			</div>
+		</p:fieldset>
+	</h:panelGroup>
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+		<p:commandButton id="addNewReport" value="Add New Report" ajax="true"
+			action="addNewReport" immediate="true" update="@form" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+
+	<p:dialog header="Event Report Addition" id="eventReportAddDialog"
+		widgetVar="eventReportAddDialog" resizable="false" modal="true">
+		<p:messages />
+		<h:panelGrid columns="2" style="margin-bottom:10px">
+			<h:outputLabel for="newReportCode" value="New Report Code:" />
+			<p:inputText id="newReportCode" value="#{eventViewModel.newReportCode}" />
+			<h:outputLabel for="newReportDescription" value="New Report Description" />
+			<p:inputText id="newReportDescription" value="#{eventViewModel.newReportDescription}" />
+			<h:outputLabel for="newReportType" value="Report Type" />
+			<h:selectOneMenu id="newReportCategory" value="#{eventViewModel.newReportCategory}">
+				<f:selectItem itemLabel="Outreach" itemValue="OUTREACH" />
+				<f:selectItem itemLabel="Check Distribution" itemValue="CHECK_DISTRIBUTION" />
+				<f:selectItem itemLabel="Check Status" itemValue="CHECK_STATUS" />
+				<f:selectItem itemLabel="RPO" itemValue="RPO" />
+				<f:selectItem itemLabel="Class Action" itemValue="CLASS_ACTION" />
+				<f:selectItem itemLabel="ROF" itemValue="ROF" />
+				<f:selectItem itemLabel="TAX" itemValue="TAX" />
+				<f:selectItem itemLabel="MISC" itemValue="MISC" />
+			</h:selectOneMenu>
+		</h:panelGrid>
+		<p:commandButton value="Save" ajax="false" action="saveNewReport" update="@form" />
+		<p:commandButton value="Cancel" type="button" onclick="eventReportAddDialog.hide()" />
+	</p:dialog>
+</ui:composition>
+</html>
+
+

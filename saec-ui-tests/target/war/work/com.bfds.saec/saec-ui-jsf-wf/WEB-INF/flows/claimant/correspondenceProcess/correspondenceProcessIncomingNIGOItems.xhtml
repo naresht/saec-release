@@ -1,0 +1,80 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+  <p:dialog header="Mail Related To Existing Cure"
+		widgetVar="existingCureDialog" id="existingCureDialog" modal="true">
+		<p:dataTable id="existingCureDocs" var="mail" styleClass="fieldsetaddresstable1"
+			value="#{viewModel.correspondenceIncomingNIGOList}" rowIndexVar="rowIndex"
+			selection="#{viewModel.selectedExistingCureMails}">
+			<f:facet name="header">
+			</f:facet>
+			<p:column selectionMode="single" style="width:18px"/>
+			<p:column id="inx">
+				<f:facet name="header">
+					<h:outputText value="#" />
+				</f:facet>
+				<h:outputText value="#{rowIndex+1}" />
+			</p:column>
+			<p:column id="id_mailType" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Mailing Type" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.mailType}" />
+			</p:column>
+			<p:column id="id_mailDate" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Mail Date" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.mailDate}" />
+			</p:column>
+			<p:column id="id_desc" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Description" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.description}" />
+			</p:column>
+			<p:column id="id_requestType" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Request Type" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.letterCode}" />
+			</p:column>
+			<p:column id="id_docsReceived" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Documents Received" />
+					</f:facet>
+					<h:outputText escape="false" value="#{mail.getReceivedCorrespondenceDocumentsAsString('&lt;br/&gt;')}" />
+			</p:column>
+			<p:column id="id_docsMissing" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Documents Missing" />
+					</f:facet>
+					<h:outputText escape="false" value="#{mail.getMissingCorrespondenceDocumentsAsString('&lt;br/&gt;')}" />
+			</p:column>
+			<p:column id="status">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:outputText value="#{mail.letter.statusDescription}" />
+			</p:column>
+			<p:column id="comments" style="width:103px;">
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>
+				<h:outputText value="#{mail.letter.comments == 'null' ? '' : mail.letter.comments}" />
+			</p:column>
+		</p:dataTable>
+		<p:spacer width="10" height="10" />
+		<div align="center">
+			<p:commandButton id="existingCure_save" oncomplete="existingCureDialog.hide()" value="Ok" action="missingDocumnetsOfExistingNIGO" update="@form" ajax="false"/>
+			<p:spacer width="10" height="10" />
+			<p:commandButton id="exit" oncomplete="existingCureDialog.hide()" value="Exit" update="@form" />
+		</div>
+	</p:dialog>
+</ui:composition>
+</html>

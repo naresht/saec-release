@@ -1,0 +1,54 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <p:fieldset legend="Details">
+        <h:panelGroup id="searchCriteriaFields">
+            <div id="stop_lift_div_table">
+                <div id="stop_lift_div_tr">
+                    <div id="stop_lift_div_lft">Username:</div>
+                    <div id="stop_lift_div_rgt">
+                        <p:inputText value="#{adminUserRolesViewModel.selectedUser}"/>
+                    </div>
+                </div>
+                <p:spacer height="10" width="100%"/>
+                
+                <div id="buttonsection" style="padding-left:67px;">
+                    <p:commandButton id="apply" action="search" value="Search" ajax="false"/>
+                </div>
+            </div>
+        </h:panelGroup>
+
+        <p:spacer height="50" width="100%"/>
+        
+        <center>
+            <h:panelGroup id="formFields" rendered="#{adminUserRolesViewModel.userFound}">
+            
+
+             
+                <p:pickList id="pickList" value="#{adminUserRolesViewModel.pickList.changedRoles}"
+                            var="role" 
+                            itemLabel="#{role.roleName}" 
+                            itemValue="#{role}" converter="roleConverter" converterMessage="Convert Failed" />
+						
+
+                <div id="buttonsection2">
+                    <p:commandButton id="pojoSubmit" value="Submit" action="save" />           
+                     <p:commandButton id="pojoCLear" value="Clear" action="clear" />                                                              
+                </div>
+                
+                
+                                                                          
+                
+            </h:panelGroup>
+        </center>
+
+    </p:fieldset>
+
+</ui:composition>

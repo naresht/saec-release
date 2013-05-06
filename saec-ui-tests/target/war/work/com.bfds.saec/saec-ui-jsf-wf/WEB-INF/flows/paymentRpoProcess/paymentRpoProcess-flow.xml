@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+  <var name="paymentRpoProcessViewModel" class="com.bfds.saec.web.model.PaymentRpoProcessViewModel"/>  
+	
+	<view-state id="paymentRpoProcessSelect">			
+		<on-entry>
+		<evaluate expression="paymentRpoProcessViewModel.reset()"></evaluate>
+		</on-entry>
+		<transition on="search" to="paymentRpoProcess">
+			<evaluate expression="paymentRpoProcessViewModel.loadPaymentByControlNumber(messageContext)" />
+		</transition>		
+		<transition on="reset">
+			<evaluate expression="paymentRpoProcessViewModel.reset()"></evaluate>
+		</transition>
+		<transition on="exitConfirm" />
+		<transition on="exit" to="endEdit"/> 
+	 </view-state>		
+	
+  <view-state id="paymentRpoProcess">
+    <on-entry>
+	    <set name="viewScope.payment" value="paymentRpoProcessViewModel.payment" />  
+	    <set name="viewScope.address" value="paymentRpoProcessViewModel.address" />   
+    </on-entry>
+	<transition on="save" to="paymentRpoProcessSelect">
+	  <evaluate expression="paymentRpoProcessViewModel.save(messageContext)" />
+	</transition> 
+	<transition on="exit" to="paymentRpoProcessSelect"/> 
+    <transition on="exitConfirm"/> 
+    <transition on="saveConfirm"/>      	
+  </view-state>
+  <end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" /> 
+</flow>

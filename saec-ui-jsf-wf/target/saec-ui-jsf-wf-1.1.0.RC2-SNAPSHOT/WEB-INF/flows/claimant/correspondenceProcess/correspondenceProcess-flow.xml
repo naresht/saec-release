@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="viewModel" class="com.bfds.saec.web.model.CorrespondenceProcessViewModelNew" />
+	<var name="rpoProcessViewModel" class="com.bfds.saec.web.model.RpoProcessViewModel"/>  
+	<input name="claimantViewModel" required="true" type="com.bfds.saec.web.model.ClaimantViewModel" />
+
+	<!-- correspondenceProcess View State -->
+	<view-state id="correspondenceProcessNew">
+		<on-entry>
+			<evaluate expression="viewModel.loadCorrespondenceList(claimantViewModel.claimant.id)"></evaluate>
+		</on-entry>
+		<transition on="newMailForm" >
+			<evaluate expression="viewModel.addNewCorrespondence()"></evaluate>
+		</transition>
+		<transition on="edit">
+			<evaluate expression="viewModel.editCorrespondence()"></evaluate>
+		</transition>
+		<transition on="exitCorrespondenceConfirm" />
+		<transition on="saveCorrespondenceConfirm" />
+		<transition on="exit" to="exitCorrespondenceProcess"/>
+		<transition on="expand">
+			<evaluate expression="viewModel.expand()"></evaluate>
+		</transition>
+		<transition on="collapse">
+			<evaluate expression="viewModel.collapse()"></evaluate>
+		</transition>
+		<transition on="saveReceivedDocs">
+			<evaluate expression="viewModel.updateReceivedDocumentsOnSelectedCorrespondence()"></evaluate>
+		</transition>
+		<transition on="saveMissingDocs">
+			<evaluate expression="viewModel.updateMissingDocumentsOnSelectedCorrespondence()"></evaluate>
+		</transition>
+		<transition on="hasAWDObject">
+			<evaluate expression="viewModel.hasAWDObject()"></evaluate>
+		</transition>
+		<transition on="hasNoAWDObject">
+			<evaluate expression="viewModel.hasNoAWDObject()"></evaluate>
+		</transition>
+		<transition on="save" to="correspondenceProcessNew">
+			<evaluate expression="viewModel.saveCorrespondence(messageContext, claimantViewModel.claimant)" />
+		</transition>
+		<transition on="alternateAddress" to="correspondenceProcessAddress">
+			<evaluate expression="viewModel.loadAddress()"></evaluate>
+		</transition>
+		<transition on="loadMailByControlNumber" to="rpoProcess" >
+			<set name="rpoProcessViewModel.mailingControlNumber" value="requestParameters.id"></set>
+			<evaluate expression="rpoProcessViewModel.loadMailByControlNumber(messageContext)" />
+		</transition>
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	</view-state>
+
+	<view-state id="correspondenceProcessAddress">
+		<transition on="save" to="correspondenceProcessNew" >
+			<evaluate expression="viewModel.saveAddress()"></evaluate>
+		</transition>
+		<transition on="saveConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="correspondenceProcessNew" />
+	</view-state>
+
+	<view-state id="rpoProcess">
+		<on-entry>
+			<set name="viewScope.mail" value="rpoProcessViewModel.mail" />
+			<set name="viewScope.address" value="rpoProcessViewModel.address" />
+		</on-entry>
+		<transition on="save" to="correspondenceProcessNew">
+			<evaluate expression="rpoProcessViewModel.save(messageContext)" />
+		</transition>
+		<transition on="exit" to="exitCorrespondenceProcess" />
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	</view-state>
+	
+	<end-state id="exitCorrespondenceProcess" />
+</flow>                                                                 

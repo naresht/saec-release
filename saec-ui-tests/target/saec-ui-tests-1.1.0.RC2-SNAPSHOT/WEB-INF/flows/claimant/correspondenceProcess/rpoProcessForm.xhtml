@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+<p:fieldset legend="Details">
+	<div id="rpo_mail1_div_table">
+		<div id="rpo_mail1_div_tr">
+			<div id="rpo_mail1_div_lft">
+				<b>Reference #:</b><br />
+				<h:outputText value="#{rpoProcessViewModel.claimant.referenceNo}"></h:outputText>
+			</div>
+			<div id="rpo_mail1_div_rgt">	
+				<b>Name:</b><br />
+				<h:outputText escape="false" value="#{rpoProcessViewModel.claimant.claimantRegistration.getRegistrationLinesAsString('&lt;br/&gt;')}"></h:outputText><br/>
+				<h:outputText escape="false" value="#{rpoProcessViewModel.claimant.mailingAddress.getAddressAsString('&lt;br/&gt;')}"></h:outputText>
+			</div>
+		</div>
+	</div>
+	<br />
+	<h:panelGroup id="rpoProcessPanel">
+	<center>
+	<p:panel header="Mailing History">
+	<table border="0" class="fieldsetreissuetable" summary="">
+		<tr class="header">
+			<td>Mail Date</td>
+			<td>Mailing Type</td>
+			<td>Mailing Control #</td>
+			<td>Description</td>
+			<td>Letter Code</td>
+			<td>Audit</td>
+			<td>Special Pull</td>
+			<td>Group Mail Code</td>
+			<td>Status</td>
+			<td>RPO Type</td>
+			<td>RPO Date</td>
+			<td>Comments</td>
+			<td>User ID</td>
+		</tr>
+		<tr class="row1">
+
+			<td style="white-space: nowrap;"><h:outputText value="#{rpoProcessViewModel.mail.mailDate}">
+			<!-- <f:convertDateTime pattern="MM/dd/yyyy KK:mm aa" /> -->
+			</h:outputText>
+			</td>
+			<td><h:outputText value="#{rpoProcessViewModel.mail.mailType}"/>
+			</td>
+			<td><h:outputText id="mailingControlNo"
+					value="#{rpoProcessViewModel.mail.mailingControlNo}" />
+			</td>
+			<td><h:outputText
+					value="#{rpoProcessViewModel.mail.description}"/>
+			</td>
+			<td><h:outputText value="#{rpoProcessViewModel.mail.letterCode.code}"
+					maxlength="3"/>
+			</td>
+			<td><h:outputText value="#{rpoProcessViewModel.mail.auditable == true ? 'A' : ''}"
+					maxlength="1"/>
+			</td>
+			<td><h:outputText
+					value="#{rpoProcessViewModel.mail.specialPull == true ? 'S' : ''}"/>
+			</td>
+			<td><h:outputText value="#{rpoProcessViewModel.mail.groupMailCode}" maxlength="3">
+					<f:converter converterId="groupMailCodeConverter" />
+				</h:outputText>
+			</td>
+			<td><h:outputText
+					value="#{rpoProcessViewModel.mail.letterStatus}" maxlength="60"/>
+			</td>
+			<td> <h:selectOneMenu id="rpoProcessType" value="#{rpoProcessViewModel.mail.rpoType}" maxlength="15" >
+ 					<f:ajax render="addressPanel rpoProcessPanel" update="addressPanel" event="valueChange" listener="#{rpoProcessViewModel.onChangeRpoType(rpoProcessViewModel.mail.rpoType)}"/>		
+						<f:selectItem itemValue="" itemLabel=""/>
+						<f:selectItem itemValue="FORWARDABLE" itemLabel="FORWARDABLE"/>
+						<f:selectItem itemValue="NONFORWARDABLE" itemLabel="NONFORWARDABLE"/>
+					</h:selectOneMenu>
+					
+			</td>
+			<td><p:calendar value="#{rpoProcessViewModel.mail.rpoDate}" pattern="MM/dd/yyyy" maxlength="10"/>
+			</td>
+			<td><p:inputTextarea value="#{rpoProcessViewModel.mail.comments}" maxlength="255" autoResize="false">
+					<f:ajax event="change" process="@this"/> 
+				</p:inputTextarea>
+			</td>
+			<td><h:outputText value="#{rpoProcessViewModel.mail.userId}"
+					maxlength="25" />
+			</td>
+		</tr>
+	</table>
+	</p:panel>
+	</center>
+	</h:panelGroup>
+    	<h:panelGroup id="addressPanel" layout="block" >     	
+    	<div style="display:#{rpoProcessViewModel.showAddressDetails ? 'block' : 'none'}">
+			<p:spacer width="100%" height="20" rowIndexVar="rowIndex"/>
+			<table border="0" class="fieldsetreissuetable" summary="" >
+				<tr class="header">
+					<td>Type</td>
+					<td>Address1</td>
+					<td>Address2</td>
+					<td>Address3</td>
+					<td>Address4</td>
+					<td>Address5</td>
+					<td>Address6</td>
+					<td>City</td>
+					<td>State</td>
+					<td>Zip Code</td>
+					<td>Zip Code ext</td>
+					<td>Last Maint. Date</td>
+					<td>User ID</td>
+				</tr>
+				<tr class="row1">
+<!-- 					<td><h:outputText -->
+<!-- 							value="#{rpoProcessViewModel.address.addressType}" maxlength="10" /> -->
+					<td>
+					 <h:outputText value="#{(rowIndex == 0) ? 'Prev' : 'Current'}"/>
+					</td>
+					<td><p:inputText id="address1" value="#{rpoProcessViewModel.address.address1}" maxlength="60" required="true" requiredMessage="Please, fill Address1"/>
+						<p:message for="address1" />
+					</td>
+					<td><p:inputText id="address2" value="#{rpoProcessViewModel.address.address2}" maxlength="60" />
+					</td>
+					<td><p:inputText id="address3" value="#{rpoProcessViewModel.address.address3}" maxlength="60" />
+					</td>
+					<td><p:inputText id="address4" value="#{rpoProcessViewModel.address.address4}" maxlength="60" />
+					</td>
+					<td><p:inputText id="address5" value="#{rpoProcessViewModel.address.address5}" maxlength="60" />
+					</td>
+					<td><p:inputText id="address6" value="#{rpoProcessViewModel.address.address6}" maxlength="60" />
+					</td>
+					<td><p:inputText id="city" value="#{rpoProcessViewModel.address.city}" maxlength="20" required="true" requiredMessage="Please, fill City"/>
+						<p:message for="city" />
+					</td>     
+					<td><p:inputText id="state" value="#{rpoProcessViewModel.address.stateCode}" maxlength="2" required="true" requiredMessage="Please, fill State"/>
+						<p:message for="state" />
+					</td>
+					<td><p:inputMask id="zipcode" value="#{rpoProcessViewModel.address.zipCode.zip}" mask="99999" maxlength="5" required="true" requiredMessage="Please, fill Zip Code"/>
+						<p:message for="zipcode" />
+					</td>
+					<td><p:inputMask id="ext" value="#{rpoProcessViewModel.address.zipCode.ext}" mask="9999" maxlength="4" />
+					</td>
+					<td><h:outputText value="#{rpoProcessViewModel.addressRevisionInfo.revisionDate}"/>
+					</td>
+					<td><h:outputText value="#{rpoProcessViewModel.addressRevisionInfo.userName}"/>
+					</td>
+				</tr>
+			</table>
+				<div id="check_confirmation_div_td">
+			Reissue Needed?</div> &nbsp;<h:selectOneMenu id="check_reissue"
+										value="#{rpoProcessViewModel.mail.rpoForwardableReissueRequired}">
+										<f:selectItem itemValue="" itemLabel="" />
+										<f:selectItem itemValue="true" itemLabel="Yes" />
+										<f:selectItem itemValue="false" itemLabel="No" />
+									</h:selectOneMenu><br/>
+								
+    </div>
+	</h:panelGroup>				
+	</p:fieldset>
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>

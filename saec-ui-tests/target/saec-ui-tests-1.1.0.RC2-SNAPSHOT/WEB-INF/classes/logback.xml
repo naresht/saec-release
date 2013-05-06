@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+
+<property resource="logback.properties" />
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/saec-app.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logs.dir}/logs/saec/saec-app.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+    
+	<appender name="external_services" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/saec-rest-services.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logs.dir}/logs/saec/saec-rest-services.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>    
+
+    <!-- Email appender -->
+
+    <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>error</level>
+        </filter>
+        <to>${mail_to}</to>
+        <from>${mail_from}</from>
+        <smtpHost>${smtp.host}</smtpHost>
+        <subject>${mail_subject}</subject>
+        <cyclicBufferTracker class="ch.qos.logback.core.spi.CyclicBufferTrackerImpl">
+            <!-- send just one log entry per email -->
+            <bufferSize>1</bufferSize>
+        </cyclicBufferTracker>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </layout>
+    </appender>
+
+    <!-- ADDRESS RESEARCH: Process appender -->
+    <appender name="FILE_ADDRESS_RESEARCH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/saec-address-research.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logs.dir}/logs/saec/saec-address-research.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ADDRESS RESEARCH: Infoage Individual In process appender -->
+    <appender name="INFOAGE_INDIVIDUAL_IN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/saec-infoage-individual-in.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logs.dir}/logs/saec/saec-infoage-individual-in.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ADDRESS RESEARCH: Infoage Individual Out process appender -->
+    <appender name="INFOAGE_INDIVIDUAL_OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/saec-infoage-individual-out.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logs.dir}/logs/saec/saec-infoage-individual-out.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ADDRESS RESEARCH: Infoage Corporate In process appender -->
+    <appender name="INFOAGE_CORPORATE_IN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/saec-infoage-corporate-in.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logs.dir}/logs/saec/saec-infoage-corporate-in.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ADDRESS RESEARCH: Infoage Corporate Out process appender -->
+    <appender name="INFOAGE_CORPORATE_OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/saec-infoage-corporate-out.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logs.dir}/logs/saec/saec-infoage-corporate-out.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="db_cashed_check" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/db-cashed-check.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/db-cashed-check.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="db_stop_acknowledgement" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/db-stop-acknowledgement.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/db-stop-acknowledgement.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="db_stop_confirmation" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/db-stop-confirmation.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/db-stop-confirmation.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="bank_issue_void" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/db-issue-void.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/bank-issue-void.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="db_stop_payment" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/db-stop-payment.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/db-stop-payment.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ss_cashed_check" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/ss-cashed-check.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/ss-cashed-check.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ss_issue_void" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/ss-issue-void.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/ss-issue-void.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ss_stop_payment" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/ss-stop-payment.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/ss-stop-payment.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="dsto_check_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/dsto-check-file.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/dsto-check-file.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="dsto_print_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/dsto-print-file.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/dsto-print-file.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ifds_check_status" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/ifds-check-status.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/ifds-check-status.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ifds_issue_void" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/ifds-issue-void.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/ifds-issue-void.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="stale_date" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/stale-date.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/stale-date.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rpo_uploads" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/awd-rpo-uploads.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/awd-rpo-uploads.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="encorr_uploads" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/encorr-uploads.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/encorr-uploads.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ncoa_in" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/ncoa-in.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/ncoa-in.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="ncoa_out" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logs.dir}/logs/saec/ncoa-out.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.dir}/logs/saec/ncoa-out.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss}, %level, %logger{20}, %thread, %class{1}, %method, %line, %message%n %exception</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.bfds.saec" level="info"/>
+
+    <logger name="com.bfds.saec.dao" level="warn"/>
+
+    <!-- JSF Phase listener (debug purpose) <logger name="org.springframework.faces.support.RequestLoggingPhaseListener">
+         <level value="${log4j.level}" /> </logger> -->
+
+    <!-- TRANSACTION -->
+    <logger name="org.springframework.transaction" level="warn" />
+
+    <logger name="org.springframework.orm.hibernate3" level="warn"/>
+
+    <!-- HIBERNATE & CACHE SPECIFIC -->
+    <logger name="org.hibernate.cache.EhCacheProvider" level="error"/>
+
+    <logger name="org.hibernate" level="warn"/>
+
+    <!-- Log Hibernate SQL queries to file (log level must be DEBUG to enable
+         it) -->
+    <logger name="org.hibernate.SQL" additivity="false" level="debug" />
+
+    <!-- OTHER OPEN SOURCE PACKAGES -->
+    <logger name="com.bfds.saec" level="debug" />
+
+    <logger name="org.springframework.security" level="warn" />
+
+    <logger name="org.apache.commons" level="warn" />
+
+    <logger name="org.springframework.beans.factory.support" level="warn" />
+
+    <logger name="org.sqlrecorder" level="warn" />
+
+    <!-- address research business process log file -->
+    <logger name="com.bfds.saec.addressresearch.batch" level="debug">
+        <appender-ref ref="FILE_ADDRESS_RESEARCH" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.in.infoage_individaul" level="info">
+        <appender-ref ref="INFOAGE_INDIVIDUAL_IN" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.infoage_individaul" level="info">
+        <appender-ref ref="INFOAGE_INDIVIDUAL_OUT" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.in.infoage_corporate" level="info">
+        <appender-ref ref="INFOAGE_CORPORATE_IN" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.infoage_corporate" level="info">
+        <appender-ref ref="INFOAGE_CORPORATE_OUT" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.in.db_cashed_check" level="info">
+        <appender-ref ref="db_cashed_check" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.in.db_stop_acknowledgement" level="info">
+        <appender-ref ref="db_stop_acknowledgement" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.in.db_stop_confirmation" level="info">
+        <appender-ref ref="db_stop_confirmation" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.bank_issue_void" level="info">
+        <appender-ref ref="bank_issue_void" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.db_stop_payment" level="info">
+        <appender-ref ref="db_stop_payment" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.in.ss_cashed_check" level="info">
+        <appender-ref ref="ss_cashed_check" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.ss_issue_void" level="info">
+        <appender-ref ref="ss_issue_void" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.ss_stop_payment" level="info">
+        <appender-ref ref="ss_stop_payment" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.dsto_check_file" level="info">
+        <appender-ref ref="dsto_check_file" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.dsto_print_file" level="info">
+        <appender-ref ref="dsto_print_file" />
+    </logger>
+
+   <logger name="com.bfds.saec.batch.out.ifds_check_status" level="info">
+        <appender-ref ref="ifds_check_status" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.out.ifds_issue_void" level="info">
+        <appender-ref ref="ifds_issue_void" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.stale_date" level="info">
+        <appender-ref ref="stale_date" />
+    </logger>
+
+    <logger name="com.bfds.saec.rpo.dao" level="info">
+        <appender-ref ref="rpo_uploads" />
+    </logger>
+
+    <logger name="com.bfds.saec.encorr.dao" level="info">
+        <appender-ref ref="encorr_uploads" />
+    </logger>
+
+    <logger name="com.bfds.saec.batch.in.ncoa" level="info">
+        <appender-ref ref="ncoa_in" />
+    </logger>
+    
+    <logger name="com.bfds.saec.batch.out.ncoa" level="info">
+        <appender-ref ref="ncoa_out" />
+    </logger>
+    
+	<logger name="com.bfds.saec.rest" level="info">
+        <appender-ref ref="external_services" />
+    </logger>
+    
+	<logger name="com.bfds.saec.external.services" level="info">
+        <appender-ref ref="external_services" />
+    </logger>    
+
+	<logger name="com.stormpath" level="info">
+        <appender-ref ref="external_services" />
+    </logger>    
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="File" />
+        <appender-ref ref="EMAIL" />
+    </root>
+</configuration>

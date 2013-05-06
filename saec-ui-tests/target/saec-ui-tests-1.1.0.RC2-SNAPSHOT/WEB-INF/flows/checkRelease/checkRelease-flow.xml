@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+  <var name="checkReleaseViewModel" class="com.bfds.saec.web.model.CheckReleaseViewModel"/>  
+  <!--
+    Input:
+      * create: 'true' the first view shows the view to create a new user
+                'false' to edit an existing user
+  -->
+  <input name="operation" type="string" />    
+  <input name="paymentType" type="string" />
+	<decision-state id="chooseView">
+		<if test="operation=='manual'" then="checkReleaseManual" else="checkReleaseBulk" />
+	</decision-state>	
+	
+	<view-state id="checkReleaseManual">	
+		<var name="searchCriteria" class="com.bfds.saec.domain.dto.CheckReleaseSearchCriteriaDto"/>
+		<on-entry>
+			<evaluate expression="searchCriteria.setBulk(false)"></evaluate>
+			<evaluate expression="searchCriteria.setPaymentType(paymentType)"></evaluate>
+			<evaluate expression="checkReleaseViewModel.loadChecksForRelease(searchCriteria,messageContext)" result="flowScope.checks"/>
+			<evaluate expression="paymentDao.getCheckCountForRelease(searchCriteria)" result="viewScope.checkCountForRelease"/>
+		</on-entry>		
+		<transition on="saveConfirm" />
+		<transition on="clearConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="endEdit" />
+		<transition on="search">
+			<evaluate expression="checkReleaseViewModel.clearCurrentPage()"></evaluate>
+			<evaluate expression="checkReleaseViewModel.loadChecksForRelease(searchCriteria,messageContext)" result="flowScope.checks"/>
+		</transition>	
+		<transition on="reset">
+			<evaluate expression="checkReleaseViewModel.clearAllManualSections()"></evaluate>
+		</transition>
+		<transition on="resetText">
+			<evaluate expression="checkReleaseViewModel.clearSearchForm(searchCriteria)"></evaluate>
+			<evaluate expression="checkReleaseViewModel.loadChecksForRelease(searchCriteria,messageContext)" result="flowScope.checks"/>
+		</transition>
+		<transition on="validateSelectedCheck">
+			<evaluate expression="checkReleaseViewModel.validateSelectedCheck()"></evaluate>
+		</transition>		
+		<transition on="save" to="checkReleaseManual">
+			<evaluate expression="checkReleaseViewModel.saveManual(messageContext, searchCriteria, paymentDao)"></evaluate>
+			<!-- Reload the data. -->
+			<evaluate expression="checkReleaseViewModel.loadChecksForRelease(searchCriteria,messageContext)" result="flowScope.checks"/>
+		</transition>
+		<transition on="summary">
+			<evaluate
+				expression="claimantSearchViewModel.getClaimantByPrimayKey(requestParameters.id)"
+				result="viewScope.claimant" />
+		</transition>
+ <transition on="saveCreateConfirm"/> 
+ <transition on="exitCreateConfirm"/>
+	</view-state>
+	
+	<view-state id="checkReleaseBulk">	
+		<var name="searchCriteria" class="com.bfds.saec.domain.dto.CheckReleaseSearchCriteriaDto"/>
+		<on-entry>
+			<evaluate expression="searchCriteria.setBulk(true)"></evaluate>
+			<evaluate expression="searchCriteria.setPaymentType(paymentType)"></evaluate>
+			<evaluate expression="checkReleaseViewModel.loadChecksForRelease(searchCriteria,messageContext)" result="flowScope.checks"/>
+			<evaluate expression="paymentDao.getCheckCountForRelease(searchCriteria)" result="viewScope.checkCountForRelease"/>
+		</on-entry>
+		<transition on="saveConfirm" />
+		<transition on="clearConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="endEdit" />
+		<transition on="reset">
+			<evaluate expression="checkReleaseViewModel.clearBulkSections()"></evaluate>
+		</transition>
+		<transition on="resetText">
+			<evaluate expression="checkReleaseViewModel.clearSearchForm(searchCriteria)"></evaluate>
+			<evaluate expression="checkReleaseViewModel.loadChecksForRelease(searchCriteria,messageContext)" result="flowScope.checks"/>
+		</transition>
+		<transition on="search">
+			<evaluate expression="checkReleaseViewModel.clearCurrentPage()"></evaluate>
+			<evaluate expression="checkReleaseViewModel.loadChecksForRelease(searchCriteria, messageContext)" result="flowScope.checks"/>
+		</transition>		
+		<transition on="save" to="checkReleaseBulk">
+			<evaluate expression="checkReleaseViewModel.saveBulk(searchCriteria, messageContext, paymentDao)"></evaluate>
+			<!-- Reload the data. -->
+			<evaluate expression="checkReleaseViewModel.loadChecksForRelease(searchCriteria,messageContext)" result="flowScope.checks"/>
+		</transition>
+		<transition on="summary">
+			<evaluate
+				expression="claimantSearchViewModel.getClaimantByPrimayKey(requestParameters.id)"
+				result="viewScope.claimant" />
+		</transition>
+ <transition on="saveCreateConfirm"/> 
+ <transition on="exitCreateConfirm"/>
+	</view-state>	
+	
+	  <!-- Default end state -->
+  <!--    <end-state id="endEdit">
+    <output name="claimant" value="claimant" />
+  </end-state>  -->
+  <end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />  
+</flow>

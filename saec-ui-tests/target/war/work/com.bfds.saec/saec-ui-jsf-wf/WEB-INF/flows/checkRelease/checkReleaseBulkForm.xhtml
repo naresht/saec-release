@@ -1,0 +1,132 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<style>
+.green {
+	background-color: #6CE26C !important;
+	background-icon: none !important;
+	color: #000000 !important;
+}
+
+.red {
+	background-color: #FF0000 !important;
+	background-icon: none !important;
+	color: #000000 !important;
+}
+</style>
+	<p:fieldset legend="Details">
+		<ui:include src="./checkReleaseSearchFields.xhtml" />		
+		<h:panelGroup id="formFields">
+			<p:spacer height="20" width="100%" />
+			<b>Total Number of CHECKS waiting Approval: </b>
+			<h:outputText value="#{checkCountForRelease}" />
+			<p:spacer height="20" width="100%" />
+			<b>Exclude All :</b> <h:selectBooleanCheckbox value="#{searchCriteria.excludeAllByDefault}">
+						<f:ajax event="click" immediate="true" onevent="showProgress"
+							listener="#{checkReleaseViewModel.togglePaymentsForbulkApproval(searchCriteria.excludeAllByDefault)}"
+							render="@form" />
+					</h:selectBooleanCheckbox>
+			<p:spacer height="20" width="100%" />			
+			<p:dataTable id="formList" value="#{checkReleaseViewModel.checkList}" lazy="true"
+				var="item" rowIndexVar="rowIndex"
+				paginator="true" rows="5" paginatorPosition="bottom" 
+				height="#{(not empty height) ? height : '500px'}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15,25,50,100" dynamic="true"
+				rowStyleClass="#{ item.approved ? 'null' : 'red '}">
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Zoom" />
+					</f:facet>
+					<p:commandButton update=":form:NewheaderPanel" action="summary"
+						oncomplete="accountDialog.show()" title="Account Summary"
+						icon="iconSelect">
+						<f:param name="id" value="#{item.claimantId}" />
+					</p:commandButton>
+				</p:column>
+				<p:column id="statusChangeDate" sortBy="#{item.statusChangeDate}"
+					filterBy="#{item.statusChangeDate}">
+					<f:facet name="header">
+						<h:outputText value="Date Requested" />
+					</f:facet>
+					<h:outputText value="#{item.statusChangeDate}">
+						<f:converter converterId="dateConverter"/>
+					</h:outputText>
+				</p:column>
+				<p:column id="reference" sortBy="#{item.referenceNo}"
+					filterBy="#{item.referenceNo}">
+					<f:facet name="header">
+						<h:outputText value="Reference#" />
+					</f:facet>
+					<h:outputText value="#{item.referenceNo}" />
+				</p:column>
+				<p:column id="name" sortBy="#{item.name}" filterBy="#{item.name}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{item.name}" escape="false" />
+				</p:column>
+				<p:column id="address">
+					<f:facet name="header">
+						<h:outputText value="Address" />
+					</f:facet>
+					<h:outputText value="#{item.address}" escape="false" />
+				</p:column>
+				<p:column id="checkNo" sortBy="#{item.checkNo}"
+					filterBy="#{item.checkNo}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Replaced Check #" />
+					</f:facet>
+					<h:outputText value="#{item.checkNo}" escape="false" />
+				</p:column>
+				<p:column id="paymentAmount" sortBy="#{item.paymentAmount}"
+					filterBy="#{item.paymentAmount}">
+					<f:facet name="header">
+						<h:outputText value="Payment Amount" />
+					</f:facet>
+					<h:outputText value="#{item.paymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+				<p:column id="approve">
+					<f:facet name="header" >
+					<h:selectBooleanCheckbox value="#{checkReleaseViewModel.includeAllOnPage}">
+						<f:ajax event="click" immediate="true"
+							listener="#{checkReleaseViewModel.togglePaymentsOnPageForBulk()}"
+							render="@form" />
+					</h:selectBooleanCheckbox>	
+					<h:outputText value="Approve" />
+					</f:facet>
+					<h:selectBooleanCheckbox value="#{item.approved}" disabled="#{!sec:canReleaseBulkCheck()}">
+						<f:ajax event="click" immediate="true"
+							listener="#{checkReleaseViewModel.selectCheckForApproval(item.id)}"
+							render="@form" />
+					</h:selectBooleanCheckbox>
+				</p:column>
+			</p:dataTable>
+		</h:panelGroup>
+	</p:fieldset>
+	<div id="buttonsection">
+		<p:commandButton id="saveCreateConfirm" action="saveCreateConfirm"
+			disabled="#{!sec:canReleaseBulkCheck()}"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton action="reset" immediate="true" ajax="false"
+			value="Clear" />
+		<p:commandButton id="exitCreateConfirm" action="exitCreateConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+	<h:panelGroup id="summary">
+		<ui:include src="../claimant/select/claimantSummaryForm.xhtml" />
+	</h:panelGroup>
+</ui:composition>
+</html>

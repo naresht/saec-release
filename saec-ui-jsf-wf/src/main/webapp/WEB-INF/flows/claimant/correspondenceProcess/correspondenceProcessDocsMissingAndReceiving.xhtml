@@ -1,0 +1,105 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+ <p:dialog header="Documents Received &amp; In Good Order"
+		widgetVar="igoDocsDialog" id="igoDocsDialog" modal="true" >
+		<p:dataTable id="igoDocs" var="docs" scrollable="true" scrollWidth="250" scrollHeight="350"
+			value="#{viewModel.correspondenceReceivedDocumentList}"
+			selection="#{viewModel.selectedReceivedCorrespondence}"
+			rowIndexVar="rowIndex">
+			<f:facet name="header">
+				</f:facet>
+				<p:column selectionMode="multiple" style="width:18px"/>
+			<p:column id="index">
+				<f:facet name="header">
+					<h:outputText value="#" />
+				</f:facet>
+				<h:outputText value="#{rowIndex+1}" />
+			</p:column>
+			<p:column id="documentsNeeded">
+				<f:facet name="header">
+					<h:outputText value="Documents Needed" />
+				</f:facet>
+				<h:outputText value="#{docs.name}" />
+			</p:column>
+		</p:dataTable>
+		<p:spacer width="10" height="10" />
+		<div align="center">
+			<p:commandButton id="saveReceivedDocs" action="saveReceivedDocs"
+				oncomplete="igoDocsDialog.hide()" value="Save" update="@form" />
+		</div>
+	</p:dialog>
+	
+	<p:dialog header="Documents Missing"
+		widgetVar="nigoDocsDialog" id="nigoDocsDialog" modal="true">
+		<p:messages />
+		<p:dataTable id="nigoDocs" var="docs" scrollable="true" scrollWidth="250" scrollHeight="350"
+			value="#{viewModel.correspondenceMissingDocumentList}"
+			selection="#{viewModel.selectedMissingCorrespondence}"
+			rowIndexVar="rowIndex">
+			<f:facet name="header">
+			</f:facet>
+			<p:column selectionMode="multiple" style="width:18px"/>
+			<p:column id="index">
+				<f:facet name="header">
+					<h:outputText value="#" />
+				</f:facet> 
+				<h:outputText value="#{rowIndex+1}" />
+			</p:column>
+			<p:column id="documentsNeeded">
+				<f:facet name="header">
+					<h:outputText value="Documents Needed" />
+				</f:facet>
+				<h:outputText value="#{docs.name}" />
+			</p:column>
+		</p:dataTable>
+		<p:spacer width="10" height="10" />
+		<div align="center">
+			<p:commandButton id="saveMissingDocs" action="saveMissingDocs"
+				oncomplete="nigoDocsDialog.hide()" value="Save" update="@form" />
+		</div>
+	</p:dialog>
+	
+	<p:dialog header="Missing Documents Of Existing Cure"
+		widgetVar="missingDocExistingCureDialog" id="missingDocExistingCureDialog" width="500" modal="true">
+		<p:dataTable id="missingDocExistingCureDocs" var="mail" styleClass="fieldsetaddresstable1"
+			value="#{viewModel.correspondenceDocumentsList}" rowIndexVar="rowIndex">
+			<p:column id="id_docsMissingg" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Documents Missing" />
+					</f:facet>
+					<h:outputText escape="false" value="#{mail.name}" /><br/>
+			</p:column>
+			<p:column id="id_docSelect" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Edit" />
+					</f:facet>
+					<h:selectBooleanCheckbox value="#{mail.selectedMissingDocs}"/>
+			</p:column>
+		</p:dataTable>
+		<p:spacer width="10" height="10" />
+		<div align="center">
+			<p:commandButton id="missingDocExistingCure_save" value="Save" action="igoNigoConfirmation" ajax="false"/>
+			<p:spacer width="10" height="10" />
+			<p:commandButton id="exit1" oncomplete="missingDocExistingCureDialog.hide()" value="Exit"  />
+		</div>
+	</p:dialog>
+	
+	
+	<p:dialog header="AWD" widgetVar="awdDialog" id="awdDialog" modal="true" resizable="false" width="300" rendered="#{!sec:canDoCorrespondence()}">
+		<h:outputText value="Are You Working From An AWD Work Object ? " />
+		<p:spacer width="100%" height="10" />
+		<p:separator />
+		<p:commandButton value="Yes" action="hasNoAWDObject" ajax="false"
+			 update=":form:alternateAddressesDialog"/>
+		<p:commandButton value="No" action="hasAWDObject" ajax="false" 
+			update=":form:addressDialog" />
+	</p:dialog>
+
+</ui:composition>
+</html>

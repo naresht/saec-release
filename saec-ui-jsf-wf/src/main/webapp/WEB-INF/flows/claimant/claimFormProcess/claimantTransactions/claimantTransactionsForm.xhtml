@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<style>
+.rednigo {
+	color: #ff0000 !important;
+}
+
+.yellowpending {
+	color: #FBB917 !important;
+}
+.grey {
+      background-color: #D3D3D3 !important;
+      background-image: none !important;
+      color: #000000 !important;
+     }
+</style>
+	<p:fieldset legend="Transactions">
+		<ui:include src="/WEB-INF/incl/claimantClaimHeader.xhtml">
+			<ui:param name="claimantClaimHeader"
+				value="#{claimantTransactionsViewModel.getClaimantClaimHeader()}" />
+		</ui:include>
+		
+		<p:dataTable id="claimantTransactions" value="#{claimantTransactions}" var="transaction" lazy="true"
+			rowIndexVar="rowIndex" paginator="true" rows="10"
+			paginatorPosition="bottom"
+			height="#{(not empty height) ? height : '500px'}"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+			rowsPerPageTemplate="5,10,15,25,50,100"
+			rowStyleClass="#{transaction.deleted == 'true'  ? 'grey' : null}">
+				<p:column id="id">
+					<f:facet name="header">
+						<h:outputText value="ID" />
+					</f:facet>
+					<p:commandLink action="loadTransactionById" update="@form" >
+						<h:outputText value="#{transaction.id}"/>
+						<f:param name="id" value="#{transaction.id}"/>
+					</p:commandLink>
+				</p:column>
+				
+				<p:column id="controlNo">
+					<f:facet name="header">
+						<h:outputText value="ControlNumber" />
+					</f:facet>
+					<h:outputText value="#{transaction.claimantClaim.controlNumber}"/>
+				</p:column>
+				
+				<p:column id="fund" filterBy="#{transaction.securityFund.fund}">
+					<f:facet name="header">
+						<h:outputText value="Fund" />
+					</f:facet>
+					<h:outputText value="#{transaction.securityFund.fund}"/>
+				</p:column>
+				<p:column id="cuisp" filterBy="#{transaction.securityFund.securityRef.cusip}">
+					<f:facet name="header">
+						<h:outputText value="Cuisp" />
+					</f:facet>
+					<h:outputText value="#{transaction.securityFund.securityRef.cusip}"/>
+				</p:column>
+				<p:column id="ticker" filterBy="#{transaction.securityFund.securityRef.ticker}">
+					<f:facet name="header">
+						<h:outputText value="Ticker" />
+					</f:facet>
+					<h:outputText value="#{transaction.securityFund.securityRef.ticker}"/>
+				</p:column>
+				<p:column id="transType" filterBy="#{transaction.sourceTransactionType}">
+					<f:facet name="header">
+						<h:outputText value="Transaction Type" />
+					</f:facet>
+					<h:outputText value="#{transaction.sourceTransactionType}"/>
+				</p:column>
+				<p:column id="transCdSrc">
+					<f:facet name="header">
+						<h:outputText value="Trans Effect" />
+					</f:facet>
+					<h:outputText value="#{transaction.sourceTransactionCode}"/>
+				</p:column>
+				<p:column id="transDate">
+					<f:facet name="header">
+						<h:outputText value="Trade Date" />
+					</f:facet>
+					<h:outputText value="#{transaction.tradeDate}">
+						<f:converter converterId="dateConverter" />
+					</h:outputText>
+				</p:column>
+				<p:column id="qty1">
+					<f:facet name="header">
+						<h:outputText value="Quantity" />
+					</f:facet>
+					<h:outputText value="#{transaction.quantity}"/>
+				</p:column>
+				<p:column id="sharePrice">
+					<f:facet name="header">
+						<h:outputText value="Share Price" />
+					</f:facet>
+					<h:outputText value="#{transaction.unitPrice}"/>
+				</p:column>
+				<p:column id="fees">
+					<f:facet name="header">
+						<h:outputText value="Fees" />
+					</f:facet>
+					<h:outputText value="#{transaction.fees}"/>
+				</p:column>
+				<p:column id="totalCost">
+					<f:facet name="header">
+						<h:outputText value="Total Cost" />
+					</f:facet>
+					<h:outputText value="#{transaction.totalCost}"/>
+				</p:column>
+				<p:column id="comments_trans">
+					<f:facet name="header">
+						<h:outputText value="Comments" />
+					</f:facet>
+					<h:outputText value="#{transaction.comments}"/>
+				</p:column>
+				
+				<p:column id="proofStatus">
+					<f:facet name="header">
+						<h:outputText value="Proof Status" />
+					</f:facet>
+					<h:panelGroup styleClass="#{claimantTransactionsViewModel.getCSSStyleClass(transaction.proof)}">
+						<h:outputText value="#{transaction.proof.status}"/>
+					</h:panelGroup>
+					<p:commandButton value="Edit" action="loadClaimProof" oncomplete="editClaimProofDialog.show()" update="@form" rendered="#{(transaction.proof.status != null) and !(transaction.proof.status == 'IGO') }">
+						<f:param name="id" value="#{transaction.id}"/>
+					</p:commandButton>
+				</p:column>
+				
+		</p:dataTable>
+		<br/>
+		<div align="right">
+			<p:commandButton value="Add New" id="addNew" action="addNewClaimantTransaction" ajax="false" update=":form:editDialog"/>
+		</div>
+		
+	</p:fieldset>
+	
+	<p:dialog header="Edit"
+		widgetVar="editDialog" id="editDialog" modal="true" >
+		<h:panelGroup rendered="#{claimantTransactionsViewModel.showDialog}">
+			<ui:include src="./claimantTransactionsEdit.xhtml"/>
+		</h:panelGroup> 
+	</p:dialog>
+	
+	<p:dialog header="Edit Claim Proof" widgetVar="editClaimProofDialog"
+		id="editClaimProofDialog" modal="true" >
+		<ui:include src="../../edit/claimSupportingDocumentsForm.xhtml" >
+			<ui:param name="claim" value="#{claimantTransactionsViewModel.claimantClaim}" />
+		</ui:include>
+		
+	</p:dialog>
+	
+	<div id="buttonsection">
+		<p:commandButton id="exitClaimDetlsConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	
+	<p:confirmDialog id="exitMessage"
+		message="Are you sure you want to exit ?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton id="exitYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exit"
+			immediate="true" />
+		<p:commandButton id="exitNoButton" value="No"
+			onclick="confirmationExit.hide()" type="button" />
+	</p:confirmDialog>
+	
+	<p:confirmDialog id="deleteMessage"
+		message="Are you sure you want to delete ?" modal="true"
+		header="Delete" severity="alert" widgetVar="confirmationDelete">
+		<p:commandButton id="deleteYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationDelete.hide()"
+			action="deleteClaimantTransaction" immediate="true" />
+		<p:commandButton id="deleteNoButton" value="No"
+			onclick="confirmationDelete.hide()" type="button" />
+	</p:confirmDialog>
+	
+	<p:confirmDialog id="restoreMessage"
+		message="Are you sure you want to restore ?" modal="true"
+		header="Restore" severity="alert" widgetVar="confirmationRestore">
+		<p:commandButton id="restoreYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationRestore.hide()"
+			action="restoreClaimantTransaction" immediate="true" />
+		<p:commandButton id="restoreNoButton" value="No"
+			onclick="confirmationRestore.hide()" type="button" />
+	</p:confirmDialog>
+	
+</ui:composition>
+</html>

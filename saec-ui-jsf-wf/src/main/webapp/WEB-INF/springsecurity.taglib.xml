@@ -1,0 +1,285 @@
+<?xml version="1.0"?>
+<!DOCTYPE facelet-taglib PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+        "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+<facelet-taglib>
+	<namespace>http://www.springframework.org/security/tags</namespace>
+	<tag>
+		<tag-name>authorize</tag-name>
+		<handler-class>org.springframework.faces.security.FaceletsAuthorizeTagHandler</handler-class>
+	</tag>
+	<function>
+		<function-name>areAllGranted</function-name>
+		<function-class>org.springframework.faces.security.FaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean areAllGranted(java.lang.String)</function-signature>
+	</function>
+	<function>
+		<function-name>areAnyGranted</function-name>
+		<function-class>org.springframework.faces.security.FaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean areAnyGranted(java.lang.String)</function-signature>
+	</function>
+	<function>
+		<function-name>areNotGranted</function-name>
+		<function-class>org.springframework.faces.security.FaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean areNotGranted(java.lang.String)</function-signature>
+	</function>
+	<function>
+		<function-name>isAllowed</function-name>
+		<function-class>org.springframework.faces.security.FaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean isAllowed(java.lang.String,
+			java.lang.String)</function-signature>
+	</function>
+
+	<!-- User Defined -->
+	<function>
+		<function-name>canSearchAccount</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canSearchAccount()</function-signature>
+	</function>
+	<function>
+		<function-name>canCreateNewAccount</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canCreateNewAccount()</function-signature>
+	</function>
+	<function>
+		<function-name>canRunStandardReports</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canRunStandardReports()</function-signature>
+	</function>
+	<function>
+		<function-name>canRunAdhocReports</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canRunAdhocReports()</function-signature>
+	</function>
+	<function>
+		<function-name>canChangeAddress</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canChangeAddress()</function-signature>
+	</function>
+	<function>
+		<function-name>canChangeName</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canChangeName()</function-signature>
+	</function>
+	<function>
+		<function-name>canVoidCheck</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canVoidCheck()</function-signature>
+	</function>
+	<function>
+		<function-name>canStopCheck</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canStopCheck()</function-signature>
+	</function>
+	<function>
+		<function-name>canStopLift</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canStopLift()</function-signature>
+	</function>
+	<function>
+		<function-name>canStopReplaceCheck</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canStopReplaceCheck()</function-signature>
+	</function>
+	<function>
+		<function-name>canReissueCheck</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canReissueCheck()</function-signature>
+	</function>
+	<function>
+		<function-name>canReverseVoidStop</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canReverseVoidStop()</function-signature>
+	</function>
+	<function>
+		<function-name>canUpdateTIN</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canUpdateTIN()</function-signature>
+	</function>
+	<function>
+		<function-name>canAddAlternatePayees</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canAddAlternatePayees()</function-signature>
+	</function>
+	<function>
+		<function-name>canAddSplitPayments</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canAddSplitPayments()</function-signature>
+	</function>
+	<function>
+		<function-name>canProcessTax</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canProcessTax()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoWire</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoWire()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoWireRelease</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoWireRelease()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoWireOrCheckRelease</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoWireOrCheckRelease(java.lang.String)</function-signature>
+	</function>
+	<function>
+		<function-name>canDoROF</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoROF()</function-signature>
+	</function>
+	<function>
+		<function-name>canReleaseSingleCheck</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canReleaseSingleCheck()</function-signature>
+	</function>
+	<function>
+		<function-name>canReleaseBulkCheck</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canReleaseBulkCheck()</function-signature>
+	</function>
+	<function>
+		<function-name>canCreateCallLog</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canCreateCallLog()</function-signature>
+	</function>
+	<function>
+		<function-name>canExitCallLog</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canExitCallLog()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoRpoProcess</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoRpoProcess()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoClaimProcess</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoClaimProcess()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoOptOutProcess</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoOptOutProcess()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoObjections</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoObjections()</function-signature>
+	</function>
+	<function>
+		<function-name>canModifyNotes</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canModifyNotes()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoTranchAssignment</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoTranchAssignment()</function-signature>
+	</function>
+	<function>
+		<function-name>canDoTranchMailings</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canDoTranchMailings()</function-signature>
+	</function>
+	<function>
+		<function-name>canRequestFulfillmentMailings</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canRequestFulfillmentMailings()</function-signature>
+	</function>
+	<function>
+		<function-name>canReissuePayments</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canReissuePayments()</function-signature>
+	</function>
+	<function>
+		<function-name>canSetupNewEvents</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canSetupNewEvents()</function-signature>
+	</function>
+	<function>
+		<function-name>canClosedownNewEvents</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canClosedownNewEvents()</function-signature>
+	</function>
+	<function>
+		<function-name>canSetupUserAccounts</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canSetupUserAccounts()</function-signature>
+	</function>
+	<function>
+		<function-name>canRequestOutgoingCureLetters</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canRequestOutgoingCureLetters()</function-signature>
+	</function>
+	<function>
+		<function-name>canSetupCureLetters</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canSetupCureLetters()</function-signature>
+	</function>
+	<function>
+		<function-name>canUpdateBatchConfig</function-name>
+		<function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+		<function-signature>boolean canUpdateBatchConfig()</function-signature>
+	</function>
+	<function>
+        <function-name>canDoCorrespondence</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canDoCorrespondence()</function-signature>
+    </function>
+    <function>
+        <function-name>canViewCorrespondence</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canViewCorrespondence()</function-signature>
+    </function>
+    <function>
+        <function-name>canSeeDailyPosition</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canSeeDailyPosition()</function-signature>
+    </function>   
+     <function>
+        <function-name>canSeeClaimantReminders</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canSeeClaimantReminders()</function-signature>
+    </function>  
+     <function>
+        <function-name>hideClaimantReminders</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean hideClaimantReminders()</function-signature>
+    </function>  
+    <function>
+        <function-name>canShowClaimProofs</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canShowClaimProofs()</function-signature>
+    </function>
+    <function>
+        <function-name>canHideClaimProofs</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canHideClaimProofs()</function-signature>
+    </function>
+    
+    <function>
+        <function-name>canseeClaimantRemindersByEvent</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canseeClaimantRemindersByEvent()</function-signature>
+    </function>
+    <function>
+        <function-name>canViewClaimDetails</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canViewClaimDetails()</function-signature>
+    </function>
+     <function>
+        <function-name>canEditClaimDetails</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canEditClaimDetails()</function-signature>
+    </function>
+         <function>
+        <function-name>canEditDataIntakeClaimDetails</function-name>
+        <function-class>com.bfds.saec.web.util.SaecFaceletsAuthorizeTagUtils</function-class>
+        <function-signature>boolean canEditDataIntakeClaimDetails()</function-signature>
+    </function>     
+</facelet-taglib>

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Claim Activity(#{claimant.claimsCount})" toggleable="true" toggleSpeed="500" 
+		id="claimsPanel" collapsed="true">
+		<p:dataTable id="claims" var="claim" value="#{allClaims}"
+			scrollable="true" scrollWidth="975" scrollHeight="226"
+			rowIndexVar="rowIndex">
+			<p:column headerText="ID" width="25">
+					<h:outputText value="#{claim.id}" />
+			</p:column>
+
+			<p:column id="claimIndetifier" width="100">
+				<f:facet name="header">
+					<h:outputText value="Claim Identifier" />
+				</f:facet>
+				<h:outputText value="#{claim.claimantClaim.entryMethod}-#{claim.claimantClaim.claimIdentifier} " />
+			</p:column>
+
+			<p:column id="controlNo" width="125">
+				<f:facet name="header">
+					<h:outputText value="Control #" />
+				</f:facet>
+				<h:outputText value="#{claim.claimantClaim.controlNumber}" />
+			</p:column>
+
+			<p:column id="actionType" width="125">
+				<f:facet name="header">
+					<h:outputText value="Action Type" />
+				</f:facet>
+				<h:outputText id="action" value="#{claim.activityType}" />
+			</p:column>
+
+			<p:column id="Date" width="125">
+				<f:facet name="header">
+					<h:outputText value="Date" />
+				</f:facet>
+				<h:outputText value="#{claim.activityDate}" >
+					<f:converter converterId="dateConverter" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="completedBy" width="125">
+				<f:facet name="header">
+					<h:outputText value="Completed By" />
+				</f:facet>
+				<h:outputText value="#{claim.userId}" />
+			</p:column>
+
+			<p:column id="status" width="125">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:outputText value="#{claim.status}" />
+			</p:column>
+			
+			<p:column id="comments" width="125">
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>
+				<h:outputText id="Comments" value="#{claim.comments}" />
+			</p:column>
+			
+		</p:dataTable>
+	</p:fieldset>
+</ui:composition>
+</html>

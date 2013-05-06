@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<ui:composition>
+	<h:form>
+		<p:menubar autoSubmenuDisplay="false">
+			<p:menuitem value="Account Search" url="/app/claimant/select"
+				ajax="false" rendered="#{sec:canSearchAccount()}"></p:menuitem>
+			<p:submenu label="Account" icon="ui-icon ui-icon-document">
+				<p:menuitem value="New" url="/app/claimant/new"
+					rendered="#{sec:canCreateNewAccount()}" ajax="false"></p:menuitem>
+			</p:submenu>
+			<p:submenu label="Payment" icon="ui-icon ui-icon-document">
+				<p:submenu label="Check Release" icon="ui-icon ui-icon-document">
+					<p:menuitem value="Manual"
+						url="/app/checkRelease?operation=manual&amp;paymentType=CHECK"
+						ajax="false"></p:menuitem>
+					<p:menuitem value="Bulk"
+						url="/app/checkRelease?operation=bulk&amp;paymentType=CHECK"
+						ajax="false"></p:menuitem>
+				</p:submenu>
+				<p:menuitem value="Wire Release"
+					url="/app/checkRelease?operation=manual&amp;paymentType=WIRE"
+					ajax="false"></p:menuitem>
+				<!-- <p:menuitem value="Return Of Funding" url="returnOfFunding" ajax="false"></p:menuitem>	 -->
+				<p:menuitem value="Stop Lift" url="/app/stopLift" ajax="false"
+					rendered="#{sec:canStopLift()}"></p:menuitem>
+				<p:menuitem value="Reverse a void or stop"
+					url="/app/stopVoidReverse" ajax="false"
+					rendered="#{sec:canReverseVoidStop()}"></p:menuitem>
+			</p:submenu>
+			<p:submenu label="RPO Processing" rendered="#{sec:canDoRpoProcess()}"
+				icon="ui-icon ui-icon-document">
+				<p:menuitem value="RPO Process" url="/app/rpoProcess"
+					rendered="#{sec:canDoRpoProcess()}" ajax="false"></p:menuitem>
+				<p:menuitem value="Payment RPO Process" url="/app/paymentRpoProcess"
+					rendered="#{sec:canDoRpoProcess()}" ajax="false"></p:menuitem>
+			</p:submenu>
+			<p:submenu label="Tax Processing" icon="ui-icon ui-icon-document">
+				<p:menuitem value="Delete" url="/app/taxProcess" ajax="false"></p:menuitem>
+			</p:submenu>
+			<p:submenu label="Batch" icon="ui-icon ui-icon-document"
+				rendered="#{sec:canUpdateBatchConfig()}">
+				<p:menuitem value="Test UI" url="/app/testBatch" ajax="false"></p:menuitem>
+			</p:submenu>
+			<p:submenu label="Tranche" rendered="#{sec:canDoTranchAssignment()}"
+				icon="ui-icon ui-icon-document">
+				<p:menuitem value="Tranche Assignment"
+					url="/app/tranchAssignment?tranchMode=add"
+					rendered="#{sec:canDoTranchAssignment()}" ajax="false"></p:menuitem>
+				<p:menuitem value="Tranche Edit/Modify"
+					url="/app/tranchAssignment?tranchMode=remove"
+					rendered="#{sec:canDoTranchAssignment()}" ajax="false"></p:menuitem>
+			</p:submenu>
+
+
+			<p:submenu label="Admin" icon="ui-icon ui-icon-document"
+				rendered="#{sec:canSetupUserAccounts() or sec:canSetupNewEvents() or sec:canUpdateBatchConfig()}">
+				<p:menuitem value="Users" url="/app/adminUserRoles?operation=users"
+					ajax="false" rendered="#{sec:canSetupUserAccounts()}"></p:menuitem>
+				<p:menuitem value="Roles" url="/app/adminUserRoles?operations=roles"
+					ajax="false" rendered="#{sec:canSetupUserAccounts()}"></p:menuitem>
+				<p:menuitem value="Event Config" url="/app/event" ajax="false"
+					rendered="#{sec:canSetupNewEvents()}"></p:menuitem>
+				<p:menuitem value="Batch Config" url="/app/batchConfig?remote=false"
+					ajax="false" rendered="#{sec:canUpdateBatchConfig()}"></p:menuitem>
+				<p:menuitem value="File Batch Config"
+					url="/app/batchConfig?remote=true" ajax="false"
+					rendered="#{sec:canUpdateBatchConfig()}"></p:menuitem>
+				<p:menuitem value="App Config Validation"
+					url="/app/appConfigValidator" ajax="false" ></p:menuitem>					
+
+			</p:submenu>
+
+
+		</p:menubar>
+	</h:form>
+</ui:composition>
+</html>

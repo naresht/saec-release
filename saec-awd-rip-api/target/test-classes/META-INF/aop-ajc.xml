@@ -1,0 +1,21 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObjectIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObjectIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObjectDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObjectDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObjectDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObjectDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObjectIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObjectIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObjectDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObjectIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObjectDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObjectIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObjectIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObjectDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObjectDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObjectIntegrationTest_Roo_IntegrationTest"/>
+</aspects>
+</aspectj>
+

@@ -1,0 +1,267 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<p:fieldset id="searchFormFieldSet" legend="Search Criteria"
+			toggleable="true">
+	<h:panelGroup id="searchCriteriaFields">
+			<div id="Account_Search_div_table">
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Reference #:</div>
+					<div id="Account_Search_div_td2">
+						<p:inputMask id="claimantReferenceNo" mask="?999999999" placeHolder="" fid="referenceNo"
+							value="#{claimantSearchViewModel.param.referenceNo}"
+							maxlength="9" />
+					</div>
+					
+					<div id="Account_Search_div_td3">Claim Identifier :</div>
+					<div id="Account_Search_div_td4">
+						<app:inputText fid="identifier"
+							value="#{claimantSearchViewModel.param.claimIdentifier}" maxlength="15" />
+					</div>
+					
+				</div>
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Check #:</div>
+					<div id="Account_Search_div_td2">
+						<p:inputMask id="claimantCheck" fid="check"
+							value="#{claimantSearchViewModel.param.checkNo}"
+							mask="?99999999999999999999999" placeHolder="" maxlength="15" />
+					</div>
+					<div id="Account_Search_div_td3">Bin #:</div>
+					<div id="Account_Search_div_td4">
+						<app:inputText fid="bin"
+							value="#{claimantSearchViewModel.param.bin}" maxlength="15" />
+					</div>
+				</div>
+				<div id="Account_Search_div_tr">
+					<!-- <div id="Account_Search_div_td1">TIN/EIN/SSN:</div> -->
+
+					<div id="Account_Search_div_td1">
+						<h:selectOneMenu id="claimant_TaxId"
+							value="#{claimantSearchViewModel.param.identificationType}"
+							maxlength="3">
+							<f:ajax render="identificationTypeTextBox" />
+							<f:selectItem itemValue="SSN" itemLabel="SSN" />
+							<f:selectItem itemValue="TIN" itemLabel="TIN" />
+							<f:selectItem itemValue="EIN" itemLabel="EIN" />
+						</h:selectOneMenu>
+					</div>
+
+					<!-- <div id="Account_Search_div_td2">
+						<app:inputText fid="taxId"
+							value="#{claimantSearchViewModel.param.taxId}" maxlength="80" />
+					</div> -->
+
+					<div id="Account_Search_div_td2">
+						<h:panelGroup id="identificationTypeTextBox">
+							<p:inputMask value="#{claimantSearchViewModel.param.taxId}"
+								mask="***-**-****" maxlength="9" id="claimant_ssn"
+								rendered="#{claimantSearchViewModel.param.identificationType == 'SSN' }"></p:inputMask>
+
+							<p:inputMask value="#{claimantSearchViewModel.param.taxId}"
+								mask="**-*******" maxlength="9" id="claimant_tin"
+								rendered="#{claimantSearchViewModel.param.identificationType == 'TIN' }"></p:inputMask>
+
+							<p:inputMask value="#{claimantSearchViewModel.param.taxId}"
+								mask="**-*******" maxlength="9" id="claimant_ein"
+								rendered="#{claimantSearchViewModel.param.identificationType == 'EIN' }"></p:inputMask>
+
+						</h:panelGroup>
+					</div>
+					<div id="Account_Search_div_td3">Broker ID:</div>
+					<div id="Account_Search_div_td4">
+						<app:inputText fid="brokerId" 
+							value="#{claimantSearchViewModel.param.brokerId}" maxlength="10" />
+					</div>
+				</div>
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Name:</div>
+					<div id="Account_Search_div_td2">
+						<app:inputText fid="name"
+							value="#{claimantSearchViewModel.param.name}" maxlength="60" />
+					</div>
+					<div id="Account_Search_div_td3">Group Mail #:</div>
+					<div id="Account_Search_div_td4">
+						<p:inputMask mask="?999" id="groupMailCode" placeHolder="" fid="groupMailCode"
+							value="#{claimantSearchViewModel.param.groupMailCode}"
+							maxlength="3" >							
+						</p:inputMask>
+					</div>
+				</div>
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">City:</div>
+					<div id="Account_Search_div_td2_1">
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td><app:inputText fid="city"
+										value="#{claimantSearchViewModel.param.city}" maxlength="20" />
+								</td>
+								<td>State:</td>
+								<td><app:inputText fid="state"
+										value="#{claimantSearchViewModel.param.state}" maxlength="2"
+										style="width:50px;" />
+								</td>
+								<td>Zip:</td>
+								<td><p:inputMask id="claimantZip" fid="zip" mask="?99999" placeHolder=""
+										value="#{claimantSearchViewModel.param.zip}" maxlength="5"
+										style="width:50px;" />
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Fund A/C #:</div>
+					<div id="Account_Search_div_td2">
+						<p:inputMask id="fundAccountNo" fid="fundAccountNo"
+							value="#{claimantSearchViewModel.param.fundAccountNo}"
+							mask="?9999999999" placeHolder="" maxlength="10" />
+					</div>
+					<div id="Account_Search_div_td3">Timer Flag:</div>
+					<div id="Account_Search_div_td4">
+						<app:inputCheckBox fid="timerFlag"
+							value="#{claimantSearchViewModel.param.marketTimer}" />
+					</div>
+					<div id="Account_Search_div_td3"></div>
+					<div id="Account_Search_div_td4"></div>
+				</div>
+			</div>
+
+			<div id="buttonsection">
+				<p:commandButton id="search" action="search" icon="iconSearch" ajax="false"
+					value="#{(empty searchValue) ? msg.Search : searchValue}" />
+				<p:commandButton id="reset" action="reset" ajax="false" value="Clear" />
+			</div>
+		</h:panelGroup>
+	</p:fieldset>
+	
+	<h:panelGroup id="formFields">
+		<p:fieldset legend="${msg.search_results}">
+			<p:dataTable id="formList"
+				value="#{claimantSearchViewModel.claimants}" var="item"
+				rowIndexVar="rowIndex" paginator="true"
+				rows="10" paginatorPosition="bottom"
+				height="#{(not empty height) ? height : '500px'}" 
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15,25,50,100">
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Zoom" />
+					</f:facet>
+					<p:commandButton id="accountZoom" update=":form:NewheaderPanel"
+						action="summary" onsuccess="accountDialog.show()"
+						icon="iconSelect" >
+						<f:param name="id" value="#{item.id}" />
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="#">
+		#{rowIndex+1}
+			</p:column>
+				<p:column id="reference" sortBy="#{item.referenceNo}"
+					filterBy="#{item.referenceNo}">
+					<f:facet name="header">
+						<h:outputText value="Reference#" />
+					</f:facet>
+					<h:outputText value="#{item.referenceNo}" />
+				</p:column>
+				<p:column id="claimIdentifier" sortBy="#{item.claimIdentifier}"
+					filterBy="#{item.claimIdentifier}">
+					<f:facet name="header">
+						<h:outputText value="Claim Identifier" />
+					</f:facet>
+					<h:outputText value="#{item.claimIdentifier}" />
+				</p:column>
+				<p:column id="paymentAmount" sortBy="#{item.paymentAmount}"
+					filterBy="#{item.paymentAmount}">
+					<f:facet name="header">
+						<h:outputText value="Payment Amount" />
+					</f:facet>
+					<h:outputText value="#{item.paymentAmount}" >
+					<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column id="name" sortBy="#{item.name}" filterBy="#{item.name}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{item.name}" escape="false" />
+				</p:column>
+				<p:column id="address" sortBy="#{item.addressLines}"
+					filterBy="#{item.addressLines}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Address" />
+					</f:facet>
+					<h:outputText value="#{item.addressLines}" escape="false" />
+				</p:column>
+				<p:column id="city" sortBy="#{item.city}" filterBy="#{item.city}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="City" />
+					</f:facet>
+					<h:outputText value="#{item.city}" />
+				</p:column>
+				<p:column id="state" sortBy="#{item.state}" filterBy="#{item.state}">
+					<f:facet name="header">
+						<h:outputText value="State" />
+					</f:facet>
+					<h:outputText value="#{item.state}" />
+				</p:column>
+				<p:column id="zip" sortBy="#{item.zip}" filterBy="#{item.zip}">
+					<f:facet name="header">
+						<h:outputText value="Zip" />
+					</f:facet>
+					<h:outputText value="#{item.zip}" />
+				</p:column>
+				<p:column id="countryCode" sortBy="#{item.countryCode}" filterBy="#{item.countryCode}">
+					<f:facet name="header">
+						<h:outputText value="Country" />
+					</f:facet>
+					<h:outputText value="#{item.countryCode}" />
+				</p:column>				
+			
+				<p:column id="open">
+					<f:facet name="header">
+						<h:outputText value="View" />
+					</f:facet>
+					<p:commandButton id="accountView" ajax="false" action="select" process="@form"
+						disabled="#{readonly}" rendered="#{empty rendered or rendered}"
+						immediate="true" icon="iconEdit" title="${msg.edit}">
+						<f:param name="id" value="#{item.id}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+	</h:panelGroup>
+
+	<h:panelGroup id="summary">
+		<ui:include src="claimantSummaryForm.xhtml" />
+	</h:panelGroup>
+
+	<p:dialog header="Refine Search" widgetVar="refineSearchDialog"
+			id="refineSearchDialog" modal="true">
+			<p><span style="float: left; margin: 0pt 7px 20px 0pt;" class="ui-icon ui-icon-alert"></span><h:outputText
+				value="No match for your entry, please refine your search criteria." /></p>
+			<p:spacer width="100%" height="10" />
+			<p:separator />
+			<p:commandButton id="claimantRefineSearchOk"  value="OK" immediate="true"
+				oncomplete="refineSearchDialog.hide()" />
+	</p:dialog>
+	
+	<p:dialog header="Empty Search" widgetVar="emptyRefineSearchDialog"
+			id="emptyRefineSearchDialog" modal="true">
+			<p><span style="float: left; margin: 0pt 7px 20px 0pt;" class="ui-icon ui-icon-alert"></span>
+			<h:outputText value="Empty Search not allowed, please refine your search criteria." /></p>
+			<p:spacer width="100%" height="10" />
+			<p:separator />
+			<p:commandButton value="OK" immediate="true"
+				oncomplete="emptyRefineSearchDialog.hide()" />
+	</p:dialog>
+		
+</ui:composition>

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:app="http://springfuse.jaxio.com/app"
+        >
+       
+<ui:composition>	
+<h:panelGroup id="claimant_new_fields">
+<p:growl id="growl" showDetail="false" globalOnly="true" life="20000"/>
+<p:fieldset legend="Event Configuration">
+<div id="event_config_div_table">
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Bank Information</div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Bank Name:</div>
+		<div id="event_config_div_rgt">
+			<h:selectOneMenu id="event_bankcode" value="#{saecEvent.bankCode}" readonly="true" disabled="true" >
+				<f:selectItems value="#{eventViewModel.bankList}" />
+			</h:selectOneMenu>		
+		</div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">ABA #:</div>
+		<div id="event_config_div_rgt"><h:outputText id="ABA" value="#{saecEvent.bank.abaNo}" maxlength="9" /></div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Account Number:</div>
+		<div id="event_config_div_rgt"><h:outputText id="AccountNumber" value="#{saecEvent.bank.accountNo}" maxlength="15" /></div>
+	</div>
+	
+	<br />
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Tax Information</div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Requires Tax Info:</div>
+		<div id="event_config_div_rgt"><h:selectBooleanCheckbox readonly="true" disabled="true" value="#{saecEvent.requiresTaxInfo}"/></div>
+	</div>
+			
+	<br />
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Address Research</div>
+	</div>		
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Requires Pre-scrub:</div>
+		<div id="event_config_div_rgt"><h:selectBooleanCheckbox readonly="true" disabled="true" value="#{saecEvent.requiresAddressPrescrub}"/></div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">InfoAge Review mail:</div>
+		<div id="event_config_div_rgt"><h:outputText id="infoAgeReviewMailDistributionList" value="#{saecEvent.infoAgeReviewMailDistributionList}" maxlength="15" /></div>
+	</div>
+	
+	<br />
+		
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Stale Dating Checks</div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Stale By:</div>
+		<div id="event_config_div_rgt"><h:outputText id="checkStaleByDate" value="#{saecEvent.checkStaleByDate}" maxlength="15" /></div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Stale in Days:</div>
+		<div id="event_config_div_rgt"><h:outputText id="checkStaleInDays" value="#{saecEvent.checkStaleInDays}" maxlength="15" /></div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Status change to stale date allowed :</div>
+		<div id="event_config_div_rgt"><h:selectBooleanCheckbox readonly="true" disabled="true" value="#{saecEvent.canChangeStausOfStaleCheck}"/></div>
+	</div>	
+	
+	<!-- <div id="event_config_div_tr">
+		<div id="event_config_div_lft">Business Area :</div>
+		<div id="event_config_div_rgt"><h:outputText id="businessArea" value="#{saecEvent.businessArea}" maxlength="15" /></div>
+	</div> -->			
+	
+	<br />			
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Misc</div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">DDA:</div>
+		<div id="event_config_div_rgt"><h:outputText id="dda" value="#{saecEvent.dda}" maxlength="15" /></div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Email Distribution List:</div>
+		<div id="event_config_div_rgt"><h:outputText id="notificationEmailTo" value="#{saecEvent.notificationEmailTo}" maxlength="15" /></div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Correspondence Process Threshold Limit:</div>
+		<div id="event_config_div_rgt"><h:outputText id="correspondenceThresholdLimit" value="#{saecEvent.correspondenceThresholdLimit}" maxlength="15" /></div>
+	</div>					
+</div>
+</p:fieldset>
+  </h:panelGroup>
+
+</ui:composition>
+</html>
+		
+

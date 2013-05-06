@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+  <var name="returnOfFundingViewModel" class="com.bfds.saec.web.model.ReturnOfFundingViewModel"/>  
+
+  <input name="paymentId" type="long" />    
+  
+	<decision-state id="chooseView">
+		<if test="paymentId!=null" then="returnOfFunding_" else="returnOfFundingSelect" />
+	</decision-state>	
+	
+	<view-state id="returnOfFundingSelect">			
+		<on-entry>
+		<evaluate expression="returnOfFundingViewModel.reset()"></evaluate>
+		</on-entry>
+		<transition on="search">
+			<evaluate expression="returnOfFundingViewModel.loadPaymentsForReturnOfFunding(messageContext)" result="flowScope.payments"/>
+		</transition>		
+		<transition on="select" to="returnOfFunding">
+		</transition>
+		<transition on="reset">
+			<evaluate expression="returnOfFundingViewModel.reset()"></evaluate>
+		</transition>
+	   <transition on="loadPaymentForROF" to="returnOfFunding">
+			<evaluate expression="returnOfFundingViewModel.loadSelectedPayment(requestParameters.id)"></evaluate>
+		</transition>					
+		<transition on="summary">
+			<evaluate
+				expression="claimantSearchViewModel.getClaimantByPrimayKey(requestParameters.id)"
+				result="viewScope.claimant" />
+		</transition>
+		<transition on="exit" to="endEdit"/> 
+         <transition on="exitConfirm"/> 
+	</view-state>	
+	
+
+  <view-state id="returnOfFunding_" view="returnOfFunding.xhtml">
+    <on-entry>
+    	<evaluate expression="returnOfFundingViewModel.loadSelectedPayment(paymentId)"></evaluate>
+	    <set name="viewScope.payment" value="returnOfFundingViewModel.selectedPayment" />    
+    </on-entry>
+	<transition on="save" to="endRof">
+	  <evaluate expression="returnOfFundingViewModel.processReturnOfFunding(messageContext)" />
+	</transition> 
+	<transition on="splitPayment" to="splitPayment">	
+	  <evaluate expression="returnOfFundingViewModel.processReturnOfFunding(messageContext)"/>
+	</transition>
+	<transition on="exit" to="endRof"/> 
+    <transition on="exitConfirm"/> 
+    <transition on="saveConfirm"/>      
+    <transition on="splitPaymentConfirm"/>	
+  </view-state>
+  	
+  <view-state id="returnOfFunding">
+    <on-entry>
+	    <set name="viewScope.payment" value="returnOfFundingViewModel.selectedPayment" />    
+    </on-entry>
+	<transition on="save" to="returnOfFundingSelect">
+	  <evaluate expression="returnOfFundingViewModel.processReturnOfFunding(messageContext)" />
+<!--       <evaluate expression="messageUtil.info('status_saved_ok', messageContext)"/>	  	 -->
+	</transition> 
+	<transition on="splitPayment" to="splitPayment">
+	  <evaluate expression="returnOfFundingViewModel.processReturnOfFunding(messageContext)"/>	  
+	</transition> 	
+	<transition on="exit" to="returnOfFundingSelect"/> 
+    <transition on="exitConfirm"/> 
+    <transition on="saveConfirm"/> 
+    <transition on="splitPaymentConfirm"/>         	
+  </view-state>
+  
+  <end-state id="endRof" view="returnOfFunding.xhtml" />  
+  <end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />  
+  <end-state id="splitPayment" view="externalRedirect:contextRelative:/app/splitPayment?paymentId=#{rofPaymentId}" />
+</flow>

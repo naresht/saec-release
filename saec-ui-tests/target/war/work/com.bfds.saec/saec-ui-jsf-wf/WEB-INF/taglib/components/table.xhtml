@@ -1,0 +1,15 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jsp/jstl/core" 
+  xmlns:p="http://primefaces.org/ui">
+
+  <p:dataTable 
+      id="#{(empty fid) ? 'st':fid}" 
+      value="#{data}" 
+      var="item" 
+      height="#{(not empty height) ? height : '300px'}"
+      width="#{(not empty width) ? width : '100%'}"
+      paginator="#{data.rowCount gt 10}" rows="10" paginatorPosition="bottom"      
+      selectionMode="single">
+    <ui:insert />
+  </p:dataTable>
+</ui:component>

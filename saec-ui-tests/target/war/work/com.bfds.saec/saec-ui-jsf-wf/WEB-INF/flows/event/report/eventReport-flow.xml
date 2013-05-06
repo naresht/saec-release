@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="eventViewModel" class="com.bfds.saec.web.model.EventViewModel"/>
+	<input name="eventViewModel" required="true" type="com.bfds.saec.web.model.EventViewModel" />
+	
+    
+	<view-state id="eventReport">
+		<on-entry> 
+		 	<evaluate expression="eventViewModel.loadAllReportCodes()" ></evaluate>		
+		 </on-entry>		
+	    <transition on="exitEventReport"/> 
+	    <transition on="saveEventReport"/>
+		<transition on="exit" to="exitEventReport"/>
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	    <transition on="save" to="exitEventReport">
+	    	<evaluate expression="eventViewModel.saveEventReportCodes(messageContext)" />
+	    </transition>	
+	    
+	    <transition on="addNewReport">
+			<evaluate expression="eventViewModel.addNewReport(messageContext)"></evaluate>
+		</transition>
+		<transition on="saveNewReport">
+			<evaluate expression="eventViewModel.saveNewReport(messageContext)"></evaluate> 
+		</transition>
+	</view-state>	
+	
+  <end-state id="exitEventReport"/>	
+</flow>

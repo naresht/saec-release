@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<view-state id="claimantSelect">
+		<on-entry>
+			<set name="flowScope.claimant" value="T(com.bfds.saec.web.model.ClaimantViewModel).newClaimant" />
+			<evaluate expression="claimantSearchViewModel.reset()" />
+		</on-entry>
+		<transition on="summary">
+			<evaluate
+				expression="claimantSearchViewModel.getClaimantByPrimayKey(requestParameters.id)"
+				result="viewScope.claimant" />
+		</transition>
+	</view-state>
+	
+	<end-state id="claimantSelected" view="externalRedirect:contextRelative:/app/claimant/edit?id=#{requestParameters.id}" />
+
+	<global-transitions>
+		<transition on="search">
+			<evaluate expression="claimantSearchViewModel.find()" />
+		</transition>
+		<transition on="reset">
+			<evaluate expression="claimantSearchViewModel.reset()" />
+		</transition>
+		<transition on="select" to="claimantSelected" validate="false" />
+	</global-transitions>
+</flow>

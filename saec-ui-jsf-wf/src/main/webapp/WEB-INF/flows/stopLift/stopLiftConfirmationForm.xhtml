@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+	<div id="stop_lift1_div_table">
+		<div id="stop_lift1_div_tr">
+			<div id="stop_lift1_div_lft">
+				<b>Reference # :</b><br />
+				<h:outputText value="#{stopLiftViewModel.claimant.referenceNo}" />
+			</div>
+			<div id="stop_lift1_div_rgt">	
+				<b>Name:</b><br />
+				<h:outputText escape="false"
+					value="#{stopLiftViewModel.claimant.getRegistrationLinesAsString('&lt;br/&gt;')}" /><br />
+				<h:outputText escape="false"
+					value="#{stopLiftViewModel.claimant.mailingAddress.getAddressAsString('&lt;br/&gt;')}" />
+			</div>
+		</div>
+	</div>							
+	<p:spacer height="10" width="100%" />
+	<div id="check_confirmation_div_tr">
+		<div id="check_confirmation_div_td">
+			Stop has been lifted on:
+		</div>
+	</div>
+	<p:spacer height="10" width="100%" />	
+	<div id="stop_lift1_div_table">
+		<div id="stop_lift1_div_tr">
+			<div id="stop_lift1_div_lft">				
+				<b>Check #: </b><h:outputText value="#{stopLiftViewModel.selectedPayment.identificatonNo}" /><br /><br />
+				<b>Pay To:</b><br />
+				<h:outputText escape="false" value="#{stopLiftViewModel.selectedPayment.payToRegistration.getRegistrationLinesAsString('&lt;br/&gt;')}" />
+			</div>
+			<div id="stop_lift1_div_rgt">
+				<b>Amount: </b>$<h:outputText value="#{stopLiftViewModel.selectedPayment.paymentAmount}" />
+			</div>
+		</div>
+	</div>				
+	<div id="buttonsection">
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<p:confirmDialog id="stopConfirmationExitMess" message="Are you sure you want to exit ?"
+		header="Exit" severity="alert" widgetVar="confirmationExit"
+		modal="true">
+		<p:commandButton id="stopConfirmationExitMessYes" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" immediate="true" action="exit" />
+		<p:commandButton id="stopConfirmationExitMessNo" value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+</ui:composition>
+</html>

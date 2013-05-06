@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:app="http://springfuse.jaxio.com/app"
+        >
+       
+<ui:composition>	
+<h:panelGroup id="claimant_new_fields">
+<p:growl id="growl" showDetail="false" globalOnly="true" life="20000"/>
+<p:fieldset legend="Event Configuration">
+<div id="event_config_div_table">
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Event Address Research Information</div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Has Address Research:</div>
+		<div id="event_config_div_rgt">
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.addressResearch}" />					
+		</div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Pre Scrub:</div>
+		<div id="event_config_div_rgt">
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.preScrub}" />						
+		</div>
+	</div>		
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Account Type:</div>
+		<div id="event_config_div_rgt">
+			<h:selectOneMenu id="event_accountType"
+				value="#{saecEvent.accountType}" >
+				<f:selectItem itemValue="INDIVIDUAL" itemLabel="Individual" />
+				<f:selectItem itemValue="CORPORATION" itemLabel="Corporation" />
+				<f:selectItem itemValue="INDIVIDUAL_AND_CORPORATION" itemLabel="Individual and Corporation" />
+			</h:selectOneMenu>		
+		</div>
+	</div>	
+		
+
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">RPO Eligible:</div>
+		<div id="event_config_div_rgt">
+			<h:selectOneMenu id="event_rpoEligible"
+				value="#{saecEvent.rpoEligible}" >
+				<f:selectItem itemValue="MAIL" itemLabel="MAIL" />
+				<f:selectItem itemValue="PAYMENT" itemLabel="PAYMENT" />
+				<f:selectItem itemValue="MAIL_AND_PAYMENT" itemLabel="Mail and Payment" />
+			</h:selectOneMenu>		
+		</div>
+	</div>	
+			
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Send Count Limit:</div>
+		<div id="event_config_div_rgt">
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.sendCountLimit}" />				
+		</div>
+	</div>					
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Mail Send In Limit:</div>
+		<div id="event_config_div_rgt">
+			<p:inputText id="mailSendCountLimit" value="#{saecEvent.mailSendCountLimit}"
+						converterMessage="Enter a numeric value for mailSendCountLimit">
+<!-- 							<f:convertNumber maxFractionDigits="0" minFractionDigits="0"/> -->
+			</p:inputText>
+			<p:message for="mailSendCountLimit" style="color:red" />
+		
+		</div>
+	</div>
+		
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Payment Send In Limit:</div>
+		<div id="event_config_div_rgt">
+			<p:inputText id="paymentSendCountLimit" value="#{saecEvent.paymentSendCountLimit}"
+						converterMessage="Enter a numeric value for paymentSendCountLimit">
+<!-- 							<f:convertNumber maxFractionDigits="0" minFractionDigits="0"/> -->
+			</p:inputText>
+			<p:message for="paymentSendCountLimit" style="color:red" />
+		
+		</div>		
+	</div>
+
+</div>
+
+
+</p:fieldset>
+  </h:panelGroup>
+		<div id="buttonsection"><p:commandButton id="saveConfirm" action="saveConfirm" immediate="true" oncomplete="confirmationSave.show()"  
+		value="Save"  /><p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" 
+		value="Exit" /></div>	
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>
+		
+

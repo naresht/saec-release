@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<h:panelGroup id="claimant_new_fields">
+		<p:growl id="growl" showDetail="false" globalOnly="true" life="20000" />
+		<p:fieldset legend="Event Configuration">
+			<div id="event_config_div_table">
+				<div id="event_config_div_tr">
+					<div id="event_config_div_td">Event Letter Config</div>
+				</div>
+				<p:dataTable id="eventLetterformList"
+					value="#{eventViewModel.letterCodeList}" var="lettercode"
+					rowIndexVar="rowIndex">
+					<p:column id="select" style="width:8px">
+						<f:facet name="header">
+							<h:selectBooleanCheckbox
+								value="#{eventViewModel.includeAllLettersOnPage}">
+								<f:ajax event="change" immediate="true"
+									listener="#{eventViewModel.toggleLettersSelection()}"
+									render="@form" />
+							</h:selectBooleanCheckbox>
+						</f:facet>
+						<h:selectBooleanCheckbox value="#{lettercode.activeForEvent}">
+							<f:ajax event="change" immediate="true"
+								listener="#{eventViewModel.selectLetterForEvent(lettercode.code)}"
+								render="@none" />
+						</h:selectBooleanCheckbox>
+					</p:column>
+					<p:column headerText="#" style="width:8px">
+						#{rowIndex+1}
+				</p:column>
+					<p:column id="code" sortBy="#{lettercode.code}">
+						<f:facet name="header">
+							<h:outputText value="Code" />
+						</f:facet>
+						<h:outputText value="#{lettercode.code}" />
+					</p:column>
+					<p:column id="description" sortBy="#{lettercode.description}">
+						<f:facet name="header">
+							<h:outputText value="Description" />
+						</f:facet>
+						<h:outputText value="#{lettercode.description}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</p:fieldset>
+	</h:panelGroup>
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+		<p:commandButton id="addNewLetter" value="Add New Letter" ajax="true"
+			action="addNewLetter" immediate="true" update="@form" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+	<p:dialog header="Event Letter Addition" id="eventLetterAddDialog"
+		widgetVar="eventLetterAddDialog"  modal="true">
+		<!-- <h:form> -->
+		<p:messages />
+			<h:panelGrid columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="newLetterCode" value="New Letter Code:" />
+				<p:inputText id="newLetterCode"
+					value="#{eventViewModel.newLetterCode}" required="true" requiredMessage="Letter Code is mandatory"/>
+				<h:outputLabel for="newLetterDescription"
+					value="New Letter Description" />
+				<p:inputText id="newLetterDescription" value="#{eventViewModel.newLetterDescription}" required="true" requiredMessage="Description is mandatory"/>
+				<h:outputLabel for="newLetterType" value="Letter Type" />
+				<h:selectOneMenu id="newLetterType"
+					value="#{eventViewModel.newLetterType}">
+					<f:selectItem itemLabel="Claim Form" itemValue="CLAIM_FORM" />
+					<f:selectItem itemLabel="Claim Form Cure Letter"
+						itemValue="CLAIM_FORM_CURE_LETTER" />
+					<f:selectItem itemLabel="Optout Form" itemValue="OPTOUT_FORM" />
+					<f:selectItem itemLabel="Optout Form Cure Letter"
+						itemValue="OPTOUT_CURE_LETTER" />
+					<f:selectItem itemLabel="Correspondence"
+						itemValue="GENERAL_CORRESPONDENCE" />
+					<f:selectItem itemLabel="Correspondence Cure Letter"
+						itemValue="GENERAL_CORRESPONDENCE_CURE_LETTER" />
+
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<p:commandButton value="Save" ajax="false" action="saveNewLetter"
+				update="@form" />
+			<p:commandButton value="Cancel" type="button"
+				onclick="eventLetterAddDialog.hide()" />
+		<!-- </h:form> -->
+	</p:dialog>
+</ui:composition>
+</html>
+
+

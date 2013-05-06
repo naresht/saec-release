@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+		<p:messages/>
+		<div id="grid" class="contact_info_div_table">
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Asset:" /><font color="red">*</font>
+				</div>
+				<div id="contact_info_div_rgt">
+				<p:selectOneMenu id="securityAsset" value="#{claimantTransactionsViewModel.selectedFund}" var="asset" style="width:200px">
+					<f:selectItem itemLabel="" itemValue=""/>
+					<f:selectItems value="#{selectItemUtil.getAllSecurityFundAssetsSelectItems()}" />
+					<p:ajax process="@this,fund,cusip,ticker" update="fundCusipTicker" event="change" listener="#{claimantTransactionsViewModel.onChangeAsset(claimantTransactionsViewModel.selectedFund)}"/>
+					<p:column>
+						<h:outputText value="#{asset.securityRef.name}"/>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{asset.fund}"/>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{asset.securityRef.ticker}"/>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{asset.securityRef.cusip}"/>
+					</p:column>
+				</p:selectOneMenu>
+			</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Claim Identifier:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="claimIdentifier" value="#{claimantTransactionsViewModel.claimantClaim.claimIdentifier}" disabled="true"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Control Number:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="controlNo" value="#{claimantTransactionsViewModel.claimantClaim.controlNumber}" disabled="true"/>
+				</div>
+			</div>
+			<h:panelGroup id="fundCusipTicker">
+				<div id="contact_info_div_tr">
+					<div id="contact_info_div_lft">
+						<h:outputLabel value="Fund:" />
+					</div>
+					<div id="contact_info_div_rgt">
+						<p:inputText id="fund" value="#{claimantTransactionsViewModel.claimantTransactions.securityFund.fund}" disabled="true"/>
+					</div>
+				</div>
+				<div id="contact_info_div_tr">
+					<div id="contact_info_div_lft">
+						<h:outputLabel value="Cusip:" />
+					</div>
+					<div id="contact_info_div_rgt">
+						<p:inputText id="cusip" value="#{claimantTransactionsViewModel.claimantTransactions.securityFund.securityRef.cusip}" disabled="true"/>
+					</div>
+				</div>
+				<div id="contact_info_div_tr">
+					<div id="contact_info_div_lft">
+						<h:outputLabel value="Ticker:" />
+					</div>
+					<div id="contact_info_div_rgt">
+						<p:inputText id="ticker" value="#{claimantTransactionsViewModel.claimantTransactions.securityFund.securityRef.ticker}" disabled="true"/>
+					</div>
+				</div>
+			</h:panelGroup>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Tran Type:" /><font color="red">*</font>
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:selectOneMenu id="tranType" value="#{claimantTransactionsViewModel.claimantTransactions.transactionType}">
+						<f:selectItems value="#{selectItemUtil.getTransactionTypeSelectItems()}"/>
+					</p:selectOneMenu>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Tran Effect Cd:" /><font color="red">*</font>
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="transEffCode" value="#{claimantTransactionsViewModel.claimantTransactions.transactionCode}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Src Tran Type:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="transCdSrc" value="#{claimantTransactionsViewModel.claimantTransactions.sourceTransactionType}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Src Tran Effect Cd:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="tranEffCd" value="#{claimantTransactionsViewModel.claimantTransactions.sourceTransactionCode}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Trade Date:" /><font color="red">*</font>
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:calendar id="tradeDate" value="#{claimantTransactionsViewModel.claimantTransactions.tradeDate}" size="10" pattern="MM/dd/yyyy" maxlength="10"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Quantity:" /><font color="red">*</font>
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="qty" value="#{claimantTransactionsViewModel.claimantTransactions.quantity}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Share Price:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="sharePrice" value="#{claimantTransactionsViewModel.claimantTransactions.unitPrice}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Fees:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="fees" value="#{claimantTransactionsViewModel.claimantTransactions.fees}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Total Cost:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="totalCost" value="#{claimantTransactionsViewModel.claimantTransactions.totalCost}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Comments: " />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputTextarea id="comments_edit" style="width:300px;height:100px;"
+						effectDuration="400" value="#{claimantTransactionsViewModel.claimantTransactions.comments}"
+						autoResize="false" maxlength="255" />
+				</div>
+			</div>
+		</div>
+		
+		<p:separator width="100%" height="20"/>
+		<div id="buttonsection">
+			<p:commandButton id="saveClaimTransConfirm" ajax="false" action="saveClaimantTransactions" value="Save" rendered="#{!(claimantTransactionsViewModel.claimantTransactions.deleted == 'true')}"/>
+			<p:commandButton id="exitConfirm" ajax="true" value="Exit" oncomplete="editDialog.hide()" />
+			<p:commandButton id="deleteClaimTrans" action="deleteConfirm" oncomplete="confirmationDelete.show()" value="Delete" rendered="#{!(claimantTransactionsViewModel.claimantTransactions.deleted == 'true') and claimantTransactionsViewModel.showDelete}"/>
+			<p:commandButton id="restorePosition" action="restoreConfirm" oncomplete="confirmationRestore.show()" value="Restore" rendered="#{claimantTransactionsViewModel.claimantTransactions.deleted == 'true'}"/>
+		</div>
+
+	
+</ui:composition>
+</html>

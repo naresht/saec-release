@@ -1,0 +1,44 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+	<p:fieldset legend="Details">
+		<h:panelGroup id="searchCriteriaFields">
+			<div id="rpo_mail_div_table">
+				<div id="rpo_mail_div_tr">
+					<div id="rpo_mail_div_lft">
+						<font color="red">*</font>Mailing Control #:
+					</div>
+					<div id="rpo_mail_div_rgt">
+						<p:inputMask id="mailing_ctrl_no" mask="??999999" placeHolder=""
+							maxlength="6" value="#{rpoProcessViewModel.mailingControlNumber}"/>
+						<p:message for="mailing_ctrl_no" />
+					</div>
+				</div>
+			</div>
+			<p:spacer height="10" width="100%" />
+			<div id="buttonsection">
+				<p:commandButton id="search" action="search" value="Search"
+					ajax="false" />
+				<p:commandButton id="resetSearch" action="reset" ajax="false"
+					value="Clear" />
+				<!--<p:commandButton id="exit"  action="exitCreateConfirm" immediate="true"  oncomplete="confirmationExit.show()" value="Exit" /> -->
+				<p:commandButton id="exitConfirm" action="exitConfirm"
+					immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+				<p:confirmDialog message="Are you sure you want to exit ?"
+					header="Exit" severity="alert" widgetVar="confirmationExit"
+					modal="true">
+					<p:commandButton value="Yes" ajax="false"
+						oncomplete="confirmationExit.hide()" immediate="true"
+						action="exit" />
+					<p:commandButton value="No" onclick="confirmationExit.hide()"
+						type="button" />
+				</p:confirmDialog>
+			</div>
+		</h:panelGroup>
+	</p:fieldset>
+</ui:composition>

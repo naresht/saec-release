@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<div id="alternate_payee_div_table">
+		<div id="alternate_payee_div_tr">
+			<div id="alternate_payee_div_td">
+				<b>Reference #: </b>
+				<h:outputText value="#{claimantViewModel.claimant.referenceNo}" />
+			</div>
+		</div>
+	</div>
+	<div>
+		<h:outputText escape="false"
+			value="#{claimantViewModel.registrationText}" />
+		<br /> <br />
+		<h:outputText escape="false" value="#{claimantViewModel.addressText}" />
+		<br />
+	</div>
+	<br />
+
+	<p:fieldset legend="Special Handling Instructions" id="grid">
+		<div id="alternate_payee_div_table">
+			<div id="alternate_payee_div_tr">
+				<div id="alternate_payee_div_td1">
+					<font color="red">*</font>
+					<p:inputTextarea id="instructions" style="width:200px;height:80px;" effectDuration="400"
+						value="#{specialHandlingViewModel.ripObject.specialInstructions}"
+						required="true" maxlength="255"
+						requiredMessage="Please, fill 'Special Handling Instructions'"></p:inputTextarea>
+					<p:message for="instructions" />
+				</div>
+			</div>
+		</div>
+	</p:fieldset>
+	<p class="space"></p>
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>

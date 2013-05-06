@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Small Check Config">
+		<div id="grid" class="contact_info_div_table">
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="EventNameAddress1" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.eventNameAddress1}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="EventNameAddress2" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.eventNameAddress2}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="EventNameAddress3" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.eventNameAddress3}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="EventNameAddress4" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.eventNameAddress4}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="EventNameAddress4" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.eventNameAddress5}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="EventNameAddress6" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.eventNameAddress6}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Variable Verbiage" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputTextarea id="comments" style="width:150px;height:50px;"
+						effectDuration="400" value="#{saecsmallcheckEvent.smallCheckConfig.variableVerbiage}"
+						autoResize="false" maxlength="255" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="BankInfo1" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.bankInfo1}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="BankInfo2" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.bankInfo2}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="BankInfo3" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.bankInfo3}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="DistributionText" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.distributionText}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="ABA Top" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.abaTop}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="ABA Bottom" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.abaBottom}"/>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Void After Days" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText value="#{saecsmallcheckEvent.smallCheckConfig.voidAfterDays}"/>
+				</div>
+			</div>
+		</div>
+	</p:fieldset>
+	<div id="buttonsection">
+			<p:commandButton id="saveConfirm" action="saveConfirm" immediate="true" oncomplete="confirmationSave.show()" value="Save"  />
+			<p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+		</div>
+		<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>
+
+

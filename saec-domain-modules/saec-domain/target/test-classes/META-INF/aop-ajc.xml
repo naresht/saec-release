@@ -1,0 +1,33 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.domain.PaymentIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.ContactIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.PaymentIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.PaymentDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.PhoneCallIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.AlternatePayeeActivityIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.PhoneCallDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.LetterDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.ContactDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.ClaimantIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.ContactIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.CheckActivityDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.ClaimantDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.PhoneCallDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.CheckActivityIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.ContactDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.activity.AlternatePayeeActivityDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.CheckActivityDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.AlternatePayeeActivityDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.activity.PhoneCallIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.ClaimantIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.TaxInfoChangeIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.ClaimantDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.activity.TaxInfoChangeDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.activity.AlternatePayeeActivityIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.PaymentDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.activity.CheckActivityIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.LetterDataOnDemand_Roo_DataOnDemand"/>
+</aspects>
+</aspectj>
+

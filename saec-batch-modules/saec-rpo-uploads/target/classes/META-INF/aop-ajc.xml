@@ -1,0 +1,7 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.rpo.dto.RpoItem_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rpo.dto.RpoItem_Roo_ToString"/>
+</aspects>
+</aspectj>
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<div id="contact_info_div_tr">
+		<div id="contact_info_div_lft">Reference #:</div>
+		<div id="contact_info_div_rgt">
+			<h:outputText value="#{claimantClaimHeader.referenceNo}" />
+		</div>
+	</div>
+	<div id="contact_info_div_tr">
+		<div id="contact_info_div_lft">
+			<b>Claim Identifier :</b>
+		</div>
+		<div id="contact_info_div_rgt">
+			<h:outputText value="#{claimantClaimHeader.claimIdentifier}" />
+			<br />
+			<h:outputText escape="false"
+				value="#{claimantClaimHeader.registrationText}"
+				id="registrationLines" />
+			<br />
+			<h:outputText escape="false"
+				value="#{claimantClaimHeader.addressText}" id="address" />
+		</div>
+	</div>
+</ui:composition>
+</html>

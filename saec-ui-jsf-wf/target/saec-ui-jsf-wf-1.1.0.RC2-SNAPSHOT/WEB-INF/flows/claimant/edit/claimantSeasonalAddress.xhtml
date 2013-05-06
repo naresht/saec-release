@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Seasonal Address">
+		<h:panelGroup id="grid">
+			<div id="Account_Search_div_table">
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Address1:</div>
+					<div id="Account_Search_div_td2">
+						<p:inputText id="seasonal_address"
+							value="#{claimant.claimant.seasonalAddress.address1}"
+							maxlength="60" />
+					</div>
+					<div id="Account_Search_div_td3">Address2:</div>
+					<div id="Account_Search_div_td4">
+						<p:inputText id="addrUpdateSeasonalAddr2"
+							value="#{claimant.claimant.seasonalAddress.address2}"
+							maxlength="60" />
+					</div>
+				</div>
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Address3:</div>
+					<div id="Account_Search_div_td2">
+						<p:inputText id="addrUpdateSeasonalAddr3"
+							value="#{claimant.claimant.seasonalAddress.address3}"
+							maxlength="60" />
+					</div>
+					<div id="Account_Search_div_td3">Address4:</div>
+					<div id="Account_Search_div_td4">
+						<p:inputText id="addrUpdateSeasonalAddr4"
+							value="#{claimant.claimant.seasonalAddress.address4}"
+							maxlength="60" />
+					</div>
+				</div>
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Address5:</div>
+					<div id="Account_Search_div_td2">
+						<p:inputText id="addrUpdateSeasonalAddr5"
+							value="#{claimant.claimant.seasonalAddress.address5}"
+							maxlength="60" />
+					</div>
+					<div id="Account_Search_div_td3">Address6:</div>
+					<div id="Account_Search_div_td4">
+						<p:inputText id="addrUpdateSeasonalAddr6"
+							value="#{claimant.claimant.seasonalAddress.address6}"
+							maxlength="60" />
+					</div>
+				</div>
+
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">City:</div>
+					<div id="Account_Search_div_td2">
+						<p:inputText id="seasonal_city"
+							value="#{claimant.claimant.seasonalAddress.city}" maxlength="30" />
+					</div>
+					<div id="Account_Search_div_td3">State:</div>
+					<div id="Account_Search_div_td4">
+						<p:inputText id="seasonal_state"
+							value="#{claimant.claimant.seasonalAddress.stateCode}" />
+					</div>
+				</div>
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Zip Code:</div>
+					<div id="Account_Search_div_td2">
+						<p:inputText id="seasonal_zipcode"
+							value="#{claimant.claimant.seasonalAddress.zipCode.zip}"
+							maxlength="8" />
+					</div>
+					<div id="Account_Search_div_td3">Zip Code Extn:</div>
+					<div id="Account_Search_div_td4">
+						<p:inputText id="addrUpdateSeasonalAddrZipExt"
+							value="#{claimant.claimant.seasonalAddress.zipCode.ext}"
+							maxlength="4" />
+					</div>
+				</div>
+
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Country:</div>
+					<div id="Account_Search_div_td2">
+						<h:selectOneMenu id="seasonal_country"
+							value="#{claimant.claimant.seasonalAddress.countryCode}">
+							<f:ajax render="grid" />
+							<f:selectItems value="#{claimant.countryList}" required="true" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				<div id="Account_Search_div_tr">
+					<div id="Account_Search_div_td1">Valid From:</div>
+					<div id="Account_Search_div_td2">
+						<p:calendar id="seasonal_validFrom"
+							value="#{claimant.claimant.seasonalAddress.validFrom}"
+							pattern="MM/dd" />
+					</div>
+					<div id="Account_Search_div_td3">Valid Till:</div>
+					<div id="Account_Search_div_td4">
+						<p:calendar id="seasonal_validTill"
+							value="#{claimant.claimant.seasonalAddress.validTill}"
+							pattern="MM/dd" />
+					</div>
+				</div>
+
+			</div>
+		</h:panelGroup>
+		<p:spacer width="100%" height="10" />
+		<p:dataTable var="address" styleClass="fieldsetaddresstable2"
+			value="#{seasonalAddressList}" id="seasonalAaddressList"
+			rowIndexVar="rowIndex">
+			<p:column headerText="Type">
+				<h:outputText value="#{(rowIndex == 0) ? 'Current' : 'Prev'}" />
+			</p:column>
+			<p:column headerText="Address1">
+				<h:outputText id="seasonal_address1"
+					value="#{address.entity.address1}" />
+			</p:column>
+			<p:column headerText="Address2">
+				<h:outputText id="seasonal_address2"
+					value="#{address.entity.address2}" />
+			</p:column>
+			<p:column headerText="Address3">
+				<h:outputText id="seasonal_address3"
+					value="#{address.entity.address3}" />
+			</p:column>
+			<p:column headerText="Address4">
+				<h:outputText id="seasonal_address4"
+					value="#{address.entity.address4}" />
+			</p:column>
+			<p:column headerText="Address5">
+				<h:outputText id="seasonal_address5"
+					value="#{address.entity.address5}" />
+			</p:column>
+			<p:column headerText="Address6">
+				<h:outputText id="seasonal_address6"
+					value="#{address.entity.address6}" />
+			</p:column>
+			<p:column headerText="City">
+				<h:outputText id="seasonal_city" value="#{address.entity.city}" />
+			</p:column>
+			<p:column headerText="State">
+				<h:outputText id="seasonal_stateCode"
+					value="#{address.entity.stateCode}" />
+			</p:column>
+			<p:column headerText="Zip Code">
+				<h:outputText id="seasonal_zip"
+					value="#{address.entity.zipCode.zip}" />
+			</p:column>
+			<p:column headerText="Zip Code Ext">
+				<h:outputText id="seasonal_zipExt"
+					value="#{address.entity.zipCode.ext}" />
+			</p:column>
+			<p:column headerText="Country">
+				<h:outputText id="seasonal_countryCode"
+					value="#{address.entity.countryCode}" />
+			</p:column>
+			<p:column headerText="Valid From (mm/dd)">
+				<p:calendar id="seasonal_validFrom"
+					value="#{address.entity.validFrom}" size="5" pattern="MM/dd"
+					style="#{(rowIndex== 0 and formState == 'edit') ? '' : 'display:none'}" />
+				<h:outputText value="#{address.entity.validFrom}"
+					rendered="#{rowIndex > 0 or formState == 'view'}">
+					<f:convertDateTime pattern="MM/dd" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Valid Till (mm/dd)">
+				<p:calendar id="seasonal_validTill"
+					value="#{address.entity.validTill}" size="5" pattern="MM/dd"
+					style="#{(rowIndex== 0 and formState == 'edit') ? '' : 'display:none'}" />
+				<h:outputText value="#{address.entity.validTill}"
+					rendered="#{rowIndex > 0 or formState == 'view'}">
+					<f:convertDateTime pattern="MM/dd" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Last Maint. date">
+				<h:outputText value="#{address.revisionDate}"
+					rendered="#{!(rowIndex == 0 and formState == 'edit')	}">
+				</h:outputText>
+			</p:column>
+			<p:column headerText="User ID">
+				<h:outputText value="#{address.userName}" />
+			</p:column>
+		</p:dataTable>
+	</p:fieldset>
+
+</ui:composition>
+</html>

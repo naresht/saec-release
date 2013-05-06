@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:app="http://springfuse.jaxio.com/app"
+        >
+       
+<ui:composition>	
+<h:panelGroup id="claimant_new_fields">
+<p:growl id="growl" showDetail="false" globalOnly="true" life="20000"/>
+<p:fieldset legend="Event Configuration">
+<div id="event_config_div_table">
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Event File Notification Information</div>
+	</div>
+	
+	<h:panelGroup id="formFields">
+		<p:fieldset legend="Details">
+			<p:dataTable id="formList"
+				value="#{eventViewModel.fileNotificationConfigList}" var="fileNotificationComponent" >
+
+				<p:column id="fileNotificationType">					
+					<f:facet name="header">
+						<h:outputText value="Active" />
+					</f:facet>
+					<h:outputText value="#{fileNotificationComponent.fileNotificationType}" />
+				</p:column>
+				
+				<p:column id="mailId">					
+					<f:facet name="header">
+						<h:outputText value="Mail Group" />
+					</f:facet>
+					<h:inputText value="#{fileNotificationComponent.mailId}" />
+				</p:column>
+				<p:column id="permType" >
+					<f:facet name="header">
+						<h:outputText value="Permission Type" />
+					</f:facet>
+					<h:selectOneMenu id="event_fileNotificataion_permType"
+						value="#{fileNotificationComponent.permType}" >
+						<f:selectItem itemValue="VIEW" itemLabel="View" />
+						<f:selectItem itemValue="EDIT" itemLabel="Edit" />
+						<f:selectItem itemValue="DELETE" itemLabel="Delete" />
+					</h:selectOneMenu>		
+				</p:column>
+
+			</p:dataTable>
+			
+		</p:fieldset>
+	</h:panelGroup>
+</div>
+
+
+</p:fieldset>
+  </h:panelGroup>
+		<div id="buttonsection"><p:commandButton id="saveConfirm" action="saveConfirm" immediate="true" oncomplete="confirmationSave.show()"  
+		value="Save"  /><p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" 
+		value="Exit" /></div>		
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>
+		
+

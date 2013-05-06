@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+    xmlns:app="http://springfuse.jaxio.com/app">
+        
+    
+<ui:composition>
+<div id="wire_info_div_table">
+	<div id="wire_info_div_tr">
+		<div id="wire_info_div_lft">Reference #:</div>
+		<div id="wire_info_div_rgt"><h:outputText value="#{claimantViewModel.claimant.referenceNo}"></h:outputText></div>
+	</div>
+	<div id="wire_info_div_tr">
+		<div id="wire_info_div_lft">Payment Amount:</div>
+		<div id="wire_info_div_rgt"><h:outputText value="#{check.paymentAmount}"><f:convertNumber currencySymbol="$" type="currency" minFractionDigits="2" maxFractionDigits="2"/></h:outputText></div>
+	</div>
+	<div id="wire_info_div_tr">
+		<div id="wire_info_div_lft">Name:</div>
+		<div id="wire_info_div_rgt"><h:outputText escape="false" value="#{checkViewModel.paytoNameAsString('&lt;br/&gt;')}"></h:outputText></div>
+	</div>
+</div>
+<h:panelGroup id="wireInformation">
+<table border="0" class="fieldsetwireissuetable" summary="">
+	<tr valign="top">
+		<td width="60%">
+			<p:fieldset legend="Sending Bank Information">
+				<div id="wire_info_div_table">
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">ABA #:</div>
+						<div id="wire_info_div_rgt1"><h:outputText value="#{sendingBank.abaNo}" maxlength="9"></h:outputText></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">Account:</div>
+						<div id="wire_info_div_rgt1"><h:outputText value="#{sendingBank.accountNo}" maxlength="15"/></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">Transfer Amount:</div>
+						<div id="wire_info_div_rgt1"><p:inputText id="TransferAmount"  value="#{checkViewModel.wireTransferAmount}"><f:convertNumber currencySymbol="$" type="currency" minFractionDigits="2" maxFractionDigits="2"/></p:inputText></div>
+					</div>
+				</div>	
+			</p:fieldset>
+		</td>
+		<td rowspan="2">
+			<p:fieldset legend="Origination Information">
+				<div id="wire_info_div_table">
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Reference #:</div>
+						<div id="wire_info_div_rgt2"><p:inputMask id="Reference" value="#{checkViewModel.check.wireInfo.originationInfo.referenceNo}" mask="?999999999" placeHolder=""/></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Name1:</div>
+						<div id="wire_info_div_rgt2"><p:inputText id="Name1" value="#{checkViewModel.check.wireInfo.originationInfo.lines.registration1}" maxlength="60" ></p:inputText></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Name2:</div>
+						<div id="wire_info_div_rgt2"><p:inputText id="Name2" value="#{checkViewModel.check.wireInfo.originationInfo.lines.registration2}" maxlength="60" ></p:inputText></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Name3:</div>
+						<div id="wire_info_div_rgt2"><p:inputText id="Name3" value="#{checkViewModel.check.wireInfo.originationInfo.lines.registration3}" maxlength="60" ></p:inputText></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Name4:</div>
+						<div id="wire_info_div_rgt2"><p:inputText id="Name4" value="#{checkViewModel.check.wireInfo.originationInfo.lines.registration4}" maxlength="60" ></p:inputText></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Name5:</div>
+						<div id="wire_info_div_rgt2"><p:inputText id="Name5" value="#{checkViewModel.check.wireInfo.originationInfo.lines.registration5}" maxlength="60" ></p:inputText></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Name6:</div>
+						<div id="wire_info_div_rgt2"><p:inputText id="Name6" value="#{checkViewModel.check.wireInfo.originationInfo.lines.registration6}" maxlength="60" ></p:inputText></div>
+					</div>
+				</div>		
+			</p:fieldset>
+			<p:fieldset legend="Authorization Information">
+				<div id="wire_info_div_table">
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Authorization Approver:</div>
+						<div id="wire_info_div_rgt2"><p:inputText id="AuthorizationApprover" value="#{checkViewModel.check.wireInfo.authorizedApprover}" maxlength="60" ></p:inputText></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Title:</div>
+						<div id="wire_info_div_rgt2"><p:inputText id="Title" value="#{checkViewModel.check.wireInfo.authorizedTitle}" maxlength="60" ></p:inputText></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft2">Date:</div>
+						<div id="wire_info_div_rgt2"><p:calendar id="Date" value="#{checkViewModel.check.wireInfo.authorizedDate}" pattern="MM/dd/yyyy" maxlength="10"/><h:outputText value=""/></div>
+					</div>
+				</div>
+			</p:fieldset>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p:fieldset legend="Receiving Bank Information">
+				<div id="wire_info_div_table">
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">ABA #:</div>
+						<div id="wire_info_div_rgt1"><p:inputMask id="ABA" value="#{checkViewModel.check.wireInfo.receivingBank.abaNo}" mask="?999999999" placeHolder=""></p:inputMask></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">Account Number:</div>
+						<div id="wire_info_div_rgt1"><p:inputMask id="AccountNumber" value="#{checkViewModel.check.wireInfo.receivingBank.accountNo}" mask="?999999999999999" placeHolder=""/></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">Address:</div>
+						<div id="wire_info_div_rgt1"><p:inputText id="Address" value="#{checkViewModel.check.wireInfo.receivingBank.address.address1}" maxlength="60" /></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">City:</div>
+						<div id="wire_info_div_rgt1">
+							<table>
+								<tr>
+									<td><p:inputText style="width:70px;" id="City" value="#{checkViewModel.check.wireInfo.receivingBank.address.city}" maxlength="20"/></td>
+									<td style="padding-left:5px;"><b>State:</b></td>
+									<td><p:inputText style="width:70px;" id="State" value="#{checkViewModel.check.wireInfo.receivingBank.address.stateCode}" maxlength="2"/></td>
+									<td style="padding-left:5px;"><b>Zip:</b></td>
+									<td><p:inputMask style="width:50px;" mask="?99999" placeHolder="" maxlength="5" id="Zip" value="#{checkViewModel.check.wireInfo.receivingBank.address.zipCode.zip}"/></td>
+									<td><p:inputMask style="width:40px;" mask="?9999" placeHolder="" maxlength="4" id="ZipExt" value="#{checkViewModel.check.wireInfo.receivingBank.address.zipCode.ext}"/></td>
+								</tr>
+							</table>
+						  </div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">Attn:</div>
+						<div id="wire_info_div_rgt1"><p:inputText id="Attn" value="#{checkViewModel.check.wireInfo.receivingBank.attn}" maxlength="60" /></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">Account Name1:</div>
+						<div id="wire_info_div_rgt1"><p:inputText id="AccountName1" value="#{checkViewModel.check.wireInfo.receivingBank.registration.registration1}" maxlength="60" /></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">Account Name2:</div>
+						<div id="wire_info_div_rgt1"><p:inputText id="AccountName2" value="#{checkViewModel.check.wireInfo.receivingBank.registration.registration2}" maxlength="60" /></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">Account Name3:</div>
+						<div id="wire_info_div_rgt1"><p:inputText id="AccountName3" value="#{checkViewModel.check.wireInfo.receivingBank.registration.registration3}" maxlength="60" /></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">For Further Credit:</div>
+						<div id="wire_info_div_rgt1"><p:inputMask id="ForFurtherCredit" value="#{checkViewModel.check.wireInfo.receivingBank.forFurtherCredit}" mask="?999999999999999" placeHolder=""/></div>
+					</div>
+					<div id="wire_info_div_tr">
+						<div id="wire_info_div_lft1">In Reference to:</div>
+						<div id="wire_info_div_rgt1"><p:inputText id="InReferenceto" value="#{checkViewModel.check.wireInfo.receivingBank.inReferenceTo}" maxlength="60" /></div>
+					</div>
+				</div>		
+			</p:fieldset>
+		</td>
+	</tr>
+</table>
+</h:panelGroup>
+<div id="buttonsection">
+	<p:commandButton id="saveConfirm" action="saveConfirm"
+			disabled="#{!sec:canDoWire()}"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+	<p:commandButton id="exitConfirm" action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" 
+		value="Exit" />
+</div>
+
+<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+
+</ui:composition>
+</html>

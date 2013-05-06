@@ -1,0 +1,147 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+   
+		<p:fieldset legend="Name">
+			<h:panelGroup id="grid">
+				<div id="Account_Search_div_table">
+				<div id="Account_Search_div_tr">
+						<div id="Account_Search_div_td1">Name1:</div>
+						<div id="Account_Search_div_td2">
+							<p:inputText id="registration1"
+								value="#{viewModel.registration.registration1}"
+								maxlength="60" />
+							<p:message for="registration1" />
+						</div>
+					
+						<div id="Account_Search_div_td3">Name2:</div>
+						<div id="Account_Search_div_td4">
+							<p:inputText
+								value="#{viewModel.registration.registration2}"
+								maxlength="60" />
+						</div>
+				</div>
+				<div id="Account_Search_div_tr">
+						<div id="Account_Search_div_td1">Name3:</div>
+						<div id="Account_Search_div_td2">
+							<p:inputText
+								value="#{viewModel.registration.registration3}"
+								maxlength="60" />
+						</div>
+						<div id="Account_Search_div_td3">Name4:</div>
+						<div id="Account_Search_div_td4">
+							<p:inputText
+								value="#{viewModel.registration.registration4}"
+								maxlength="60" />
+						</div>
+				</div>
+				<div id="Account_Search_div_tr">
+						<div id="Account_Search_div_td1">Name5:</div>
+						<div id="Account_Search_div_td2">
+							<p:inputText
+								value="#{viewModel.registration.registration5}"
+								maxlength="60" />
+						</div>
+						<div id="Account_Search_div_td3">Name6:</div>
+						<div id="Account_Search_div_td4">
+							<p:inputText
+								value="#{viewModel.registration.registration6}"
+								maxlength="60" />
+						</div>
+				</div>
+			</div>
+			</h:panelGroup>
+			</p:fieldset>
+
+		<p:fieldset legend="Address">
+			<h:panelGroup id="grid1">
+				<div id="Account_Search_div_table">
+				<div id="Account_Search_div_tr">
+						<div id="Account_Search_div_td1">Address1:</div>
+						<div id="Account_Search_div_td2">
+							<p:inputText id="address1"
+							value="#{viewModel.address.address1}" 
+							maxlength="60" />
+						</div>
+						<div id="Account_Search_div_td3">Address2:</div>
+						<div id="Account_Search_div_td4">
+							<p:inputText
+							value="#{viewModel.address.address2}"
+							maxlength="60" />
+						</div>
+				</div>
+				<div id="Account_Search_div_tr">
+						<div id="Account_Search_div_td1">Address3:</div>
+						<div id="Account_Search_div_td2">
+							<p:inputText
+							value="#{viewModel.address.address3}"
+							maxlength="60" />
+						</div>
+						<div id="Account_Search_div_td3">Address4:</div>
+						<div id="Account_Search_div_td4">
+							<p:inputText
+							value="#{viewModel.address.address4}"
+							maxlength="60" />
+						</div>
+				</div>
+				<div id="Account_Search_div_tr">
+						<div id="Account_Search_div_td1">Address5:</div>
+						<div id="Account_Search_div_td2">
+							<p:inputText
+							value="#{viewModel.address.address5}"
+							maxlength="60" />
+						</div>
+						<div id="Account_Search_div_td3">Address6:</div>
+						<div id="Account_Search_div_td4">
+							<p:inputText
+							value="#{viewModel.address.address6}"
+							maxlength="60" />
+						</div>
+				</div>
+				<div id="Account_Search_div_tr">
+						<div id="Account_Search_div_td1">City:</div>
+						<div id="Account_Search_div_td2">
+							<p:inputText
+							value="#{viewModel.address.city}"
+							maxlength="20" />
+						</div>
+						<div id="Account_Search_div_td3">State:</div>
+						<div id="Account_Search_div_td4">
+							<p:inputText
+							value="#{viewModel.address.stateCode}"
+							maxlength="2" />
+						</div>
+				</div>
+				<div id="Account_Search_div_tr">
+						<div id="Account_Search_div_td1">Zip Code:</div>
+						<div id="Account_Search_div_td2">
+							<p:inputMask
+							value="#{viewModel.address.zipCode.zip}"
+							mask="99999" maxlength="5" />
+						</div>
+						<div id="Account_Search_div_td3">Zip Code Extn:</div>
+						<div id="Account_Search_div_td4">
+							<p:inputMask
+							value="#{viewModel.address.zipCode.ext}"
+							mask="9999" maxlength="4" />
+						</div>
+				</div>
+				</div>
+			</h:panelGroup>
+		</p:fieldset>
+			<p:spacer width="10" height="10" />
+			<div id="buttonsection">
+				<p:commandButton id="address_save" action="saveConfirm"
+					immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+				<p:commandButton id="exitClaimDetlsConfirm" action="exitConfirm"
+					immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+			</div>
+			<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+	
+</ui:composition>
+</html>

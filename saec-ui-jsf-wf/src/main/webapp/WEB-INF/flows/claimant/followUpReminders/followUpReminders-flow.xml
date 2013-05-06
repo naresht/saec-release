@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="viewModel" class="com.bfds.saec.web.model.FollowupRemindersViewModel" />
+	<input name="claimantId" required="true" />
+	<on-start>
+		<evaluate expression="viewModel.prepareViewModel(claimantId)" />
+	</on-start>
+
+	<view-state id="followUpReminders">
+		<transition on="addNewReminder">
+			<evaluate expression="viewModel.newFollowUpReminder()"></evaluate>
+		</transition>
+		<transition on="loadFollowUpReminder">
+			<evaluate expression="viewModel.editFollowUpReminder(messageContext,requestParameters.id)"></evaluate>
+		</transition>
+		<transition on="save">
+			<evaluate expression="viewModel.saveFollowUpReminder(messageContext)"></evaluate>
+		</transition>
+		<transition on="exitFollowUpConfirm" />
+		<transition on="saveFollowUpConfirm" />
+		<transition on="exit" to="exitProcess" />
+		<transition on="save" to="exitProcess">
+
+		</transition>
+	</view-state>
+
+	<end-state id="exitProcess" />
+</flow>                                                                 

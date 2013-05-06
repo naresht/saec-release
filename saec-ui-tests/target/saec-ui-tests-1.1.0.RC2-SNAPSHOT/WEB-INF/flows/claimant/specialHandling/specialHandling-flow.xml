@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="specialHandlingViewModel" class="com.bfds.saec.web.model.SpecialHandlingViewModel" />
+	<input name="claimantViewModel" required="true" type="com.bfds.saec.web.model.ClaimantViewModel" />
+	
+	<view-state id="specialHandling">
+		 <on-entry>
+		 	<evaluate expression="specialHandlingViewModel.setClaimant(claimantViewModel.claimant)"></evaluate>
+		</on-entry>
+		<transition on="save" to="exit">
+			<evaluate expression="specialHandlingViewModel.save(messageContext)"></evaluate>
+		</transition>
+		<transition on="exit" to="exit" />
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	</view-state>
+	<end-state id="exit" />
+</flow>                                                                 

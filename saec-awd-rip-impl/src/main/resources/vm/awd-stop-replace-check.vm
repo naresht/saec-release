@@ -1,0 +1,24 @@
+@@KEY HOSTNAME=$!e.hostName
+@@BEGIN
+@@KEY ACTION=C,CASE=WORKCASE,STAT=RIPPED,UNIT=$!e.businessUnit
+@@BEGIN
+@@KEY ACTION=W,WRKT=$!e.workType,STAT=RIPPED,UNIT= $!e.businessUnit
+@@LOB MISC=$!e.referenceNo,FUND=9999999,ACCT=99999999999,SYST=DTO
+@@BEGIN
+@@KEY ACTION=S,OBJT=RIP,UNIT= $!e.businessUnit
+
+REFERENCE_NUM:$!e.referenceNo
+STOPPED_CHECK_NUM:$!e.paymentIdentificationNo
+
+NAME_LN1:$!e.registration1
+NAME_LN2:$!e.registration2
+NAME_LN3:$!e.registration3
+NAME_LN4:$!e.registration4
+NAME_LN5:$!e.registration5
+NAME_LN6:$!e.registration6
+
+PAYMENT_AMOUNT:$!e.grossAmount
+MAILED_DATE:$!e.mailedDate
+@@END
+@@END
+@@END

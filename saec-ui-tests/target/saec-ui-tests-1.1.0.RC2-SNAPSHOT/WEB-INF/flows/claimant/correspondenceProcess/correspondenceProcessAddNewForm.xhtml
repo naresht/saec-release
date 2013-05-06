@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition>
+	<p:fieldset id="incomingMailItem" legend="Mail">
+		<!-- dummy text box start -->
+			<h:inputText style="width:0px;height:0px;cursor:none;border:0px solid #ffffff;background-color:#fff;"/>
+		<!-- dummy text box end -->
+		<h:panelGroup id="incomingMailDtls">
+			<table width="100%">
+				<tr>
+					<td>Mail Type:</td>
+					<td>
+					<p:selectOneMenu
+							value="#{viewModel.newCorrespondence.letter.mailType}"
+							id="mailing_type" rendered="#{(viewModel.newCorrespondence.canEditMailType(viewModel.canEdit))  and !sec:canDoCorrespondence()}">
+							<f:ajax render="@form" event="change"
+								listener="#{viewModel.onChangeMailType(viewModel.newCorrespondence.letter.mailType,viewModel.newCorrespondence)}"
+								onevent="showProgress" />
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItem itemLabel="Incoming"
+								itemValue="#{viewModel.incomingMailType}" />
+							<f:selectItem itemLabel="Outgoing"
+								itemValue="#{viewModel.outgoingMailType}" />
+						</p:selectOneMenu>
+						<p:message for="mailing_type"/>
+						<h:outputText value="#{viewModel.newCorrespondence.letter.mailType}"
+						rendered="#{!(viewModel.newCorrespondence.canEditMailType(viewModel.canEdit)) and !sec:canDoCorrespondence()}" />
+						
+						<p:selectOneMenu value="#{viewModel.newCorrespondence.letter.mailType}" id="mailing_type_csr"
+						rendered="#{sec:canDoCorrespondence() and (viewModel.newCorrespondence.isNew())}" >
+							<f:ajax render="@form" event="change"
+								listener="#{viewModel.onChangeMailType(viewModel.newCorrespondence.letter.mailType,viewModel.newCorrespondence)}" onevent="showProgress"/>
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItem itemLabel="Outgoing" itemValue="#{viewModel.outgoingMailType}" />
+						</p:selectOneMenu>
+						<h:outputText value="#{viewModel.newCorrespondence.letter.mailType}"
+							rendered="#{!(viewModel.newCorrespondence.canEditMailType(viewModel.canEdit)) and sec:canDoCorrespondence()}" />
+					</td>
+					<td>Audit:</td>
+					<td><p:selectBooleanCheckbox
+							value="#{viewModel.newCorrespondence.letter.auditable}" disabled="#{!viewModel.newCorrespondence.isAuditEditable(viewModel.canEdit)}">
+							<f:ajax event="change" process="@this" />
+						</p:selectBooleanCheckbox>	
+							</td>
+					<td></td>
+					<td><h:panelGroup >
+							<p:commandButton value="DocumentsReceived &amp; In Good Order"
+								ajax="false"
+								action="#{viewModel.getReceivedCorrespondenceDocuments(viewModel.newCorrespondence)}"
+								immediate="true" update=":form:igoDocsDialog" disabled="#{viewModel.newCorrespondence.showHideDocsReceivedAndMissing()}"/>
+							<br />
+							<h:outputText
+								value="#{viewModel.getReceivedCorrespondenceDocumentsAsString('&lt;br/&gt;')}"
+								escape="false" />
+						</h:panelGroup></td>
+				</tr>
+
+				<tr>
+					<td>Mail Date:</td>
+					<td><h:outputText value="#{viewModel.newCorrespondence.letter.mailDate}" rendered="#{viewModel.newCorrespondence.canEditMailDate(viewModel.canEdit)}">
+							<f:converter converterId="dateConverter" />
+						</h:outputText>
+						<p:calendar value="#{viewModel.newCorrespondence.letter.mailDate}" id="mailDate"
+						pattern="MM/dd/yyyy" size="10" maxlength="10" rendered="#{!viewModel.newCorrespondence.canEditMailDate(viewModel.canEdit)}"/>
+						</td>
+					<td>Special Pull:</td>
+					<td><p:selectBooleanCheckbox
+							value="#{viewModel.newCorrespondence.letter.specialPull}" disabled="#{!viewModel.newCorrespondence.isSpecialPullEditable(viewModel.canEdit)}">
+							<f:ajax event="change" process="@this" />
+						</p:selectBooleanCheckbox>		
+					</td>
+					<td></td>
+					<td><h:panelGroup>
+							<p:commandButton
+								value="DocumentsReceived &amp; Not in Good Order " ajax="false"
+								action="#{viewModel.getMissingCorrespondenceDocuments(viewModel.newCorrespondence)}"
+								immediate="true" update="@form" disabled="#{viewModel.newCorrespondence.showHideDocsReceivedAndMissing()}"/>
+							<br />
+							<h:outputText
+								value="#{viewModel.getMissingCorrespondenceDocumentsAsString('&lt;br/&gt;')}"
+								escape="false" />
+						</h:panelGroup></td>
+				</tr>
+
+				<tr>
+					<td>Mailing Control No:</td>
+					<td><h:outputText
+							value="#{viewModel.newCorrespondence.letter.mailingControlNo}"
+							rendered="#{viewModel.newCorrespondence.hasMailingControlNo(viewModel.canEdit)}" /></td>
+					<td>Group Mail Code:</td>
+						<td>
+						<p:selectOneMenu value="#{viewModel.newCorrespondence.letter.groupMailCode}" disabled="#{!viewModel.newCorrespondence.isGroupMailEditable(viewModel.canEdit)}">
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItems value="#{selectItemUtil.getGroupMailCodeSelectItems()}"/>
+						</p:selectOneMenu>
+						<h:outputText value="#{viewModel.newCorrespondence.letter.groupMailCode.code}" rendered="#{!viewModel.newCorrespondence.isGroupMailEditable(viewModel.canEdit)}"/>
+						</td>
+						<td>Status:</td>
+						<td><p:selectOneMenu id="status" value="#{viewModel.newCorrespondence.letter.letterStatus}" rendered="#{viewModel.newCorrespondence.canEditStatus(viewModel.canEdit)}">
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItem itemLabel="IGO" itemValue="#{viewModel.igoLetterStatus}" />
+								<f:selectItem itemLabel="NIGO" itemValue="#{viewModel.nigoLetterStatus}" />
+								<f:ajax event="change" process="@this" />
+							</p:selectOneMenu>
+							<h:outputText value="#{viewModel.newCorrespondence.letter.statusDescription}" rendered="#{!viewModel.newCorrespondence.canEditStatus(viewModel.canEdit)}"/>
+						</td>
+				</tr>
+
+				<tr>
+					<td>Request Type:</td>
+					<td><app:letterCodeSelect
+							letterType='#{viewModel.newCorrespondence.letterType}'
+							id="lettercodes"
+							value="#{viewModel.newCorrespondence.letter.letterCode}"
+							rendered="#{viewModel.newCorrespondence.canEditRequestType(viewModel.canEdit)}">
+						</app:letterCodeSelect>
+						<p:message for="form:claimPanel"/>
+					</td>
+
+					<td>RPO Status:</td>
+					<td><p:selectOneMenu id="rpoType"
+							value="#{viewModel.newCorrespondence.letter.rpoType}" disabled="#{!viewModel.newCorrespondence.isRPOEditable(viewModel.canEdit)}">
+							<p:ajax update="@form" process="@form" event="change"
+								listener="#{viewModel.onChangeRPOStatus(viewModel.newCorrespondence.letter.rpoType)}"/>
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItem itemValue="FORWARDABLE" itemLabel="FORWARDABLE" />
+							<f:selectItem itemValue="NONFORWARDABLE"
+								itemLabel="NONFORWARDABLE" />
+						</p:selectOneMenu></td>
+
+					<td>Updated By:</td>
+					<td><h:outputText value="#{viewModel.newCorrespondence.letter.userId}"/></td>
+				</tr>
+
+				<tr>
+					<td>Category:</td>
+					<td><p:selectOneMenu
+							value="#{viewModel.newCorrespondence.letter.description}">
+							<f:selectItem itemLabel="Correspondence"
+								itemValue="Correspondence" />
+							<f:selectItem itemLabel="Claim Form" itemValue="Claim Form" />
+							<f:selectItem itemLabel="Opt Out" itemValue="Opt Out" />
+							<f:selectItem itemLabel="Other" itemValue="Other" />
+						</p:selectOneMenu></td>
+					<td>RPO Date:</td>
+					<td><p:calendar
+							value="#{viewModel.newCorrespondence.letter.rpoDate}"
+							pattern="MM/dd/yyyy" disabled="#{!viewModel.newCorrespondence.isRPOEditable(viewModel.canEdit)}"/></td>
+					<td>Comments:</td>
+					<td><p:inputTextarea id="comments"
+							value="#{viewModel.newCorrespondence.letter.comments}" style="width:200px;height:50px;" effectDuration="400"
+							maxlength="255" autoResize="false">
+						</p:inputTextarea></td>
+				</tr>
+
+			</table>
+		</h:panelGroup>
+	</p:fieldset>
+
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExitt.show()" value="Exit" />
+	</div>
+
+	<p:confirmDialog id="corroProcessSave"
+		message="Are you sure you want to save?" modal="true" header="Save"
+		severity="alert" widgetVar="confirmationSave">
+		<p:commandButton id="corroProcessSaveYes" value="Yes"
+			oncomplete="confirmationSave.hide()" ajax="false" action="save"
+			update="@form" />
+		<p:commandButton id="corroProcessSaveNo" value="No"
+			onclick="confirmationSave.hide()" type="button" />
+	</p:confirmDialog>
+
+	<p:confirmDialog message="Are you sure you want to exit without saving the changes?"
+		header="Exit" severity="alert" widgetVar="confirmationExitt"
+		modal="true">
+		<p:commandButton value="Yes" ajax="false"
+			oncomplete="confirmationExitt.hide()" immediate="true" action="exit" />
+		<p:commandButton value="No" onclick="confirmationExitt.hide()"
+			type="button" />
+	</p:confirmDialog>
+
+	<p:dialog header="Add Alternate Addresses"
+		widgetVar="alternateAddressesDialog" id="alternateAddressesDialog"
+		modal="true" resizable="false">
+		<p>
+			<span style="float: left; margin: 0pt 7px 20px 0pt;"
+				class="ui-icon ui-icon-alert"></span>
+			<h:outputText value="Add Alternate Addressee? " />
+		</p>
+		<p:spacer width="100%" height="10" />
+		<p:separator />
+		<p:commandButton value="Yes" action="alternateAddress"
+			oncomplete="alternateAddressesDialog.hide()" />
+		<p:commandButton value="No" oncomplete="alternateAddressesDialog.hide()" />
+	</p:dialog>
+	
+	<ui:include src="./correspondenceProcessDocsMissingAndReceiving.xhtml" />
+
+</ui:composition>
+</html>

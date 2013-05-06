@@ -1,0 +1,15 @@
+@@BEGIN
+@@KEY HOSTNAME=$!e.hostName,UNIT=$!e.businessUnit,CASE=WORKCASE,STAT=RIPPED,ACTION=C
+@@BEGIN
+@@KEY UNIT=$!e.businessUnit,WRKT=$!e.workType,STAT=RIPPED,ACTION=W
+@@BEGIN
+@@KEY UNIT=$!e.businessUnit,OBJT=GDL,ACTION=S
+@@LOB EXT=$!e.fileExt, FLNM=$!e.fileName
+@@LOB CLID=$!e.claimIdentifier
+@@LOB CTLN=$!e.controlNo
+@@FILE=$!e.filePath
+CLAIM_IDENTIFIER:$!e.claimIdentifier
+CONTROL_NUMBER:$!e.controlNo
+@@END
+@@END
+@@END

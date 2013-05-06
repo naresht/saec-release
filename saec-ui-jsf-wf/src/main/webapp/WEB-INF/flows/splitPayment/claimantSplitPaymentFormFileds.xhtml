@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<div id="alternate_payee_div_tr">
+		<div id="alternate_payee_div_td1">
+			<b>Payment Type</b><br />
+			<h:outputText id="paymentType" value="#{actualPayment.paymentType}" />
+		</div>
+		<div id="alternate_payee_div_td1">
+			<b>Check #</b><br />
+			<h:outputText id="paymentIdentificationNo" value="#{actualPayment.identificatonNo}" />
+		</div>
+		<h:panelGroup rendered="#{actualPayment.canVoidOrStop()}">
+			<div id="alternate_payee_div_td1">
+				<font color="red">*</font><b>Void or Stop	</b><br />
+				<h:selectOneMenu value="#{viewModel.voidOrStopExistingPayment}" id="voidOrStop">  
+		            <f:selectItem itemLabel="VOID" itemValue="VOID_VOIDED_V_V" />  
+		            <f:selectItem itemLabel="STOP" itemValue="STOP_STOP_REQUESTED_S_SR" />  
+		        </h:selectOneMenu>  				
+			</div>			
+		</h:panelGroup>	
+	</div>		
+	<div id="alternate_payee_div_tr">
+		<div id="alternate_payee_div_td1">
+			<font color="red">*</font><b>% of Payment</b><br />
+			<p:inputText id="paymentPercentage" value="#{viewModel.percentageToSplitBy}" maxlength="3" validatorMessage="% must be an integer between 1 and 100.">
+				<f:validateLongRange minimum="1" maximum="100"/>
+				<p:ajax update="paymentAmountsPanelGroup paymentPercentage_msg paymentPercentage" process="@this" listener="#{viewModel.applyPercentage(actualPayment, payment, messageContext)}" />	
+			</p:inputText>
+			<p:message id="paymentPercentage_msg" for="paymentPercentage" />
+		</div>
+		<div id="alternate_payee_div_td1">
+			<font color="red">*</font><b>New Payment Method</b><br />
+			<h:selectOneMenu id="newPaymentMethod" value="#{viewModel.newPaymentType}">  
+	            <f:selectItem itemLabel="CHECK" itemValue="CHECK" />  
+	            <f:selectItem itemLabel="WIRE" itemValue="WIRE" />  
+	        </h:selectOneMenu>  				
+		</div>		
+	</div>			
+	<p:spacer width="100%" height="15" />
+	<h:panelGroup id="paymentAmountsPanelGroup">
+		<app:paymentAmounts/>
+	</h:panelGroup>
+</ui:composition>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+<!-- 	<var name="eventViewModel" class="com.bfds.saec.web.model.EventViewModel"/> -->
+	<input name="eventViewModel" required="true" type="com.bfds.saec.web.model.EventViewModel" />
+	
+    
+	<view-state id="eventPayments">
+<!-- 		<on-entry> -->
+<!-- 			<evaluate expression="eventViewModel.loadEvent()" result="viewScope.saecEvent"></evaluate>			 -->
+<!-- 		</on-entry>		 -->
+	    <transition on="exitEventPayments"/> 
+	    <transition on="saveEventPayments"/>
+		<transition on="exit" to="exitEventPayments"/>
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	    <transition on="save" to="exitEventPayments">
+	     <evaluate expression="eventViewModel.savePaymentConfigList()" /> 
+	    	<!-- <evaluate expression="eventViewModel.saveEventPaymentConfigs(eventViewModel)" /> -->
+	    </transition>		
+	    <transition on="resetPayment" />
+	</view-state>	
+	
+  <end-state id="exitEventPayments"/>	
+</flow>

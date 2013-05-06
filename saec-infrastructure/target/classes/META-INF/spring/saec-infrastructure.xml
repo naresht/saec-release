@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+
+	<description>
+		Common environment configuration + 
+		Platform abstraction (e.g. Tomcat vs JEE)
+	</description>
+
+    <!--
+        This will automatically locate any and all property files you have
+        within your classpath, provided they fall under the META-INF/spring
+        directory. The located property files are parsed and their values can
+        then be used within application context files in the form of
+        ${propertyKey}.
+    -->
+    <context:property-placeholder 
+    	location="classpath:/META-INF/spring/build.properties,classpath:/META-INF/spring/common.properties,classpath:/META-INF/spring/default-environment.properties,classpath:/META-INF/spring/${environment.type:saec}-environment.properties,classpath:/META-INF/spring/bostonfinancial_ldap.properties,classpath:/META-INF/spring/wss-master_ldap.properties"
+    	system-properties-mode="OVERRIDE"
+    	ignore-unresolvable="true"/>
+    
+    <!-- Optionally import any environment-specific beans -->
+    <import resource="classpath*:/META-INF/spring/${environment.type:saec}-environment.xml" />
+
+    <!-- Enable Inection via annotations -->   
+    <context:annotation-config />    
+  
+	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
+		p:dataSource-ref="dataSource" /> -->
+	
+	<!-- TODO: Need JpaTransactionManager for production, so consider splitting test and runtime tx managers -->
+	
+<!--     <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager"> -->
+<!--         <property name="entityManagerFactory" ref="entityManagerFactory"/> -->
+<!--     </bean> -->
+	
+	<tx:annotation-driven mode="aspectj" transaction-manager="transactionManager"/>
+
+    <bean id="mailSender" class="com.bfds.saec.util.MailSenderImpl" >
+        <constructor-arg ref="mailSenderTarget" />
+    </bean>
+
+    <bean id="mailSenderTarget" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${smtp.host}" />
+        <property name="port" value="25" />
+    </bean>
+
+</beans>

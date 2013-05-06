@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+  <var name="eventViewModel" class="com.bfds.saec.web.model.EventViewModel"/>  
+	<view-state id="eventConfig">	
+		<on-entry>
+			<evaluate expression="eventViewModel.loadEvent()" result="flowScope.saecEvent"></evaluate>			
+		</on-entry>		
+		<transition on="setupEventGeneral" to="setupEventGeneral" validate="false" />
+		<transition on="setupEventTaxReport" to="setupEventTaxReport" validate="false" />		
+		<transition on="setupEventPayments" to="setupEventPayments" validate="false" >
+			<evaluate expression="eventViewModel.getEventPaymentConfigList(saecEvent)" result="flowScope.paymentConfigList"></evaluate>
+		</transition>		
+		<transition on="setupEventMail" to="setupEventMail" validate="false" />		
+		<transition on="setupEventFileNotification" to="setupEventFileNotification" validate="false">
+			<evaluate expression="eventViewModel.getEventFileNotificationConfigList(saecEvent)" result="flowScope.fileNotificationConfigList"></evaluate>
+		</transition>		
+		<transition on="setupEventAddressResearch" to="setupEventAddressResearch" validate="false" />
+		<transition on="setupEventLetter" to="setupEventLetter" validate="false" />
+		<transition on="setupEventReport" to="setupEventReport" validate="false" />
+		<transition on="setupEventSmallCheckConfig" to="setupEventSmallCheckConfig" validate="false" />
+				
+		<transition on="saveConfirm" />
+		<transition on="clearConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="endEdit" />
+		<transition on="save" to="endEdit">
+			<evaluate expression="eventViewModel.saveEvent(saecEvent, messageContext)"></evaluate>
+		</transition>
+ <transition on="saveCreateConfirm"/> 
+ <transition on="exitCreateConfirm"/>
+	</view-state>
+	
+	<subflow-state id="setupEventGeneral" subflow="event/general">
+		<input name="eventViewModel"  />
+		<transition on="exitEventGeneral" to="eventConfig">
+			<evaluate expression="eventViewModel.loadEvent()"></evaluate>
+		</transition>
+	</subflow-state>
+	
+	<subflow-state id="setupEventTaxReport" subflow="event/taxreport">
+		<input name="eventViewModel"  />
+		<transition on="exitEventTaxReporting" to="eventConfig">
+			<evaluate expression="eventViewModel.loadEvent()"></evaluate>
+		</transition>
+	</subflow-state>
+	
+	<subflow-state id="setupEventPayments" subflow="event/payments">
+		<input name="eventViewModel"  />
+		<transition on="exitEventPayments" to="eventConfig">
+			<evaluate expression="eventViewModel.loadEvent()"></evaluate>
+		</transition>
+	</subflow-state>
+	
+	<subflow-state id="setupEventMail" subflow="event/mail">
+		<input name="eventViewModel"  />
+		<transition on="exitEventMail" to="eventConfig">
+			<evaluate expression="eventViewModel.loadEvent()"></evaluate>
+		</transition>
+	</subflow-state>	
+	
+	<subflow-state id="setupEventFileNotification" subflow="event/filenotification">
+		<input name="eventViewModel"  />
+		<transition on="exitEventFileNotification" to="eventConfig">
+			<evaluate expression="eventViewModel.loadEvent()"></evaluate>
+		</transition>
+	</subflow-state>
+	
+	<subflow-state id="setupEventAddressResearch" subflow="event/addressresearch">
+		<input name="eventViewModel"  />
+		<transition on="exitEventAddressResearch" to="eventConfig">
+			<evaluate expression="eventViewModel.loadEvent()"></evaluate>
+		</transition>
+	</subflow-state>
+	
+	<subflow-state id="setupEventLetter" subflow="event/letter">
+		<input name="eventViewModel"  />
+		<transition on="exitEventLetter" to="eventConfig">
+			<evaluate expression="eventViewModel.loadEvent()"></evaluate>
+		</transition>
+	</subflow-state>	
+	
+	<subflow-state id="setupEventReport" subflow="event/report">
+		<input name="eventViewModel"  />
+		<transition on="exitEventReport" to="eventConfig">
+			<!--   <evaluate expression="eventViewModel.loadEvent()"></evaluate> -->
+		</transition>
+	</subflow-state>
+	
+	<subflow-state id="setupEventSmallCheckConfig" subflow="event/smallCheckConfig">
+		<input name="eventViewModel"  />
+		<transition on="exitEventSmallCheckConfig" to="eventConfig">
+			<evaluate expression="eventViewModel.loadEvent()"></evaluate>
+		</transition>
+	</subflow-state>	
+		
+  <end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />  
+</flow>

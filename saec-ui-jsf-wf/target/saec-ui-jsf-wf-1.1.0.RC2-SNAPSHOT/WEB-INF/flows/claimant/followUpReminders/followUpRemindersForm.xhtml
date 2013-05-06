@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+ 
+	<p:fieldset legend="Followup Reminders">
+		<ui:include src="/WEB-INF/incl/claimantClaimHeader.xhtml">
+			<ui:param name="claimantClaimHeader"
+				value="#{viewModel.getClaimantClaimHeader()}" />
+		</ui:include>
+		<p:spacer width="100%" height="20" />
+		<p:dataTable id="followUpReminders" var="followUpReminder" styleClass="fieldsetaddresstable1" value="#{viewModel.followupRemindersList}" rowIndexVar="rowIndex">
+				<p:column id="id">
+					<f:facet name="header">
+						<h:outputText value="ID" />
+					</f:facet>
+				 
+					<p:commandLink action="loadFollowUpReminder" update="@form" rendered="#{!sec:hideClaimantReminders() and !(followUpReminder.reminderStatus == 'COMPLETE') 
+										   and !(followUpReminder.reminderStatus == 'REJECT') and !(followUpReminder.reminderStatus == 'AUTO_RESOLVED')
+										   and !(followUpReminder.reminderStatus == 'MAN_RESOLVED')}">
+						<h:outputText value="#{followUpReminder.id}"/>
+						<f:param name="id" value="#{followUpReminder.id}" />
+					</p:commandLink>
+					<h:outputText value="#{followUpReminder.id}" rendered="#{sec:hideClaimantReminders() or (followUpReminder.reminderStatus == 'COMPLETE') 
+											or (followUpReminder.reminderStatus == 'REJECT') or (followUpReminder.reminderStatus == 'AUTO_RESOLVED')
+											or (followUpReminder.reminderStatus == 'MAN_RESOLVED')}"/>
+				</p:column>
+					<p:column id="controlNo">
+					<f:facet name="header">
+						<h:outputText value="Control#" />
+					</f:facet>
+					<h:outputText value="#{followUpReminder.claimantClaim.controlNumber}"/>
+				</p:column>
+				<p:column id="contactBy">
+					<f:facet name="header">
+						<h:outputText value="Contact Method" />
+					</f:facet>
+					<h:outputText value="#{followUpReminder.contactMethod}"/>
+				</p:column>
+				 
+			
+				<p:column id="followUpType">
+					<f:facet name="header">
+						<h:outputText value="Follow-up Type" />
+					</f:facet>
+					<h:outputText value="#{followUpReminder.reminderType.description}"/>
+				</p:column>
+				<p:column id="dueDate">
+					<f:facet name="header">
+						<h:outputText value="Due Date" />
+					</f:facet>
+					<h:outputText value="#{followUpReminder.reminderDueDate}">
+						<f:converter  converterId="dateConverter"/>
+					</h:outputText>
+				</p:column>
+				<p:column id="comments">
+					<f:facet name="header">
+						<h:outputText value="Comments" />
+					</f:facet>
+					<h:outputText value="#{followUpReminder.reminderDescription}"/>
+				</p:column>
+				<p:column id="status">
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+					<h:outputText value="#{followUpReminder.reminderStatus}"/>
+				</p:column>
+				<p:column id="actionDt">
+					<f:facet name="header">
+						<h:outputText value="Action Date" />
+					</f:facet>
+					<h:outputText value="#{followUpReminder.actionDate}">
+						<f:converter  converterId="dateConverter"/>
+					</h:outputText>
+				</p:column>
+		</p:dataTable>
+		<br/>
+		<div align="right">
+			<p:commandButton id="addNewButton" value="Add New" action="addNewReminder" ajax="false" update="@form" rendered="#{!sec:hideClaimantReminders()}"/>
+		</div>
+	</p:fieldset>
+	
+	
+	<p:dialog header="Edit" widgetVar="editDialog" id="editDialog" modal="true" width="800" resizable="false">
+		<h:panelGroup rendered="#{viewModel.showDialog}">
+			<ui:include src="./followUpRemindersEdit.xhtml"/>
+		</h:panelGroup> 
+	</p:dialog>
+	
+	<div id="buttonsection">
+		 
+		<p:commandButton id="exitFollowUpConfirm" action="exitFollowUpConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<p:confirmDialog id="exitMessage"
+		message="Are you sure you want to exit?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton id="exitYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exit"
+			immediate="true" />
+		<p:commandButton id="exitNoButton" value="No"
+			onclick="confirmationExit.hide()" type="button" />
+	</p:confirmDialog>
+	
+</ui:composition>
+</html>

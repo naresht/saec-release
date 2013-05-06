@@ -1,0 +1,74 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<bean id="addressSendJobParametersValidator" class="com.bfds.saec.batch.out.infoage.AddressSendJobParametersValidator" />
+	
+    <!-- Parent Job with logging listeners -->
+    <batch:job id="loggerJob" abstract="true">
+        <batch:listeners>
+            <batch:listener ref="addressResearchJobLogger"/>
+            <batch:listener ref="addressResearchJobfailureLogger"/>
+        </batch:listeners>
+    </batch:job>
+    
+    <bean id="addressResearchJobLogger" class="com.bfds.saec.addressresearch.batch.AddressResearchJobLogger"/>
+    
+    <bean id="addressResearchJobfailureLogger" class="com.bfds.saec.addressresearch.batch.AddressReasearchJobFailureLogger"/>
+
+    <bean id="addressResearchValidationHandler" class="com.bfds.saec.addressresearch.batch.AddressResearchValidationHandler"/>  
+
+	<bean id="infoageretryPolicy"
+		class="org.springframework.batch.retry.policy.ExceptionClassifierRetryPolicy">
+		<property name="policyMap">
+			<map>
+				<entry key="org.springframework.dao.ConcurrencyFailureException">
+					<bean class="org.springframework.batch.retry.policy.SimpleRetryPolicy">
+						<property name="maxAttempts" value="3" />
+					</bean>
+				</entry>
+				<entry key="org.springframework.dao.DeadlockLoserDataAccessException">
+					<bean class="org.springframework.batch.retry.policy.SimpleRetryPolicy">
+						<property name="maxAttempts" value="5" />
+					</bean>
+				</entry>
+				<entry key="org.springframework.dao.OptimisticLockingFailureException">
+					<bean class="org.springframework.batch.retry.policy.SimpleRetryPolicy">
+						<property name="maxAttempts" value="5" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="infoageretryListener" class="com.bfds.saec.addressresearch.batch.InfoAgeBatchRetryListener"></bean>
+
+	<bean id="inAddressResearchSkipListener" class="com.bfds.saec.addressresearch.batch.InAddressResearchSkipListener"
+		parent="baseElement" scope="step">
+		<property name="jobName" value="#{stepExecutionContext['jobName']}"></property>
+		<property name="stepName" value="#{stepExecutionContext['stepName']}"></property>
+		<property name="processSkipCount" value="#{stepExecutionContext['processSkipCount']}"></property>
+		<property name="readSkipCount" value="#{stepExecutionContext['readSkipCount']}"></property>
+		<property name="writeSkipCount" value="#{stepExecutionContext['writeSkipCount']}"></property>
+	</bean>   
+	
+    <bean id="baseElement" class="com.bfds.saec.addressresearch.batch.BaseElement" abstract="true"></bean>
+    <bean id="infoAgestepListener" class="com.bfds.saec.addressresearch.batch.SampleStepExecutionListener"></bean>	
+    
+    <bean id="outAddressResearchSkipListener" class="com.bfds.saec.addressresearch.batch.OutAddressResearchSkipListener" parent="baseElement" scope="step">
+		<property name="jobName" value="#{stepExecutionContext['jobName']}"></property>
+		<property name="stepName" value="#{stepExecutionContext['stepName']}"></property>
+		<property name="processSkipCount" value="#{stepExecutionContext['processSkipCount']}"></property>
+		<property name="readSkipCount" value="#{stepExecutionContext['readSkipCount']}"></property>
+		<property name="writeSkipCount" value="#{stepExecutionContext['writeSkipCount']}"></property>
+	</bean>  
+	
+	<bean id="addressResearchSendCriteria" class="com.bfds.saec.batch.out.infoage.AddressResearchClaimantSelectionCriteria" scope="step" />
+	 
+</beans>

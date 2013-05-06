@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Claim Proof(#{viewModel.claimProofCount})" toggleable="true" toggleSpeed="500" 
+		id="claimProofPanel" collapsed="true">
+		<p:dataTable id="claimProof" var="claimProof" value="#{allClaimProofs}"
+			scrollable="true" scrollWidth="975" scrollHeight="226"
+			rowIndexVar="rowIndex">
+
+			<p:column headerText="ID" width="25">
+				<p:commandLink action="loadClaimProofById" update="@form" rendered="#{!sec:canHideClaimProofs()}">
+					<h:outputText value="#{claimProof.id}" />
+					<f:param name="id" value="#{claimProof.id}"/>
+				</p:commandLink>
+				<h:outputText value="#{claimProof.id}" rendered="#{sec:canHideClaimProofs()}"/>
+			</p:column>
+
+			<p:column id="claimIndetifier" width="100">
+				<f:facet name="header">
+					<h:outputText value="Claim Identifier" />
+				</f:facet>
+				<h:outputText value="#{claimProof.claimantClaim.entryMethod}-#{claimProof.claimantClaim.claimIdentifier}" />
+			</p:column>
+
+			<p:column id="controlNo" width="125">
+				<f:facet name="header">
+					<h:outputText value="Control #" />
+				</f:facet>
+				<h:outputText value="#{claimProof.claimantClaim.controlNumber}" />
+			</p:column>
+			
+			<p:column id="itemTagName" width="125">
+				<f:facet name="header">
+					<h:outputText value="Item Tag Name" />
+				</f:facet>
+				<h:outputText value="" />
+			</p:column>
+			
+			<p:column id="proofType" width="125">
+				<f:facet name="header">
+					<h:outputText value="Proof Type" />
+				</f:facet>
+				<h:outputText value="#{viewModel.getClaimProofsAsString(claimProof.proofTypes,'&lt;br/&gt;')}" escape="false"/>
+			</p:column>
+			
+			<p:column id="status" width="125">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:outputText value="#{claimProof.proofStatusDesc}" />
+			</p:column>
+
+			<p:column id="dateReceived" width="125">
+				<f:facet name="header">
+					<h:outputText value="Date Received" />
+				</f:facet>
+				<h:outputText value="#{claimProof.dateReceived}" >
+					<f:converter converterId="dateConverter" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column id="source" width="125">
+				<f:facet name="header">
+					<h:outputText value="Source" />
+				</f:facet>
+				<h:outputText value="#{claimProof.sourceDesc}" />
+			</p:column>
+
+			<p:column id="comments" width="125">
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>
+				<h:outputText id="Comments" value="#{claimProof.comments}" />
+			</p:column>
+			
+		</p:dataTable>
+		<p:spacer width="100%" height="20" />
+		<div align="right">
+			<p:commandButton value="Add New" id="addNew" action="addNewClaimSupportingDoc" update=":form:editClaimProofDialog" rendered="#{!sec:canHideClaimProofs()}" disabled ="#{claimant.claimant.singleClaimantClaim == null}"/>
+		</div>
+	</p:fieldset>
+	
+	<p:dialog header="Edit Claim Proof" widgetVar="editClaimProofDialog" id="editClaimProofDialog" modal="true" width="1000" resizable="false">
+		<h:panelGroup rendered="#{viewModel.showDialog}">
+			<ui:include src="./claimSupportingDocumentsForm.xhtml"/>
+		</h:panelGroup> 
+	</p:dialog>
+</ui:composition>
+</html>

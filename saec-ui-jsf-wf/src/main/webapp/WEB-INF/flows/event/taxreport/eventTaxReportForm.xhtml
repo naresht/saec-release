@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:app="http://springfuse.jaxio.com/app">
+       
+<ui:composition>	
+<h:panelGroup id="claimant_new_fields">
+<p:growl id="growl" showDetail="false" globalOnly="true" life="20000"/>
+<p:fieldset legend="Event Configuration">
+<div id="event_config_div_table">
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Event Tax Reporting Information</div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Taxable Distribution:</div>
+		<div id="event_config_div_rgt">
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.taxableDistribution}" />
+			
+		</div>
+	</div>	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Tax Type Primary:</div>
+		<div id="event_config_div_rgt">
+				<h:selectOneMenu id="taxTypePrimary" value="#{saecEvent.taxTypePrimary}" maxlength="15" >
+ 					<f:ajax render="taxTypeSecondary" update="taxTypeSecondary" event="valueChange" listener="#{eventViewModel.onChangeTaxType(saecEvent.taxTypePrimary)}" onevent="showProgress"/>
+ 					<f:selectItems value="#{eventViewModel.taxTypePrimaryList}" />
+				</h:selectOneMenu>		
+		</div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Tax Type Secondary:</div>
+		<div id="event_config_div_rgt">
+		
+			<h:selectOneMenu id="taxTypeSecondary" value="#{saecEvent.taxTypeSecondary}" >
+				<f:selectItems value="#{eventViewModel.taxTypeSecondaryList}" />
+			</h:selectOneMenu>
+		
+		</div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Taxable Threshold:</div>
+		<div id="event_config_div_rgt">
+			<p:inputText id="taxableThreshold" value="#{saecEvent.taxableThreshold}"
+						converterMessage="Enter a numeric value only with no decimals">
+						<!-- 							<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/> -->
+			</p:inputText>
+			<p:message for="taxableThreshold" style="color:red" />
+		</div>	
+	</div>			
+
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">EVENT TAX ADMINISTRATION</div>
+	</div>
+		<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Tax Administrator:</div>
+		<div id="event_config_div_rgt">
+			<h:selectBooleanCheckbox id="taxAdminCheck"
+							value="#{saecEvent.taxAdministrator}" />
+					
+		</div>
+	</div>	
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Tax Vendor:</div>
+		<div id="event_config_div_rgt">
+			<p:inputText  id="taxVendor"
+							value="#{saecEvent.taxVendor}" />			
+		</div>
+	</div>
+</div>
+</p:fieldset>
+  </h:panelGroup>
+		<div id="buttonsection"><p:commandButton id="saveConfirm" action="saveConfirm" immediate="true" oncomplete="confirmationSave.show()"  
+		value="Save"  /><p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" 
+		value="Exit" /></div>		
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>
+		
+

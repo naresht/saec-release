@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<h:panelGroup id="NewheaderPanel">
+		<div id="Account_Details_div_table">
+			<div id="Account_Details_div_tr">
+				<div id="Account_Details_div_td">
+					<b>Reference #: </b>
+					<h:outputText value="#{claimant.claimant.referenceNo}" />
+					<br />
+					<br />
+
+					<h:outputText escape="false" value="#{claimant.registrationText}" />
+					<br />
+					<h:outputText escape="false" value="#{claimant.addressText}" />
+					<p:spacer width="100%" height="30" />
+					<div id="Account_Details_div_table1">
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft1">
+								<b>CONTACT INFORMATION</b>
+							</div>
+						</div>
+						<p:spacer width="100%" height="10" />
+						<div id="Account_Details_div_tr1">
+							<table border="0" class="fieldsetcontacttable" summary=""
+								width="100%">
+								<tr>
+									<td><b>Name:</b>
+									</td>
+									<td><b>Telephone Number:</b>
+									</td>
+
+								</tr>
+								<tr>
+									<td><h:outputText escape="false"
+											value="#{claimant.registrationText}" />
+									</td>
+									<td>(H) <h:outputText
+											value="#{claimant.identification1String}" /><br /> (C)
+										 <h:outputText value="#{claimant.identification3String}" /><br />
+										(W) <h:outputText
+											value="#{claimant.identification2String}" />
+									</td>
+									
+								</tr>
+								<tr>
+								<td><b>Email Id:</b>
+									</td>
+								</tr>
+								<tr>
+								<td><h:outputText escape="false"
+											value="#{claimant.claimant.primaryContact.email}" />
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div id="Account_Details_div_td">
+					<div id="Account_Details_div_table1">
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_1">
+								<b>ACCOUNT INFORMATION</b>
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">Fund Account #:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.claimant.fundAccountNo}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">Account Status:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.claimant.accountStatus}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">Account Type:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.claimant.accountType}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">Org/Ind:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.organizationOrIndividual}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">Acct.Created By:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.claimant.createdBy}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">BIN #:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.claimant.bin}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">Omni Bus:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.claimant.omniBus}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">Broker ID:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.claimant.brokerId}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr1">
+							<div id="Account_Details_div_td1_lft">Date:</div>
+							<div id="Account_Details_div_td1_rgt">
+								<h:outputText value="#{claimant.claimant.createdDate}" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="Account_Details_div_td">
+					<div id="Account_Details_div_table2">
+						<div id="Account_Details_div_tr2">
+							<div id="Account_Details_div_td2_1">
+								<b>TAX INFORMATION</b>
+							</div>
+						</div>
+						<div id="Account_Details_div_tr2">
+							<div id="Account_Details_div_td2_lft">Tax ID/SSN:</div>
+							<div id="Account_Details_div_td2_rgt">
+								<h:outputText value="#{claimant.identificationString}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr2">
+							<div id="Account_Details_div_td2_lft">Certification Type:</div>
+							<div id="Account_Details_div_td2_rgt">
+								<h:outputText value="#{claimant.claimant.certificationType}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr2">
+							<div id="Account_Details_div_td2_lft">Certification Status:</div>
+							<div id="Account_Details_div_td2_rgt">
+								<h:outputText value="#{claimant.claimant.certificationStatus}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr2">
+							<div id="Account_Details_div_td2_lft">US Citizen:</div>
+							<div id="Account_Details_div_td2_rgt">
+								<h:outputText value="#{claimant.claimant.usCitizen}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr2">
+							<div id="Account_Details_div_td2_lft">Tax Country:</div>
+							<div id="Account_Details_div_td2_rgt">
+								<h:outputText value="#{claimant.claimant.taxCountryCode}" />
+							</div>
+						</div>
+						<div id="Account_Details_div_tr2">
+							<div id="Account_Details_div_td2_lft">Certification Date:</div>
+							<div id="Account_Details_div_td2_rgt">
+								<h:outputText value="#{claimant.claimant.certificationDate}">
+									<f:convertDateTime type="both" pattern="yyyy-MM-dd hh:m:ss" />
+								</h:outputText>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<h:outputText value="#{returnOfFundingViewModel.paymentType}"/>
+			<p:separator />
+			<c:choose>
+			<c:when test="#{(paymentType !='CHECK' and paymentType !='WIRE' and returnOfFundingViewModel.paymentType != 'CHECK')}">
+			<p:commandButton id="openButton" value="Open" ajax="false" action="select"
+				immediate="true">
+				<f:param name="id" value="#{claimant.claimant.id}" />
+			</p:commandButton>
+			</c:when>
+			</c:choose>
+			<p:commandButton id="okButton" value="Ok" ajax="false"
+				oncomplete="accountDialog.hide()" immediate="true">
+				<f:param name="id" value="#{claimant.claimant.id}" />
+			</p:commandButton>
+		</div>
+	</h:panelGroup>
+</ui:composition>
+</html>

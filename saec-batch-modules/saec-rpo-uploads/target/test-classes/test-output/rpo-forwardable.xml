@@ -1,0 +1,11 @@
+<a:rpos xmlns:a="http://saec.bfds.com/schema/rpo">
+	<a:rpo>
+		<a:businessArea>test1</a:businessArea>
+		<a:workType>workType</a:workType>
+		<a:referenceNo>100000001</a:referenceNo>
+		<a:ssn>123456</a:ssn>
+		<a:checkNo>999999</a:checkNo>
+		<a:checkAmount>111111</a:checkAmount>
+		<a:mailControlNo>9</a:mailControlNo>
+	</a:rpo>
+</a:rpos>

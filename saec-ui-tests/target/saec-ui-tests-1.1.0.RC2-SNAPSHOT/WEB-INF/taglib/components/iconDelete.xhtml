@@ -1,0 +1,18 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:p="http://primefaces.org/ui">
+	<p:commandButton 
+		ajax="true"
+		update="@form"
+		action="#{action.toString()}" 
+		process="@form" 
+		disabled="#{readonly}"
+		rendered="#{empty rendered or rendered}"		
+		immediate="#{not empty immediate and immediate}" 
+		icon="iconDelete"		
+		title="${msg.supprimer}"/>
+</ui:composition>

@@ -1,0 +1,230 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+<style type="text/css">
+.old {
+      background-color: #6CE26C !important;
+      background-image: none !important;
+      color: #000000 !important;
+     }
+</style>
+<style type="text/css">
+.old1 {
+      background-color: #FF0000 !important;
+      background-image: none !important;
+      color: #000000 !important;
+     }
+</style>
+<p:fieldset legend="Details">
+		<ui:include src="./checkReleaseSearchFields.xhtml" />
+		<h:panelGroup id="formFields">
+			<p:spacer height="10" width="100%" />
+			<b>Total Number of #{paymentType=='CHECK' ? 'CHECKS': 'WIRES'}
+				waiting Approval: </b>
+			<h:outputText value="#{checkCountForRelease}" />
+			<p:spacer height="15" width="100%" />
+			<p:dataTable id="formList" value="#{checkReleaseViewModel.checkList}" lazy="true"
+				var="item" rowIndexVar="rowIndex" 
+				paginator="true" rows="5" paginatorPosition="bottom" 
+				height="#{(not empty height) ? height : '500px'}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15,25,50"
+				rowStyleClass="#{ item.approved ? 'old' : (item.rejected ? 'old1' : null) }">
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Zoom" />
+					</f:facet>
+					<p:commandButton update=":form:NewheaderPanel" action="summary"
+						onsuccess="accountDialog.show()" title="Account Summary"
+						icon="iconSelect" required="true">
+						<f:param name="id" value="#{item.claimantId}" />
+					</p:commandButton>
+
+				</p:column>
+				<p:column id="statusChangeDate" sortBy="#{item.statusChangeDate}"
+					filterBy="#{item.statusChangeDate}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Date Requested" />
+					</f:facet>
+					<h:outputText value="#{item.statusChangeDate}">
+						<f:converter converterId="dateConverter" />
+					</h:outputText>
+				</p:column>
+				<p:column id="reference" sortBy="#{item.referenceNo}"
+					filterBy="#{item.referenceNo}">
+					<f:facet name="header">
+						<h:outputText value="Reference#" />
+					</f:facet>
+					<h:outputText value="#{item.referenceNo}" />
+				</p:column>
+				<p:column id="name" sortBy="#{item.name}" filterBy="#{item.name}"
+					filterMatchMode="startsWith">
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{item.name}" escape="false" />
+				</p:column>
+				<p:column id="address">
+					<f:facet name="header">
+						<h:outputText value="Address" />
+					</f:facet>
+					<h:outputText value="#{item.address}" escape="false" />
+				</p:column>
+				<p:column id="checkNo" sortBy="#{item.checkNo}"
+					filterBy="#{item.checkNo}">
+					<f:facet name="header">
+						<h:outputText
+							value="Replaced Check#" />
+					</f:facet>
+					<h:outputText value="#{item.checkNo}" escape="false" />
+				</p:column>
+				<p:column id="paymentAmount" sortBy="#{item.paymentAmount}"
+					filterBy="#{item.paymentAmount}">
+					<f:facet name="header">
+						<h:outputText value="Payment Amount" />
+					</f:facet>
+					<h:outputText value="#{item.paymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+				<p:column id="comments1">
+					<f:facet name="header">
+						<h:outputText value="Comments" />
+					</f:facet>
+					<h:panelGroup id="rejectedCommentsDescription">
+						<p:message for="rejectedComments" />
+						<h:selectOneMenu id="rejectedComments"
+							value="#{item.rejectReasonCode}" maxlength="3"
+							rendered="#{item.rejected==true}" required="true"
+							requiredMessage="Please select the comments">
+							<f:ajax event="change" immediate="true" render="@form" />
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItem itemLabel="NameCorrectionNeeded"
+								itemValue="#{checkReleaseViewModel.nameCorrectionNeeded}" />
+							<f:selectItem itemLabel="AddressCorrectionNeeded"
+								itemValue="#{checkReleaseViewModel.addressCorrectionNeeded}" />
+							<f:selectItem itemLabel="CheckReissuedInError"
+								itemValue="#{checkReleaseViewModel.checkReissuedInError}" />
+							<!-- <f:selectItem itemValue="NameCorrectionNeeded"
+								itemLabel="Name correction needed" />
+							<f:selectItem itemValue="AddressCorrectionNeeded"
+								itemLabel="Address correction needed" />
+							<f:selectItem itemValue="CheckReissuedInError"
+								itemLabel="Check Reissued In Error" /> -->
+							<f:selectItem itemValue="Other" itemLabel="Other" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup id="otherDescription">
+						<p:message for="abc" />
+						<p:inputTextarea id="abc" value="#{item.comments}" maxlength="255"
+							rendered="#{item.rejectReasonCode=='Other'}" required="true"
+							requiredMessage="Please, fill the other field" autoResize="false">				
+						</p:inputTextarea>
+					</h:panelGroup>
+
+					<p:inputTextarea id="wireReleaseApproveComments" value="#{item.comments}" maxlength="255"
+						rendered="#{item.approved==true}" autoResize="false">						
+					</p:inputTextarea>
+				</p:column>
+				<p:column id="approve">
+					<f:facet name="header">
+						<h:outputText value="Approve" />
+					</f:facet>
+					<h:selectBooleanCheckbox id="wireReleaseApproveCheckBox" value="#{item.approved}" disabled="#{!sec:canDoWireOrCheckRelease(paymentType)}">
+						<f:ajax event="click" immediate="true" 
+							listener="#{checkReleaseViewModel.selectCheckForApproval(item.id)}"
+							render="@form" />
+					</h:selectBooleanCheckbox>
+				</p:column>
+				<p:column id="reject">
+					<f:facet name="header">
+						<h:outputText value="Reject" />
+					</f:facet>
+					<h:selectBooleanCheckbox id="wireReleaseRejectCheckBox"  value="#{item.rejected}" disabled="#{!sec:canDoWireOrCheckRelease(paymentType)}">
+						<f:ajax event="click" immediate="true"
+							listener="#{checkReleaseViewModel.selectCheckForRejection(item.id)}"
+							render="@form" />
+					</h:selectBooleanCheckbox>
+				</p:column>
+			</p:dataTable>
+		</h:panelGroup>
+	</p:fieldset>
+	<br />
+	<div id="buttonsection">
+		<!-- <p:commandButton id="saveCreateConfirm" action="saveCreateConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" /> -->
+		<p:commandButton id="wireReleaseSaveButton" ajax="false" action="validateSelectedCheck" 
+			disabled="#{!sec:canDoWireOrCheckRelease(paymentType)}" value="Save" update="@form"/>
+		<p:commandButton id="releaseClearButton" action="reset" immediate="true" ajax="false"
+			value="Clear" />
+		<p:commandButton id="exitCreateConfirm" action="exitCreateConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<!--<p:confirmDialog message="Are you sure you want to save?" modal="true"
+		header="Save" severity="alert" widgetVar="confirmationSave">
+		<p:commandButton value="Yes" ajax="false" update="formFields msgs"
+			oncomplete="confirmationSave.hide()" action="save" />
+		<p:commandButton value="No" onclick="confirmationSave.hide()"
+			type="button" />
+	</p:confirmDialog> -->
+	
+	<p:dialog header="Approve and Rejects the Checks" widgetVar="approveRejectCheckDialog"
+		id="approveRejectCheckDialog"  modal="true" resizable="false">
+				<p><span style="float: left; margin: 0pt 7px 20px 0pt;" class="ui-icon ui-icon-alert"></span> Are you sure you want Approve &amp; Reject the Check's ?</p>
+				<p:spacer width="100%" height="10" />
+		<p:separator />
+		<p:commandButton id="approveRejectCheckDialogYes" value="Yes" ajax="false"
+			disabled="#{!sec:canDoWireOrCheckRelease(paymentType)}"
+			oncomplete="approveRejectCheckDialog.hide()" action="save" immediate="true"
+			update="@form" />
+		<p:commandButton id="approveRejectCheckDialogNo" value="No"
+			onclick="approveRejectCheckDialog.hide()" type="button" />
+	</p:dialog>
+	
+	<p:dialog header="Approve the Check" widgetVar="approveCheckDialog"
+		id="approveCheckDialog"  modal="true" resizable="false">
+				<p><span style="float: left; margin: 0pt 7px 20px 0pt;" class="ui-icon ui-icon-alert"></span> Are you sure you want to Approve the Check ?</p>
+				<p:spacer width="100%" height="10" />
+		<p:separator />
+		<p:commandButton id="approveCheckDialogYes"  value="Yes" ajax="false"
+			oncomplete="approveCheckDialog.hide()" action="save" immediate="true"
+			update="@form" />
+		<p:commandButton id="approveCheckDialogNo"  value="No"
+			onclick="approveCheckDialog.hide()" type="button" />
+	</p:dialog>
+	
+	<p:dialog header="Reject the Check" widgetVar="rejectCheckDialog"
+		id="rejectCheckDialog" modal="true" resizable="false">
+				<p><span style="float: left; margin: 0pt 7px 20px 0pt;" class="ui-icon ui-icon-alert"></span> 
+				Are you sure you want to Reject the Check ?</p>
+				<p:spacer width="100%" height="10" />
+		<p:separator />
+		<p:commandButton id="rejectCheckDialogYes" value="Yes" ajax="false"
+			oncomplete="rejectCheckDialog.hide()" action="save" immediate="true"
+			update="@form" />
+		<p:commandButton id="rejectCheckDialogNo" value="No"
+			onclick="rejectCheckDialog.hide()" type="button" />
+	</p:dialog>
+
+	<p:confirmDialog
+		message="Are you sure you want to exit without saving?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exit" immediate="true" />
+		<p:commandButton value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+	<h:panelGroup id="summary">
+		<ui:include src="../claimant/select/claimantSummaryForm.xhtml" />
+	</h:panelGroup>
+</ui:composition>
+</html>

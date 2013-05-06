@@ -1,0 +1,9 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.encorr.EncorrItemDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.encorr.EncorrItemIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.encorr.EncorrItemIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.encorr.EncorrItemDataOnDemand_Roo_DataOnDemand"/>
+</aspects>
+</aspectj>
+

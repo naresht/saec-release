@@ -1,0 +1,18 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:app="http://springfuse.jaxio.com/app">
+
+  <app:panelTopMenu fid="homePanel">
+	<p:spacer height="10" />
+
+	<p:spacer height="10" rendered="#{accountContext.account != null}"/>
+	<p:fieldset header="Accounts viewed without call log" rendered="#{accountContext.account != null}"  toggleable="true">
+	    <p>TODO: List of accounts viewed without call log.</p>
+		</p:fieldset>
+				
+    </app:panelTopMenu>
+</ui:composition>

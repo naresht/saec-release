@@ -1,0 +1,29 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+  	xmlns:p="http://primefaces.org/ui">
+
+  <h:outputLabel 
+  	id="#{fid}_label" 
+  	value="#{label}"
+    rendered="#{(empty rendered || rendered) and (not empty label)}"
+    styleClass="#{styleClass}" />     
+    
+  <h:panelGrid id="#{fid}_pg" style="display:table;" columns="2">
+    <h:selectOneRadio
+      id="#{fid}"
+      value="#{value}"
+      rendered="#{empty rendered || rendered}"
+      styleClass="#{styleClass}"
+      layout="#{layout}"
+      disabled="#{readonly}"
+      readonly="#{readonly}" >
+        <ui:insert/> <!-- place for select items insertion -->
+    </h:selectOneRadio>
+    <p:message for="#{fid}" display="text"/>
+  </h:panelGrid>
+
+</ui:composition>

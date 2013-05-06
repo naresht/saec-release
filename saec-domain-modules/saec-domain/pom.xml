@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.bfds.saec</groupId>
+		<artifactId>seac-domain-modules</artifactId>
+        <version>1.1.0.RC2-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>    
+    <groupId>com.bfds.saec.domain</groupId>
+    <artifactId>saec-domain</artifactId>
+    <name>SAEC Domain</name>
+	<version>1.1.0.RC2-SNAPSHOT</version>
+
+    <properties>
+        <!-- JSF -->
+        <!-- http://javaserverfaces.java.net/nonav/rlnotes/2.0.4/whatsnew.html -->
+        <jsf-api.version>2.0.4-b09</jsf-api.version>
+    </properties>
+	
+    <dependencies>
+        <dependency>
+            <groupId>com.bfds.saec</groupId>
+            <artifactId>saec-domain-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>${jsf-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>sqlrecorder</groupId>
+            <artifactId>sqlrecorder</artifactId>
+            <version>0.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

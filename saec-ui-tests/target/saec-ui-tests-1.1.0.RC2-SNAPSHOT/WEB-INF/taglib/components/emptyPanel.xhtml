@@ -1,0 +1,38 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+  	template="/WEB-INF/layouts/template1CH.xhtml">
+  	
+  <ui:define name="topmenu">
+  </ui:define>
+
+  <ui:define name="body">  
+    <h:form id="form">
+      <p:growl id="growl" showDetail="false" globalOnly="true" life="2000"/>	  
+	  <p:focus/>
+	  
+        <p:panel styleClass="standardContentPanel">
+          <p style="padding: 0; margin: 0; text-align: right;">
+			<h:panelGroup>
+            	<p:commandButton id="ok1" action="ok" ajax="false" value="${msg.submit}" process="@form" rendered="#{not readonly}" icon="ui-icon-check"/>
+            	<p:commandButton id="cancel1" action="cancel" ajax="false" value="${msg.back}" process="@none" immediate="true" 
+            	icon="#{readonly ? 'ui-icon-arrowreturnthick-1-w' : 'ui-icon-cancel'}"/>
+          	</h:panelGroup>
+          </p>
+          <h2><h:outputText value="#{title}"/></h2>
+          <ui:insert />
+          <p style="padding: 0; margin: 0; text-align: right;">
+          	<h:panelGroup>
+            	<p:commandButton id="ok2" action="ok" ajax="false" value="${msg.submit}" process="@form" rendered="#{not readonly}" icon="ui-icon-check"/>
+            	<p:commandButton id="cancel2" action="cancel" ajax="false" value="${msg.back}" process="@none" immediate="true" 
+            	icon="#{readonly ? 'ui-icon-arrowreturnthick-1-w' : 'ui-icon-cancel'}"/>
+          	</h:panelGroup>
+          </p>
+        </p:panel>
+    </h:form>
+  </ui:define>
+</ui:composition>

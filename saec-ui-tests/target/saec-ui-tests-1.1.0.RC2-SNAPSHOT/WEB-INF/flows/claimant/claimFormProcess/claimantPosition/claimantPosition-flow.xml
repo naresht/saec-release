@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+	
+	<var name="claimantPositionViewModel" class="com.bfds.saec.web.model.ClaimantPositionViewModel"/>
+	<var name="viewModel" class="com.bfds.saec.web.model.ClaimProofViewModel" />
+	<input name="claimantId" required="true" />
+    
+    <on-start>
+		<evaluate expression="claimantPositionViewModel.prepareViewModel(claimantId)" />
+	</on-start>
+	
+	<view-state id="claimantPosition">
+		<on-entry>
+			<evaluate expression="claimantPositionViewModel.getClaimantPositions()"
+				result="viewScope.claimantPositions"></evaluate>
+		</on-entry>
+		<transition on="addNewClaimantPosition">
+			<evaluate expression="claimantPositionViewModel.addNewClaimantPosition()"></evaluate>
+		</transition>
+		<transition on="loadPositionById">
+			<evaluate expression="claimantPositionViewModel.loadPositionById(requestParameters.id)"></evaluate>
+		</transition>	
+		<transition on="saveClaimantPosition">
+			<evaluate expression="claimantPositionViewModel.saveClaimantPosition(messageContext)"></evaluate>
+			<evaluate expression="claimantPositionViewModel.getClaimantPositions()" result="viewScope.claimantPositions"></evaluate>
+		</transition>
+		<transition on="saveClaimProof">
+			<evaluate expression="claimantPositionViewModel.saveClaimSupportingDocuments(viewModel)" />
+		</transition>
+		<transition on="deleteClaimantPosition">
+			<evaluate expression="claimantPositionViewModel.deleteClaimantPosition()"></evaluate>
+		</transition>
+		<transition on="restoreClaimantPosition">
+			<evaluate expression="claimantPositionViewModel.restoreClaimantPosition()"></evaluate>
+		</transition>
+		 <transition on="loadClaimProof" >
+	    	<evaluate expression="claimantPositionViewModel.loadClaimProofByClaimantPosition(requestParameters.id,viewModel)"></evaluate>
+	    </transition>
+		<transition on="exitConfirm"/> 
+	    <transition on="saveConfirm"/>
+	    <transition on="deleteConfirm"/>
+	    <transition on="restoreConfirm"/>
+		<transition on="exit" to="exitClaimantPosition"/>
+	    <transition on="save" to="exitClaimantPosition">
+	    </transition>		
+	</view-state>	
+	
+  <end-state id="exitClaimantPosition"/>	
+</flow>                                                                 

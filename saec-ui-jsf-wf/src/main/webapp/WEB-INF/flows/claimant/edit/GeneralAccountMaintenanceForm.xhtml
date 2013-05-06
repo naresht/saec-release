@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Details">
+	<h:panelGroup id="grid">
+	<div id="name_update_div_table">
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">Reference #:</div>
+			<div id="name_update_div_rgt"><h:outputText value="#{claimant.claimant.referenceNo}" /></div>
+		</div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">&nbsp;</div>
+			<div id="name_update_div_rgt"><h:outputText escape="false" value="#{claimant.addressText}"/></div>
+		</div>	
+		<div id="name_update_div_tr"></div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">.</div>
+			<div id="name_update_div_rgt"><a href="#">Edit General Account Maintenance</a></div>
+		</div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">Fund Account #:</div>
+			<div id="name_update_div_rgt">
+			<p:inputMask id="accountMaintenFundAccount" mask="?9999999999" placeHolder="" fid="fundAccountNo" value="#{claimant.claimant.fundAccountNo}" maxlength="10"/>
+		</div>
+		</div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">Account Status:</div>
+			<div id="name_update_div_rgt"><h:selectOneMenu id="claimant_AccountStatus"
+										value="#{claimant.claimant.accountStatus}">
+										<f:selectItem itemValue="Open" itemLabel="Open" />
+										<f:selectItem itemValue="Closed" itemLabel="Closed" />
+										<f:selectItem itemValue="Un known" itemLabel="Un known" />
+									</h:selectOneMenu></div>
+		</div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">Account Type:</div>
+			<div id="name_update_div_rgt"><h:selectOneMenu id="claimant_AccountType"
+										value="#{claimant.claimant.accountType}" maxlength="25">
+										<f:ajax render="otherAccountDescription" />
+										<f:selectItem itemValue="Custodial" itemLabel="Custodial" />
+										<f:selectItem itemValue="Individual" itemLabel="Individual" />
+										<f:selectItem itemValue="IRA" itemLabel="IRA" />
+										<f:selectItem itemValue="Joint" itemLabel="Joint" />
+										<f:selectItem itemValue="Plan" itemLabel="Plan" />
+										<f:selectItem itemValue="other" itemLabel="Other" />
+									</h:selectOneMenu>
+									<br />
+									<h:panelGroup id="otherAccountDescription">
+										<p:message for="abc" />
+										<p:inputTextarea id="abc"
+											value="#{claimant.claimant.accountTypeOtherDescription}"
+											rendered="#{claimant.claimant.accountType=='other'}"
+											required="true"
+											requiredMessage="Please, fill the other field"
+											maxlength="255" autoResize="false" />
+									</h:panelGroup></div>
+		</div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">Omni Bus:</div>
+			<div id="name_update_div_rgt"><h:selectBooleanCheckbox id="accMaintenanceOminiBus" 
+							value="#{claimant.claimant.omniBus}" /></div>
+		</div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">Broker ID:</div>
+			<div id="name_update_div_rgt"><p:inputText id="accMaintenanceBrokerId" value="#{claimant.claimant.brokerId}" maxlength="10" /></div>
+		</div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">BIN #:</div>
+			<div id="name_update_div_rgt"><p:inputText id="accMaintenanceBin"  value="#{claimant.claimant.bin}" maxlength="15" /></div>
+		</div>
+		<div id="name_update_div_tr">
+			<div id="name_update_div_lft">Org/Ind #:</div>
+			<div id="name_update_div_rgt">
+				<h:selectOneMenu id="accMaintenanceOrgOrInd"  value="#{claimant.claimant.organization}" >
+					<f:selectItem itemValue="" itemLabel="" />
+					<f:selectItem itemValue="true" itemLabel="Organization" />
+					<f:selectItem itemValue="false" itemLabel="Individual" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+	</div>
+		</h:panelGroup>	
+		</p:fieldset>
+			<div id="buttonsection"><p:commandButton id="saveConfirm" action="saveConfirm" immediate="true" oncomplete="confirmationSave.show()"  
+		value="Save"  /><p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" 
+		value="Exit" /></div>		
+		
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>	
+	
+</ui:composition>
+</html>

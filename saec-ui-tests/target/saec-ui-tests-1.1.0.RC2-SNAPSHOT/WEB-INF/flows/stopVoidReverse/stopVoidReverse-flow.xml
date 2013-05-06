@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+  <var name="stopVoidReverseViewModel" class="com.bfds.saec.web.model.StopVoidReverseViewModel"/>  
+	
+	<view-state id="stopVoidReverseSelect">			
+		<on-entry>
+		<evaluate expression="stopVoidReverseViewModel.reset()"></evaluate>
+		</on-entry>
+		<transition on="search">
+			<evaluate expression="stopVoidReverseViewModel.loadPaymentsForStopVoidReverse(messageContext)" result="flowScope.payment"/>
+		</transition>		
+		<transition on="select" to="stopVoidReverse">
+		</transition>
+		<transition on="reset">
+			<evaluate expression="stopVoidReverseViewModel.reset()"></evaluate>
+		</transition>
+	   <transition on="save" to="stopVoidReverseConfirmation">
+			<evaluate expression="stopVoidReverseViewModel.processStopVoidReverse(messageContext)"></evaluate>
+		</transition>					
+		<transition on="summary">
+			<evaluate
+				expression="claimantSearchViewModel.getClaimantByPrimayKey(requestParameters.id)"
+				result="viewScope.claimant" />
+		</transition>
+		<transition on="exit" to="endEdit"/> 
+	</view-state>	
+  	
+  <view-state id="stopVoidReverseConfirmation">
+    <on-entry>
+	    <set name="viewScope.payment" value="stopVoidReverseViewModel.selectedPayment" />    
+    </on-entry>
+    <transition on="exitConfirm"/> 
+	<transition on="exit" to="endEdit"/>      	
+  </view-state>
+  <end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />  
+</flow>

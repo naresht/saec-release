@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+  <var name="stopLiftViewModel" class="com.bfds.saec.web.model.StopLiftViewModel"/>  
+	
+	<view-state id="stopLiftSelect">			
+		<on-entry>
+		<evaluate expression="stopLiftViewModel.reset()"></evaluate>
+		</on-entry>
+		<transition on="search">
+			<evaluate expression="stopLiftViewModel.loadPaymentsForStopLift(messageContext)" result="flowScope.payments"/>
+		</transition>		
+		<transition on="select" to="stopLift">
+		</transition>
+		<transition on="reset">
+			<evaluate expression="stopLiftViewModel.reset()"></evaluate>
+		</transition>
+	   <transition on="save" to="stopLiftConfirmation">
+			<evaluate expression="stopLiftViewModel.processStopLift(requestParameters.id)"></evaluate>
+		</transition>					
+		<transition on="summary">
+			<evaluate
+				expression="claimantSearchViewModel.getClaimantByPrimayKey(requestParameters.id)"
+				result="viewScope.claimant" />
+		</transition>
+		<transition on="exit" to="endEdit"/> 
+	</view-state>	
+  	
+  <view-state id="stopLiftConfirmation">
+    <on-entry>
+	    <set name="viewScope.payment" value="stopLiftViewModel.selectedPayment" />    
+    </on-entry>
+    <transition on="exitConfirm"/> 
+	<transition on="exit" to="endEdit"/>      	
+  </view-state>
+  <end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />  
+</flow>

@@ -1,0 +1,38 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.rip.domain.RipObject_Roo_Jpa_Entity"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObject_Roo_ToString"/>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObject_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rip.domain.RipObject_Roo_ToString"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObject_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObject_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObject_Roo_Jpa_ActiveRecord"/>
+<aspect name="com.bfds.saec.rip.domain.FollowupRemindersRipObject_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObject_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rip.domain.RipObject_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObject_Roo_Jpa_Entity"/>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObject_Roo_ToString"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObject_Roo_Jpa_ActiveRecord"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObject_Roo_Jpa_Entity"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObject_Roo_Jpa_Entity"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObject_Roo_ToString"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObject_Roo_Jpa_ActiveRecord"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObject_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rip.domain.ClaimFormSupportingDocRipObject_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rip.domain.FollowupRemindersRipObject_Roo_ToString"/>
+<aspect name="com.bfds.saec.rip.domain.RipObject_Roo_Jpa_ActiveRecord"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObject_Roo_Configurable"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObject_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rip.domain.CureLetterRipObject_Roo_ToString"/>
+<aspect name="com.bfds.saec.rip.domain.RipObject_Roo_Finder"/>
+<aspect name="com.bfds.saec.rip.domain.RipObject_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rip.dto.PhoneCallDto_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rip.dto.PhoneCallDto_Roo_ToString"/>
+<aspect name="com.bfds.saec.rip.domain.ClaimFormSupportingDocRipObject_Roo_ToString"/>
+<aspect name="com.bfds.saec.rip.domain.StopReplaceCheckRipObject_Roo_Jpa_ActiveRecord"/>
+<aspect name="com.bfds.saec.rip.domain.FollowupRemindersRipObject_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.rip.domain.AddressChangeRipObject_Roo_Jpa_Entity"/>
+<aspect name="com.bfds.saec.rip.domain.SpecialhandlingRipObject_Roo_Configurable"/>
+</aspects>
+</aspectj>
+

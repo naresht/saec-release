@@ -1,0 +1,36 @@
+@@KEY HOSTNAME=$!e.hostName
+@@BEGIN
+@@KEY ACTION=C,CASE=WORKCASE,STAT=RIPPED,UNIT=$!e.businessUnit
+@@BEGIN
+@@KEY ACTION=W,WRKT=$!e.workType,STAT=RIPPED,UNIT= $!e.businessUnit
+@@LOB MISC=$!e.referenceNo,FUND=9999999,ACCT=99999999999,SYST=DTO
+@@BEGIN
+@@KEY ACTION=S,OBJT=RIP,UNIT= $!e.businessUnit
+
+REFERENCE_NUM:$!e.referenceNo
+
+NAME_LN1$!e.registration1
+NAME_LN2$!e.registration2
+NAME_LN3$!e.registration3
+NAME_LN4$!e.registration4
+NAME_LN5$!e.registration5
+NAME_LN6$!e.registration6
+
+ADDR_LN1$!e.address1
+ADDR_LN2$!e.address2
+ADDR_LN3$!e.address3
+ADDR_LN4$!e.address4
+ADDR_LN5$!e.address5
+ADDR_LN6$!e.address6
+
+CITY:$!e.city
+STATE:$!e.stateCode
+ZIP:$!e.zipCode
+ZIP_PLUS4$!e.zipExt
+
+SPECIAL_INSTRUCTIONS:$!e.specialInstructions
+
+
+@@END
+@@END
+@@END

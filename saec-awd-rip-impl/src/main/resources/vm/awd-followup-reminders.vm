@@ -1,0 +1,17 @@
+@@KEY HOSTNAME=$!e.hostName
+@@BEGIN
+@@KEY ACTION=C,CASE=WORKCASE,STAT=RIPPED,UNIT=$!e.businessUnit
+@@BEGIN
+@@KEY ACTION=W,WRKT=$!e.workType,STAT=RIPPED,UNIT= $!e.businessUnit
+@@LOB FUND=9999999,ACCT=99999999999,SYST=DTO
+@@BEGIN
+@@KEY ACTION=S,OBJT=RIP,UNIT= $!e.businessUnit
+
+REFERENCE_NUM:$!e.referenceNo
+
+
+REMINDER TYPE:$!e.reminderType
+
+@@END
+@@END
+@@END

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<div id="alternate_payee_div_table">
+		<div id="alternate_payee_div_tr">
+			<div id="alternate_payee_div_td">
+				<b>Reference #: </b>
+				<h:outputText
+					value="#{parentClaimant.referenceNo}" />
+			</div>
+		</div>
+	</div>
+	<div>
+		<h:outputText escape="false" value="#{parentClaimant.getClaimantRegistration().getRegistrationLinesAsString('&lt;br&#47;&gt;')}" />
+		<br /> <br />
+		<h:outputText escape="false" value="#{parentClaimant.getMailingAddress() != null ? parentClaimant.getMailingAddress().getAddressAsString('&lt;br&#47;&gt;') : ''}" />
+		<br />
+	</div>
+	<br />
+	<h:panelGroup id="addressFields_1"> 
+		<p:fieldset legend="Alternate Payee Information" id="grid">
+			<div id="alternate_payee_div_table">
+				<ui:include src="claimantAlternatePayeeFormFileds.xhtml" />	
+				<p:spacer width="100%" height="15" />
+				<ui:include src="claimantSplitPaymentFormFileds.xhtml" />				
+			</div>
+		</p:fieldset>
+	</h:panelGroup>
+	<p class="space"></p>
+	<div id="buttonsection">
+		<p:commandButton id="addMore" action="saveConfirm" immediate="true"
+			disabled="#{!sec:canAddAlternatePayees()}"
+			oncomplete="confirmationAddMode.show()" value="Add Alternate Payee" />
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			disabled="#{!sec:canAddAlternatePayees()}"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<p:confirmDialog id="addMoreMessage" message="Are you sure you want to save the changes?"
+		header="Save" severity="alert" widgetVar="confirmationAddMode"
+		modal="true">
+		<p:commandButton id="addMoreMessageYes" value="Yes" ajax="false" update="grid"
+			oncomplete="confirmationAddMode.hide()" action="addMore" />
+		<p:commandButton id="addMoreMessageNo" value="No" onclick="confirmationAddMode.hide()"
+			type="button" />
+	</p:confirmDialog>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>

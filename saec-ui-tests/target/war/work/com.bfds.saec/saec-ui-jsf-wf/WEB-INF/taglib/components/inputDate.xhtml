@@ -1,0 +1,33 @@
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:c="http://java.sun.com/jsp/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui">
+  <h:outputLabel
+    for="#{fid}"
+    id="#{fid}_label"
+    value="#{label}"
+    rendered="#{(empty rendered || rendered) and (not empty label)}"
+    styleClass="#{required ? 'required' : ''}" />
+  <h:panelGrid id="${fid}_pg" columns="2" style="display:table;">
+    <p:calendar
+      id="#{fid}"
+      label="#{label}"
+      value="#{value}"
+      enableManualInput="true" mode="popup"
+      rendered="#{empty rendered || rendered}"
+      disabled="#{disabled}"
+      readonly="#{readonly}"
+      requiredMessage="#{requiredMessage}"
+      converter="#{converter}"
+      datePattern="#{not empty converter ? converter.pattern : 'yyyy-MM-dd'}"
+      styleClass="#{styleClass}"
+      accesskey="#{accesskey}"
+      tabindex="#{(empty tabindex) ? '' : tabindex}">
+      <ui:insert />
+    </p:calendar>
+    <p:message for="#{fid}" display="text"/>
+  </h:panelGrid>
+</ui:composition>

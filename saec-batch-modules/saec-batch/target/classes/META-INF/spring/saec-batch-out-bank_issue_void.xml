@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:file="http://www.springframework.org/schema/integration/file"
+       xmlns:integration="http://www.springframework.org/schema/integration"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-1.0.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file-1.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd">
+
+    <job id="bankIssueVoidJob" xmlns="http://www.springframework.org/schema/batch">
+        <validator ref="bankIssueVoidJobParametersValidator" />
+        <step id="processReissueApprovedChecks" next="bankIssueVoidReadWriteStep">
+            <tasklet ref="reissueApprovedChecksProcessor" />
+        </step>
+        <step id="bankIssueVoidReadWriteStep">
+            <tasklet transaction-manager="transactionManager"
+                     start-limit="100" allow-start-if-complete="true">
+                <chunk reader="bankIssueVoidReader" writer="bankIssueVoidWriter"
+                       processor="bankIssueVoidProcessor" commit-interval="100"
+                       retry-policy="retryPolicy">
+                </chunk>
+                <listeners>
+                    <listener ref="retryListener" />
+                    <listener ref="defaultStepExecutionListener" />
+                </listeners>
+            </tasklet>
+        </step>
+    </job>
+
+    <bean id="reissueApprovedChecksProcessor" class="com.bfds.saec.batch.out.bank_issue_void.ReissueApprovedChecksProcessor"  scope="step"/>
+
+    <bean id="bankIssueVoidProcessor" class="com.bfds.saec.batch.out.bank_issue_void.IssueVoidItemProcessor" scope="step"/>
+
+    <bean id="bankIssueVoidQueryProvider" class="com.bfds.saec.batch.out.bank_issue_void.IssueVoidQueryProvider" scope="step"/>
+
+    <bean id="bankIssueVoidReader" class="com.bfds.saec.batch.item.database.JpaItemReader"
+            p:pageSize="100"
+            p:entityManagerFactory-ref="entityManagerFactory"
+            p:queryProvider-ref="bankIssueVoidQueryProvider" />
+
+    <bean id="bankIssueVoidWriter" class="org.springframework.batch.item.database.TransactionalJpaItemWrite" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"  />
+
+    <bean id="bankIssueVoidJobParametersValidator" class="org.springframework.batch.core.job.DefaultJobParametersValidator"
+          p:requiredKeys="tranchCode,dda" />
+
+</beans>
+

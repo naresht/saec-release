@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+	
+	<h:panelGroup id="claimant_new_fields">
+	<p:fieldset legend="Batch Configuration">
+		
+			<p:dataTable id="jobConfig" var="jobConfig" value="#{batchConfigViewModel.jobConfigList}" tableStyle="width:auto" 
+			rows="10" paginator="true" 
+			paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15,25,50,100">  
+		        		
+		 	    <p:column style="width:100px" sortBy="#{jobConfig.vendorName}"
+					filterBy="#{jobConfig.vendorName}">  
+					<f:facet name="header">
+						<h:outputText value="Vendor" />
+					</f:facet>					
+		            <h:outputText value="#{jobConfig.vendorName}" />  
+		        </p:column> 
+		        		        		
+		        <p:column style="width:100px" sortBy="#{jobConfig.jobName}"
+					filterBy="#{jobConfig.jobName}"> 
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+		            <h:outputText value="#{jobConfig.jobName}" />  
+		        </p:column>  
+		        
+		 	    <p:column style="width:20px" >
+					<f:facet name="header">
+						<h:outputText value="In/Out" />
+					</f:facet>		 	      
+		            <h:outputText value="#{jobConfig.incoming ? 'IN' : 'Out'}" />  
+		        </p:column>      
+		        
+		       	<p:column style="width:100px">  
+					<f:facet name="header">
+						<h:outputText value="Cron" />
+					</f:facet>				       	
+		            <h:outputText value="#{jobConfig.scheduleConfig.cronExpression}" />  
+		        </p:column>  
+		        
+		       	<p:column style="width:200px">  
+					<f:facet name="header">
+						<h:outputText value="File" />
+					</f:facet>				       	
+		            <h:outputText value="#{jobConfig.fileConfig.locationResourcePath}" />  
+		        </p:column>
+		        
+		       	<p:column style="width:200px">  
+					<f:facet name="header">
+						<h:outputText value="Archive File" />
+					</f:facet>					       	
+		            <h:outputText value="#{jobConfig.fileConfig.archiveLocationResourcePath}" />  
+		        </p:column>		         	
+		        
+		        <p:column style="width:100px"> 
+					<f:facet name="header">
+						<h:outputText value="Contact" />
+					</f:facet>		         
+		            <h:outputText value="#{jobConfig.getContactInfoAsString('&lt;br/&gt;')}" escape="false"/>  
+		        </p:column>         	        
+		  
+		        <p:column style="width:40px" >  
+		        	<f:facet name="header">
+						<h:outputText value="Enable/Disable" />
+					</f:facet>	             						
+					<p:commandButton ajax="true" action="disable" immediate="true" value="Disable" rendered="#{jobConfig.scheduleConfig.enabled}" update=":form:claimant_new_fields">
+						<f:param name="id" value="#{jobConfig.id}" />
+					</p:commandButton>	
+					<p:commandButton ajax="true" action="enable" immediate="true" value="Enable" rendered="#{!jobConfig.scheduleConfig.enabled}" update=":form:claimant_new_fields">
+						<f:param name="id" value="#{jobConfig.id}" />
+					</p:commandButton>											
+		        </p:column>
+		        
+		        <p:column style="width:40px" >
+		        	<f:facet name="header">
+						<h:outputText value="Manual Start" />
+					</f:facet>  	             						
+					<p:commandButton ajax="false" action="execute" immediate="true" value="Run" rendered="#{jobConfig.scheduleConfig.enabled}" update=":msgs">
+						<f:param name="id" value="#{jobConfig.id}" />
+					</p:commandButton>											
+		        </p:column>		        
+		        		  
+		        <p:column style="width:40px">  	             						
+					<p:commandButton ajax="false" action="edit" immediate="true" icon="iconEdit" title="${msg.edit}">
+						<f:param name="id" value="#{jobConfig.id}" />
+					</p:commandButton>						
+		        </p:column>  
+		  
+		    </p:dataTable>  
+		    
+			<p:spacer height="10" width="0" />
+			<div class="exportlnk">
+				Export to 
+				<h:commandLink>Excel<p:dataExporter type="xls" target="jobConfig" fileName="saec-batch-config" excludeColumns="7,8" /></h:commandLink> / 
+				<h:commandLink>PDF<p:dataExporter type="pdf" target="jobConfig" fileName="saec-batch-config" excludeColumns="7,8" /></h:commandLink> / 
+				<h:commandLink>Csv<p:dataExporter type="csv" target="jobConfig" fileName="saec-batch-config" excludeColumns="7,8" /></h:commandLink>
+			</div>
+			<p:spacer height="10" width="0" />		    
+    	
+	</p:fieldset>
+	</h:panelGroup>		
+		
+	<div id="buttonsection">
+		<p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<p:confirmDialog message="Are you sure you want to exit ?"
+		header="Exit" severity="alert"
+		widgetVar="confirmationExit"  modal="true">
+		<p:commandButton value="Yes" ajax="false" oncomplete="confirmationExit.hide()"
+			immediate="true" action="exit" />		
+		<p:commandButton value="No" onclick="confirmationExit.hide()"
+			type="button" />		
+	</p:confirmDialog> 
+</ui:composition>
+
+</html>
+
+

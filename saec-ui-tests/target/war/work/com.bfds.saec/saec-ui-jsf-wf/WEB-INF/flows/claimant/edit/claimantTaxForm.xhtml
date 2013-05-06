@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:messages id="msgs"></p:messages>
+	<p:fieldset legend="Details">
+		<h:panelGroup id="grid">
+			<div id="tax_info_div_table">
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">Reference #:</div>
+					<div id="tax_info_div_rgt">
+						<h:outputText value="#{claimant.claimant.referenceNo}" />
+					</div>
+				</div>
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">&nbsp;</div>
+					<div id="tax_info_div_rgt">
+						<h:outputText escape="false" value="#{claimant.addressText}" />
+					</div>
+				</div>
+				<p:spacer width="100%" height="10" />
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">
+						<h:selectOneMenu id="claimant_TaxId"
+							value="#{claimant.identificationType}" maxlength="3"
+							required="true"
+							requiredMessage="Please, select the identificationType">
+							<f:ajax render="identificationFields" />
+							<f:selectItem itemValue="SSN" itemLabel="SSN" />
+							<f:selectItem itemValue="TIN" itemLabel="TIN" />
+							<f:selectItem itemValue="EIN" itemLabel="EIN" />
+						</h:selectOneMenu>
+					</div>
+					<div id="tax_info_div_rgt">
+						<h:panelGroup id="identificationFields">
+							<p:inputMask value="#{claimant.claimant.ssn}" mask="***-**-****"
+								maxlength="9" id="claimant_ssn" required="true"
+								requiredMessage="Please, fill the ssn field"
+								disabled="#{claimant.identificationType=='SSN' and !sec:canUpdateTIN()}"
+								rendered="#{claimant.identificationType=='SSN'}"></p:inputMask>
+							<p:message for="claimant_ssn" />
+							<p:inputMask value="#{claimant.claimant.tin}" mask="**-*******"
+								maxlength="9" id="claimant_tin" required="true"
+								requiredMessage="Please, fill the tin field"
+								rendered="#{claimant.identificationType=='TIN'}"
+								disabled="#{claimant.identificationType=='TIN' and !sec:canUpdateTIN()}">
+							</p:inputMask>
+							<p:message for="claimant_tin" />
+							<p:inputMask value="#{claimant.claimant.ein}" mask="**-*******"
+								maxlength="9" id="claimant_ein" required="true"
+								requiredMessage="Please, fill the ein field"
+								rendered="#{claimant.identificationType=='EIN'}"></p:inputMask>
+							<p:message for="claimant_ein" />
+						</h:panelGroup>
+					</div>
+				</div>
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">Certification Type:</div>
+					<div id="tax_info_div_rgt">
+						<h:selectOneMenu id="claimant_certificationType"
+							value="#{claimant.claimant.certificationType}" maxlength="15">
+							<p:ajax update="msgs"
+								listener="#{checkViewModel.showRememberToCreateAlternatePayeeMsg(claimant.claimant.certificationType,messageContext)}"></p:ajax>
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItem itemValue="W8-Foreign" itemLabel="W8-Foreign" />
+							<f:selectItem itemValue="W9-US Citizen" itemLabel="W9-US Citizen" />
+							<f:selectItem itemValue="W4P" itemLabel="W4P" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">Certification Status:</div>
+					<div id="tax_info_div_rgt">
+						<h:selectOneMenu id="claimant_certificationStatus"
+							value="#{claimant.claimant.certificationStatus}" maxlength="25">
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItem itemValue="Certified" itemLabel="Certified" />
+							<f:selectItem itemValue="filed with broker"
+								itemLabel="filed with broker" />
+							<f:selectItem itemValue="Missing" itemLabel="Missing" />
+							<f:selectItem itemValue="Uncertified" itemLabel="Uncertified" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">US Citizen:</div>
+					<div id="tax_info_div_rgt">
+						<h:selectOneMenu id="claimant_USCitizen"
+							value="#{claimant.claimant.usCitizen}">
+							<f:selectItem itemValue="true" itemLabel="Yes" />
+							<f:selectItem itemValue="false" itemLabel="No" />
+						</h:selectOneMenu>
+						<!-- <h:selectBooleanCheckbox value="#{claimant.claimant.usCitizen}"/> -->
+					</div>
+				</div>
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">Tax Country:</div>
+					<div id="tax_info_div_rgt">
+						<h:selectOneMenu id="countryCode" value="#{claimant.claimant.taxCountryCode}">
+							<f:selectItem itemLabel="" itemValue=""/>
+							<f:selectItems value="#{claimant.countryList}"/>
+						</h:selectOneMenu>
+					</div>
+				</div>
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">Certification Date:</div>
+					<div id="tax_info_div_rgt">
+						<p:calendar id="taxInfoUpdatecertiDate"
+							value="#{claimant.claimant.taxInfo.certificationDate}"
+							pattern="MM/dd/yyyy" size="10" maxlength="10" />
+					</div>
+				</div>
+				<!-- TODO: ATTACH VALUE -->
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">Foreign Tax Ind:</div>
+					<div id="tax_info_div_rgt">
+						<p:selectBooleanCheckbox
+							value="#{claimant.claimant.taxInfo.foreignTax}" />
+					</div>
+				</div>
+				<!-- TODO: ATTACH VALUE -->
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">Foreign Tax Classification:</div>
+					<div id="tax_info_div_rgt">
+
+						<h:selectOneMenu id="foreignTaxClassification"
+							value="#{claimant.claimant.taxInfo.foreignTaxClassification}">
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItem itemValue="fIRA" itemLabel="Foreign IRA" />
+							<f:selectItem itemValue="fPlan" itemLabel="Foregin Plan" />
+							<f:selectItem itemValue="fEntity" itemLabel="Foregin Entity" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				<!-- TODO: ATTACH VALUE -->
+				<div id="tax_info_div_tr">
+					<div id="tax_info_div_lft">Date Solicitation Received:</div>
+					<div id="tax_info_div_rgt">
+						<p:calendar id="dateSolicitationReceived" pattern="MM/dd/yyyy"
+							value="#{claimant.claimant.taxInfo.dateSolicitationReceived}"
+							size="10" maxlength="10" />
+					</div>
+				</div>
+			</div>
+		</h:panelGroup>
+	</p:fieldset>
+	<div id="buttonsection">
+		<p:commandButton id="saveTaxConfirm" action="saveTaxConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitTaxConfirm" action="exitTaxConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+	
+</ui:composition>
+</html>

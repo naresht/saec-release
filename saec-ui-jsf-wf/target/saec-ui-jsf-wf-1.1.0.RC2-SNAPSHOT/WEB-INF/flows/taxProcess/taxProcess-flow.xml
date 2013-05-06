@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="viewModel" class="com.bfds.saec.web.model.TaxProcessViewModel" />
+
+	<var name="deleteViewModel" class="com.bfds.saec.web.model.TaxProcessDeleteViewModel" />
+
+	<decision-state id="chooseFirstPage">
+		<if test="requestParameters.paymentId == null" then="taxProcessList"
+			else="createOutbound" />
+	</decision-state>
+
+
+	<view-state id="createOutbound">
+		<on-entry>
+			<evaluate
+				expression="viewModel.getOutboundDomesticTaxRec(requestParameters.paymentId)"
+				result="viewScope.outboundTaxRec"></evaluate>
+		</on-entry>
+		<transition on="save" to="exit">
+			<evaluate expression="viewModel.create(outboundTaxRec, messageContext)"></evaluate>
+		</transition>
+		<transition on="void">
+			<evaluate
+				expression="viewModel.updatePaymentWithDamascoVoidStatus(outboundTaxRec.paymentId, messageContext)" />
+		</transition>
+		<transition on="stop">
+			<evaluate
+				expression="viewModel.updatePaymentWithDamascoStopStatus(outboundTaxRec.paymentId, messageContext)" />
+		</transition>
+		<transition on="exit" to="exit" />
+		<transition on="voidConfirm" />
+		<transition on="stopConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	</view-state>
+
+	<view-state id="taxProcessList">
+		<on-entry>
+			<evaluate expression="deleteViewModel.loadAllOutboundDomesticTaxRecs()"
+				result="viewScope.outboundPayments"></evaluate>
+		</on-entry>
+		<transition on="deleteSelected" to="taxProcessList">
+			<evaluate expression="deleteViewModel.deleteSelected()"></evaluate>
+		</transition>
+		<transition on="exit" to="exit" />
+		<transition on="exitConfirm" />
+		<transition on="deleteConfirm" />
+	</view-state>
+
+	<end-state id="exit" view="externalRedirect:contextRelative:/app/home" />
+
+</flow>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+	
+	<var name="claimantTransactionsViewModel" class="com.bfds.saec.web.model.ClaimantTransactionsViewModel"/>
+	<var name="viewModel" class="com.bfds.saec.web.model.ClaimProofViewModel" />
+	<input name="claimantId" required="true" />
+	
+	<on-start>
+		<evaluate expression="claimantTransactionsViewModel.prepareViewModel(claimantId)" />
+	</on-start>
+    
+	<view-state id="claimantTransactions">
+		<on-entry>
+			<evaluate expression="claimantTransactionsViewModel.getClaimantTransaction()"
+				result="viewScope.claimantTransactions"></evaluate>
+		</on-entry>
+		<transition on="addNewClaimantTransaction">
+			<evaluate expression="claimantTransactionsViewModel.addNewClaimantTransaction()"></evaluate>
+		</transition>
+		<transition on="saveClaimantTransactions">
+			<evaluate expression="claimantTransactionsViewModel.saveClaimantTransactions(messageContext)"/>
+			<evaluate expression="claimantTransactionsViewModel.getClaimantTransaction()" result="viewScope.claimantTransactions"/>
+		</transition>
+		<transition on="saveClaimProof">
+			<evaluate expression="claimantTransactionsViewModel.saveClaimSupportingDocuments(viewModel)" />
+		</transition>
+		<transition on="deleteClaimantTransaction">
+			<evaluate expression="claimantTransactionsViewModel.deleteClaimantTransaction()"></evaluate>
+		</transition>
+		<transition on="restoreClaimantTransaction">
+			<evaluate expression="claimantTransactionsViewModel.restoreClaimantTransaction()"></evaluate>
+		</transition>
+		<transition on="loadTransactionById">
+			<evaluate expression="claimantTransactionsViewModel.loadTransactionById(requestParameters.id)"></evaluate>
+		</transition>		
+		<transition on="exitConfirm"/> 
+	    <transition on="saveConfirm"/>
+	    <transition on="deleteConfirm"/>
+	    <transition on="restoreConfirm"/>
+	    <transition on="loadClaimProof" >
+	    	<evaluate expression="claimantTransactionsViewModel.loadClaimProofByClaimantTransaction(requestParameters.id,viewModel)"></evaluate>
+	    </transition>
+		<transition on="exit" to="exitProcess" />
+		<transition on="save" to="exitProcess">
+	    </transition>		
+	</view-state>	
+	
+  <end-state id="exitProcess"/>	
+</flow>                                                                 

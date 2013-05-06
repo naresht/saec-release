@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<div id="alternate_payee_div_table">
+		<div id="alternate_payee_div_tr">
+			<div id="alternate_payee_div_td">
+				<b>Reference #: </b>
+				<h:outputText
+					value="#{parentClaimantViewModel.claimant.referenceNo}" />
+			</div>
+		</div>
+	</div>
+	<div>
+		<h:outputText escape="false"
+			value="#{parentClaimantViewModel.registrationText}" />
+		<br /> <br />
+		<h:outputText escape="false"
+			value="#{parentClaimantViewModel.addressText}" />
+		<br />
+	</div>
+	<br />
+
+		 <h:panelGroup id="addressFields_1"> 
+	<p:fieldset legend="Alternate Payee Information" id="grid">
+		<div id="alternate_payee_div_table">
+
+			<div id="alternate_payee_div_tr">
+			 
+				<div id="alternate_payee_div_td1">
+					<font color="red">*</font><b>Name:</b><br />
+					<p:inputText id="claimant_registration1_1"
+						value="#{claimantViewModel_1.claimant.claimantRegistration.registration1}"
+						maxlength="60" required="true"
+						requiredMessage="Please, fill the Name"></p:inputText>
+					<p:message id="claimant_registration1_1Error" for="claimant_registration1_1" />
+				</div>
+				<div id="alternate_payee_div_td1">
+					<font color="red">*</font><b>Address:</b><br />
+					<p:inputText id="claimant_address1_1"
+						value="#{claimantViewModel_1.claimant.addressOfRecord.address1}"
+						maxlength="60" required="true"
+						requiredMessage="Please, fill the Address" />
+					<p:message id="claimant_address1_1Error" for="claimant_address1_1" />
+				</div>
+				<div id="alternate_payee_div_td1">
+					<font color="red">*</font><b>City:</b><br />
+					<p:inputText id="claimant_City"
+						value="#{claimantViewModel_1.claimant.addressOfRecord.city}"
+						maxlength="20" required="true"
+						requiredMessage="Please, fill the city" />
+					<p:message id="claimant_CityError" for="claimant_City" />
+				</div>
+				<div id="alternate_payee_div_td1">
+					<font color="red">*</font><b>State:</b><br />
+					<p:inputText id="claimant_State"
+						value="#{claimantViewModel_1.claimant.addressOfRecord.stateCode}"
+						maxlength="2" required="true"
+						requiredMessage="Please, fill the statecode" />
+					<p:message id="claimant_StateError" for="claimant_State" />
+				</div>
+				<div id="alternate_payee_div_td1">
+					<font color="red">*</font><b>Zip Code:</b><br />
+					<p:inputText id="claimant_Zip"
+						value="#{claimantViewModel_1.claimant.addressOfRecord.zipCode.zip}"
+						maxlength="8" required="true"
+						requiredMessage="Please, fill the Zipcode" />
+					<p:message  id="claimant_Zip_Error" for="claimant_Zip" />
+				</div>
+				<div id="alternate_payee_div_td1">
+					<b>Zip Code + 4:</b><br />
+					<p:inputText id="claimant_Zip4"
+						value="#{claimantViewModel_1.claimant.addressOfRecord.zipCode.ext}"
+						maxlength="4" />
+				</div>
+			  
+			</div>
+		
+			<p:spacer width="100%" height="15" />
+			<div id="alternate_payee_div_tr">
+				<div id="alternate_payee_div_td1">
+					<font color="red">*</font><b>Country:</b><br />
+						<h:selectOneMenu id="claimant_country" value="#{claimantViewModel_1.claimant.addressOfRecord.countryCode}" >
+							 	<f:selectItem itemLabel="" itemValue=""/>
+								<f:selectItems value="#{claimantViewModel_1.countryList}" required="true"  />
+						</h:selectOneMenu>																
+				</div>
+			</div>
+		
+			
+			<p:spacer width="100%" height="15" />
+			<div id="alternate_payee_div_tr">
+				<div id="alternate_payee_div_td1">
+					<b>Tax ID:</b><br />
+					<table border="0" width="20%">
+						<tr>
+							<td><h:selectOneMenu style="width:54px;" id="claimant_TaxId"
+									value="#{claimantViewModel_1.identificationType}" maxlength="3"
+									required="true"
+									requiredMessage="Please, select the identificationType">
+									<f:ajax render="identificationFields" />
+									<f:selectItem itemValue="SSN" itemLabel="SSN" />
+									<f:selectItem itemValue="TIN" itemLabel="TIN" />
+									<f:selectItem itemValue="EIN" itemLabel="EIN" />
+								</h:selectOneMenu>
+							</td>
+							<td><h:panelGroup id="identificationFields">
+									<p:inputMask size="9"
+										value="#{claimantViewModel_1.claimant.ssn}" mask="***-**-****"
+										maxlength="9" id="claimant_ssn"
+										rendered="#{claimantViewModel_1.identificationType=='SSN'}"></p:inputMask>
+									<p:message for="claimant_ssn" />
+									<p:inputMask size="9"
+										value="#{claimantViewModel_1.claimant.tin}" mask="**-*******"
+										maxlength="9" id="claimant_tin"
+										rendered="#{claimantViewModel_1.identificationType=='TIN'}"></p:inputMask>
+									<p:message for="claimant_tin" />
+									<p:inputMask size="9"
+										value="#{claimantViewModel_1.claimant.ein}" mask="**-*******"
+										maxlength="9" id="claimant_ein"
+										rendered="#{claimantViewModel_1.identificationType=='EIN'}"></p:inputMask>
+									<p:message for="claimant_ein" />
+								</h:panelGroup>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="alternate_payee_div_td1">&nbsp;</div>
+				<div id="alternate_payee_div_td1">
+					<b>Certification Type:</b><br />
+					<h:selectOneMenu id="claimant_certificationStatus"
+						value="#{claimantViewModel_1.claimant.certificationType}"
+						maxlength="12">
+						<f:selectItem itemValue="" itemLabel="" />
+						<f:selectItem itemValue="W8-Foreign" itemLabel="W8-Foreign" />
+						<f:selectItem itemValue="W9-US Citizen" itemLabel="W9-US Citizen" />
+					</h:selectOneMenu>
+				</div>
+				<div id="alternate_payee_div_td1">
+					<b>Certification Date:</b><br />
+					<p:calendar id="claimant_certification_Date1_1"
+						value="#{claimantViewModel_1.claimant.certificationDate}"
+						size="10" pattern="MM/dd/yyyy" maxlength="10" />
+				</div>
+				<div id="alternate_payee_div_td1">
+					<b>Tax Country:</b><br/>
+					<p:message id="claimant_TaxCountry_Error" for="claimant_TaxCountry" />
+					<h:selectOneMenu id="claimant_TaxCountry" value="#{claimantViewModel_1.claimant.taxCountryCode}">
+						<f:selectItem itemLabel="" itemValue=""/>
+						<f:selectItems value="#{claimantViewModel_1.countryList}" />
+					</h:selectOneMenu>	
+				</div>				
+			</div>
+			<p:spacer width="100%" height="15" />
+			<div id="alternate_payee_div_tr">
+				<div id="alternate_payee_div_td1">
+					<b>US Citizen:</b><br />
+					<p:message  id="claimant_USCitizen_Error" for="claimant_USCitizen" />
+					<h:selectOneMenu id="claimant_USCitizen"
+						value="#{claimantViewModel_1.claimant.usCitizen}" maxlength="3">
+						<f:selectItem itemValue="" itemLabel="" />
+						<f:selectItem itemValue="true" itemLabel="Yes" />
+						<f:selectItem itemValue="false" itemLabel="No" />
+					</h:selectOneMenu>
+				</div>
+				<div id="alternate_payee_div_td1">
+					<font color="red">*</font><b>Reason:</b><br />
+					<p:message id="claimant_Reason_Error" for="claimant_Reason" />
+					<h:selectOneMenu id="claimant_Reason"
+						value="#{claimantViewModel_1.claimant.alternatePayeeResonCode}"
+						maxlength="20" required="true"
+						requiredMessage="Please, select the Reasoncode">
+						<f:selectItem itemValue="" itemLabel="" />
+						<f:selectItem itemValue="deceased" itemLabel="deceased" />
+						<f:selectItem itemValue="divorced" itemLabel="divorced" />
+						<f:selectItem itemValue="custodian change"
+							itemLabel="custodian change" />
+					</h:selectOneMenu>
+				</div>
+			</div>
+		</div>
+	</p:fieldset>
+	
+	</h:panelGroup> 
+	<p class="space"></p>
+	<div id="buttonsection">
+		<p:commandButton id="addMore" action="saveConfirm" immediate="true"
+			disabled="#{!sec:canAddAlternatePayees()}"
+			oncomplete="confirmationAddMode.show()" value="Add Alternate Payee" />
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			disabled="#{!sec:canAddAlternatePayees()}"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<p:confirmDialog id="addMoreMessage" message="Are you sure you want to save the changes?"
+		header="Save" severity="alert" widgetVar="confirmationAddMode"
+		modal="true">
+		<p:commandButton id="addMoreMessageYes" value="Yes" ajax="false" update="grid"
+			oncomplete="confirmationAddMode.hide()" action="addMore" />
+		<p:commandButton id="addMoreMessageNo" value="No" onclick="confirmationAddMode.hide()"
+			type="button" />
+	</p:confirmDialog>
+	
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+	
+</ui:composition>
+</html>

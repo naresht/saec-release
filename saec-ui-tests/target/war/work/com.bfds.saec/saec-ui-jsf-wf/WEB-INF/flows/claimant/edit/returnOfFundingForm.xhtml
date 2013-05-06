@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+	<div id="return_fund_div_table">
+		<div id="return_fund_div_tr">
+			<div id="return_fund_div_lft">
+				<div id="return_fund_div_table">
+					<div id="return_fund_div_tr">
+						<div id="return_fund_div_td">Check #:</div>
+						<div id="return_fund_div_td1">
+							<h:outputText
+								value="#{returnOfFundingViewModel.selectedPayment.identificatonNo}"
+								maxlength="6" />
+						</div>
+					</div>
+					<div id="return_fund_div_tr">
+						<div id="return_fund_div_td">Check Amount:</div>
+						<div id="return_fund_div_td1">
+							<h:outputText
+								value="#{returnOfFundingViewModel.selectedPayment.paymentAmount}">
+								<f:convertNumber currencySymbol="$" type="currency"
+									minFractionDigits="2" maxFractionDigits="2" />
+							</h:outputText>
+						</div>
+					</div>
+					<div id="return_fund_div_tr">
+						<div id="return_fund_div_td">Prior ROF Amount:$</div>
+						<div id="return_fund_div_td1">
+							<h:outputText value="#{returnOfFundingViewModel.priorRofAmount}">
+								<f:convertNumber currencySymbol="$" type="currency"
+									minFractionDigits="2" maxFractionDigits="2" />
+							</h:outputText>
+						</div>
+					</div>
+					<div id="return_fund_div_tr">
+						<div id="return_fund_div_td">Amount of ROF:$</div>
+						<div id="return_fund_div_td1">
+							<p:inputText id="AmountofROF"
+								value="#{returnOfFundingViewModel.rofAmount}">
+								<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+							</p:inputText>
+						</div>
+					</div>
+					<div id="return_fund_div_tr">
+						<div id="return_fund_div_td">Interest:$</div>
+						<div id="return_fund_div_td1">
+							<p:inputText id="Interest"
+								value="#{returnOfFundingViewModel.rofInterest}">
+								<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+							</p:inputText>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="return_fund_div_rgt">
+				<div id="return_fund_div_table">
+					<div id="return_fund_div_tr">
+						<div id="return_fund_div_td">Date:</div>
+						<div id="return_fund_div_td1">
+							<p:calendar id="Date" value="#{returnOfFundingViewModel.rofDate}"
+								size="8" pattern="MM/dd/yyyy" maxlength="10"/>
+						</div>
+					</div>
+					<div id="return_fund_div_tr">
+						<div id="return_fund_div_td">Residual Monies:</div>
+						<div id="return_fund_div_td1">
+							<h:selectOneMenu id="ResidualMonies"
+								value="#{returnOfFundingViewModel.residual}">
+								<f:selectItem itemValue="true" itemLabel="Yes" />
+								<f:selectItem itemValue="false" itemLabel="No" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+					<div id="return_fund_div_tr">
+						<div id="return_fund_div_td">Comments:</div>
+						<div id="return_fund_div_td1">
+							<p:inputTextarea id="comments"
+								value="#{returnOfFundingViewModel.rofComments}" maxlength="255" autoResize="false"
+								size="60"></p:inputTextarea>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm"		
+			disabled="#{!sec:canDoROF()}"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+	<p:messages/>
+	<f:param name="id" value="#{claimant.claimant.id}" />
+	<ui:include src="../edit/claimantHeaderForm.xhtml" />
+	<p:panel>
+		<center>
+			<span
+				style="font-family: Arial, Helvetica, sans-serif; color: #003968; font-size: 17pt; font-weight: normal; text-decoration: none; font-style: normal; text-align: center; margin-top: 17px; margin-bottom: 17px;">Reissue</span><br />
+		</center>
+		<div id="reissue_div_table">
+			<div id="reissue_div_tr">
+				<div id="reissue_div_lft">
+					<b>Reference #:</b><br />
+					<h:outputText value="#{claimantViewModel.claimant.referenceNo}"></h:outputText>
+					<p:spacer height="15" width="100%" />
+					<b>Pay to:</b><br />
+					<h:outputText escape="false"
+						value="#{checkViewModel.paytoNameAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+				<div id="reissue_div_rgt">
+					<b>Address: </b><br />
+					<h:outputText escape="false"
+						value="#{checkViewModel.checkAddressAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+			</div>
+			<p:spacer height="20" width="100%" />
+			<div id="reissue_div_tr">
+				<div id="check_select_div_lft">
+					<b>Reissue: </b>Check #
+					<h:outputText value="#{checkViewModel.check.identificatonNo}"></h:outputText>
+				</div>
+				<div id="check_select_div_rgt">
+					<b>Payment Amount: </b>
+					<h:outputText value="#{check.paymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</div>
+			</div>
+			<p:spacer height="10" width="100%" />
+			<p:outputPanel id="lazypanel_buttons" layout="block">
+				<h:panelGroup id="id_buttons"
+					rendered="#{!requestScope.shouldRenderButtons}">
+					<div id="reissue_div_tr">
+						<div id="check_select_div_td">
+							<div id="buttonsection">
+								Reissue method?&nbsp;&nbsp;
+								<p:commandButton id="check" action="show" value="Check" ajax="false" immediate="true"/>
+								&nbsp;OR&nbsp;&nbsp;
+								<p:commandButton id="wire" action="changeCheckToWire"
+									ajax="false" value="Wire" />
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+			</p:outputPanel>
+		</div>
+		<p:outputPanel id="lazypanel" layout="block">
+			<h:panelGroup id="AddressTable">
+				<div style="display:#{checkViewModel.showTable ? 'block' : 'none'}">
+				<p:spacer width="100%" height="20" />
+				<b>&curren; Please choose the correct address</b>
+				<table border="0" class="fieldsetreissuetable" summary="">
+					<tr class="header">
+						<td>Select</td>
+						<td>Address Type</td>
+						<td>Address</td>
+						<td>City</td>
+						<td>State</td>
+						<td>Zip</td>
+						<td>Letter Code</td>
+						<td>Special Pull or Audit</td>
+						<td>Group Mail Code</td>
+					</tr>
+					<tr class="row1">
+						<td><input type="radio" name="addressToUse" value="AOR"
+							checked="#{checkViewModel.check.payTo.aorMailingAddress ? 'checked' : ''}" />
+						</td>
+						<td><h:outputText
+								value="#{checkViewModel.check.payTo.addressOfRecord.addressType}" />
+						</td>
+						<td><h:outputText
+								value="#{checkViewModel.check.payTo.addressOfRecord.address1}" />
+						</td>
+						<td><h:outputText
+								value="#{checkViewModel.check.payTo.addressOfRecord.city}" /></td>
+						<td><h:outputText
+								value="#{checkViewModel.check.payTo.addressOfRecord.stateCode}" />
+						</td>
+						<td><h:outputText
+								value="#{checkViewModel.check.payTo.addressOfRecord.zipCode.zip}" />
+						</td>
+						<td><p:inputText value="#{checkViewModel.check.letterCode}" maxlength="3" /></td>
+						<td><h:selectBooleanCheckbox value="#{checkViewModel.check.auditable}"/></td>
+						<td><p:inputMask value="#{checkViewModel.check.groupMailCode}" mask="?999" maxlength="3">
+								<f:converter  converterId="groupMailCodeConverter" />
+							</p:inputMask>
+						</td>
+					</tr>
+					<p:outputPanel
+						rendered="#{checkViewModel.check.payTo.hasSeasonalAddress()}">
+						<tr class="row2">
+							<td><input type="radio" name="addressToUse" value="SEASONAL"
+								checked="#{checkViewModel.check.payTo.seasonalMailingAddress ? 'checked' : ''}" />
+							</td>
+							<td><h:outputText
+									value="#{checkViewModel.check.payTo.seasonalAddress.addressType}" />
+							</td>
+							<td><font color="red">*</font>
+							<h:outputText
+									value="#{checkViewModel.check.payTo.seasonalAddress.address1}" />
+							</td>
+							<td><font color="red">*</font>
+							<h:outputText
+									value="#{checkViewModel.check.payTo.seasonalAddress.city}" />
+							</td>
+							<td><font color="red">*</font>
+							<h:outputText
+									value="#{checkViewModel.check.payTo.seasonalAddress.stateCode}" />
+							</td>
+							<td><font color="red">*</font>
+							<h:outputText
+									value="#{checkViewModel.check.payTo.seasonalAddress.zipCode.zip}" />
+							</td>
+							<td><p:inputText value="#{checkViewModel.check.letterCode}" maxlength="3" /></td>
+							<td><h:selectBooleanCheckbox value="#{checkViewModel.check.auditable}"/></td>
+							<td><p:inputMask value="#{checkViewModel.check.groupMailCode}" mask="?999" maxlength="3">
+								<f:converter  converterId="groupMailCodeConverter" />
+							</p:inputMask>
+							</td>
+						</tr>
+					</p:outputPanel>
+					<tr class="row1">
+						<td><input type="radio" name="addressToUse"
+							value="ONE_TIME_MAILING" /></td>
+						<td>One Time Mailing</td>
+						<td><p:inputText id="address1"
+								value="#{checkViewModel.onetimeMailingAddressForReissue.address1}"
+								maxlength="60" 
+								requiredMessage="Please, fill the Address"></p:inputText> <p:message
+								for="address1" /></td>
+						<td><p:inputText id="claimant_City"
+								value="#{onetimeMailingAddressForReissue.city}" maxlength="20"
+								requiredMessage="Please, fill the city"></p:inputText>
+							<p:message for="claimant_City" /></td>
+						<td><p:inputText id="claimant_State"
+								value="#{onetimeMailingAddressForReissue.stateCode}"
+								maxlength="2"
+								requiredMessage="Please, fill the statecode"></p:inputText> <p:message
+								for="claimant_State" /></td>
+						<td><p:inputMask id="claimant_Zip"
+								value="#{onetimeMailingAddressForReissue.zipCode.zip}" mask="99999"
+								maxlength="5"
+								requiredMessage="Please, fill the Zipcode"></p:inputMask> <p:message
+								for="claimant_Zip" /></td>
+						<td><p:inputText id="letterCode" value="#{checkViewModel.check.letterCode}" maxlength="3" /></td>
+						<td><h:selectBooleanCheckbox id="audit" value="#{checkViewModel.check.auditable}"/></td>
+						<td><p:inputMask id="groupMailCode" value="#{checkViewModel.check.groupMailCode}" mask="?999" maxlength="3">
+								<f:converter  converterId="groupMailCodeConverter" />
+							</p:inputMask>
+						</td>
+					</tr>
+
+				</table>
+				</div>
+			</h:panelGroup>
+		</p:outputPanel>
+
+		<p:remoteCommand name="lazyload" update="lazypanel,lazypanel_buttons">
+			<f:setPropertyActionListener value="#{true}"
+				target="#{requestScope.shouldRender}" />
+			<f:setPropertyActionListener value="#{true}"
+				target="#{requestScope.shouldRenderButtons}" />
+		</p:remoteCommand>
+	</p:panel>
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm" rendered="#{checkViewModel.showTable}" 
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<p:confirmDialog id="reissueSaveMessage" message="Are you sure you want to save?" modal="true"
+		header="Save" severity="alert" widgetVar="confirmationSave">
+		<p:commandButton id="reissueSaveYes" value="Yes" oncomplete="confirmationSave.hide()"
+			disabled="#{!sec:canReissueCheck()}"
+			ajax="false" action="saveReissue" />
+		<p:commandButton id="reissueSaveNo" value="No" onclick="confirmationSave.hide()"
+			type="button" />
+	</p:confirmDialog>
+
+	<p:confirmDialog id="reissueExitMessage" message="Are you sure you want to exit ?"
+		header="Exit" severity="alert" widgetVar="confirmationExit"
+		modal="true">
+		<p:commandButton id="reissueExitYes" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" immediate="true" action="exit" />
+		<p:commandButton id="reissueExitNo" value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+
+</ui:composition>
+</html>
+

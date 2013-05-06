@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Primary Contact">
+		<p:message for="contactNumberFields" />
+		<div id="grid" class="contact_info_div_table">
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">Reference #:</div>
+				<div id="contact_info_div_rgt">
+					<h:outputText value="#{claimantViewModel.claimant.referenceNo}" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">Name :</div>
+				<div id="contact_info_div_rgt">
+					<h:outputText escape="false"
+						value="#{claimantViewModel.registrationText}" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">Address :</div>
+				<div id="contact_info_div_rgt">
+					<h:outputText escape="false"
+						value="#{claimantViewModel.addressText}" />
+				</div>
+			</div>
+			
+			<h:panelGroup id="contactNumberFields">
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Home Phone: " />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputMask id="claimant_HomePhone"
+						mask="?999999999999999" placeHolder="" value="#{claimantViewModel.claimant.primaryContact.phoneNo}"
+						maxlength="15" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Cell Phone: " />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputMask id="claimant_CellPhone"
+						mask="?999999999999999" placeHolder="" value="#{claimantViewModel.claimant.primaryContact.cellPhoneNo}"
+						maxlength="15" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Work Phone: " />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputMask id="claimant_WorkPhone"
+						mask="?999999999999999" placeHolder="" value="#{claimantViewModel.claimant.primaryContact.workPhoneNo}"
+						maxlength="15"  />
+				</div>
+			</div>
+			</h:panelGroup>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Email: " />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputText id="claimant_Email"
+						value="#{claimantViewModel.claimant.primaryContact.email}">
+					<f:validator validatorId="emailValidator" /></p:inputText>
+					<p:message for="claimant_Email" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Comments: " />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputTextarea id="conatcatInfoComments"
+						value="#{claimantViewModel.claimant.primaryContact.comments}"
+						style="width:300px;height:100px;" effectDuration="400"
+						autoResize="false" maxlength="255" />
+				</div>
+			</div>
+		</div>
+	</p:fieldset>
+	<p:outputPanel id="contacts">
+		<p:fieldset legend="More Contacts">
+			<p:dataTable var="contact" value="#{contactViewModel.contactList}"
+				id="contactList" editable="true">
+				<p:column headerText="Options" style="width:150px">
+					<p:rowEditor />
+				</p:column>
+				<p:column headerText="Name" style="width:150px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{contact.name.firstName}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="newName"  value="#{contact.name.firstName}" style="width:100%"
+								maxlength="60" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Home Phone" style="width:150px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{contact.phoneNo}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputMask id="claimant_HomePhone1" value="#{contact.phoneNo}"
+								mask="?999999999999999" placeHolder="" maxlength="15"  />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Cell Phone" style="width:150px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{contact.cellPhoneNo}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputMask id="claimant_CellPhone1"
+								value="#{contact.cellPhoneNo}" mask="?999999999999999" placeHolder="" maxlength="15"  />								
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Work Phone" style="width:150px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{contact.workPhoneNo}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputMask id="claimant_WorkPhone1"
+								value="#{contact.workPhoneNo}" mask="?999999999999999" placeHolder="" maxlength="15"  />								
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Comments" style="width:150px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{contact.comments}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputTextarea id="newNameComments"  value="#{contact.comments}" maxlength="255"
+								autoResize="false" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Delete" style="width:150px">
+					<h:commandLink value="Delete" update="@form">
+						<p:collector value="#{contact}"
+							removeFrom="#{contactViewModel.contactList}" />
+					</h:commandLink>
+				</p:column>
+			</p:dataTable>
+			<p:spacer width="100%" height="10" />
+			<p:commandButton id="contactInfoAdd" value="Add" update="contacts @parent"
+				action="#{contactViewModel.reinit}">
+				<p:collector value="#{contactViewModel.newContact}"
+					addTo="#{contactViewModel.contactList}" />
+			</p:commandButton>
+		</p:fieldset>
+	</p:outputPanel>
+
+	<div id="buttonsection">
+		<p:commandButton id="saveContactConfirm" action="saveContactConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitContactConfirm" action="exitContactConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+		<p:commandButton id="reset" type="reset" value="Clear" immediate="true" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>

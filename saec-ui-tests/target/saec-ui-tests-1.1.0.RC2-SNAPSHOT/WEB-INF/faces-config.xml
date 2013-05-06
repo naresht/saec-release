@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+	<application>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<supported-locale>en</supported-locale>
+			<supported-locale>fr</supported-locale>
+		</locale-config>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+	</application>
+	<render-kit>
+		<renderer>
+			<component-family>org.primefaces.component</component-family>
+			<renderer-type>org.primefaces.component.CalendarRenderer</renderer-type>
+			<renderer-class>com.bfds.saec.web.ui.components.calendar.CalendarRenderer</renderer-class>
+		</renderer>
+	</render-kit>
+    
+	<converter>
+		<converter-for-class>java.util.Date</converter-for-class>
+		<converter-class>com.bfds.saec.web.util.CustomDateTimeConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-for-class>java.sql.Date</converter-for-class>
+		<converter-class>com.bfds.saec.web.util.CustomDateTimeConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-for-class>java.lang.String</converter-for-class>
+		<converter-class>com.bfds.saec.web.ui.components.EmptyToNullConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-for-class>com.bfds.saec.domain.reference.AddressType</converter-for-class>
+		<converter-class>com.bfds.saec.web.ui.components.AddressTypeEnumConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-for-class>com.bfds.saec.domain.reference.CallType</converter-for-class>
+		<converter-class>com.bfds.saec.web.ui.components.CallTypeEnumConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-for-class>com.bfds.saec.domain.reference.MailType</converter-for-class>
+		<converter-class>com.bfds.saec.web.ui.components.MailTypeEnumConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>com.bfds.saec.faces.convert.IntegerPercentageConverter</converter-id>
+		<converter-class>com.bfds.saec.faces.convert.IntegerPercentageConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>groupMailCodeConverter</converter-id>
+		<converter-class>com.bfds.saec.web.util.GroupMailCodeConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>dateConverter</converter-id>
+		<converter-class>com.bfds.saec.web.util.CustomDateConverter</converter-class>
+	</converter>
+	<converter>
+    	<converter-id>roleConverter</converter-id>
+    	<converter-class>com.bfds.saec.web.util.EntityConverter</converter-class>
+	</converter>
+	
+	<validator>
+		<validator-id>emailValidator</validator-id>
+		<validator-class>com.bfds.saec.web.util.CustomEmailValidator</validator-class>
+	</validator>
+</faces-config>

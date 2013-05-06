@@ -1,0 +1,50 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:app="http://springfuse.jaxio.com/app">
+
+    <p:fieldset id="searchFormFieldSet" legend="Add approved User"
+                collapsed="#{tranchAssignmentViewModel.hasResults()}">
+        <h:form id="formSearchFields">
+            <h:panelGroup id="searchCriteriaFields">
+                <div id="check_bulk_div_table">
+                    <div id="check_bulk_div_tr">
+                        <div id="check_bulk_div_td">User :</div>
+                        <div id="check_bulk_div_td2">
+                            <p:selectOneMenu id="associateNtId" value="#{adminUserRolesViewModel.selectedUser}" required="true" requiredMessage="User is mandatory.">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItems value="#{adminUserRolesViewModel.associateNames}" var="associate" itemLabel="#{associate}" itemValue="#{associate}"/>
+                            </p:selectOneMenu>
+                            <p:message for="associateNtId" />
+                        </div>
+                    </div>
+                    <p:spacer height="10" width="100%"/>
+
+                    <div id="check_bulk_div_tr">
+                        <div id="check_bulk_div_td">Role:</div>
+                        <div id="check_bulk_div_td2">
+                            <h:selectOneMenu id="roleId"
+                                             value="#{adminUserRolesViewModel.selectedRoleName}">
+                                <f:selectItems value="#{adminUserRolesViewModel.roles}"
+                                               var="role" itemLabel="#{role.roleName}" itemValue="#{role.roleName}" />
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+            </h:panelGroup>
+            <p:spacer height="10" width="100%"/>
+
+            <div id="buttonsection">
+                <p:commandButton id="saveId" action="save" value="Save" ajax="false"/>
+            </div>
+
+        </h:form>
+    </p:fieldset>
+
+</ui:composition>
+    

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:saec="http://www.bostonfinancial.com/saec/tags"
+                xmlns:p="http://primefaces.org/ui">    
+		<div id="companytitle">
+			<table border="0" class="companytitletable" summary="">
+				<tr>
+					<td class="companyname"><span class="yellow">S</span>ettlement <span class="yellow">A</span>dministration and <span
+						class="yellow">E</span>vent <span class="yellow">C</span>enter
+					</td>					
+					<td align="right"><span class="yellow">#{saec:getCurrentEventCode()}</span> / <span class="yellow">#{saec:getCurrentEventDescription()}</span>&nbsp;|
+					    <h:outputLink id="login" value="${facesContext.externalContext.requestContextPath}/app/login" rendered="${accountContext.account == null}">
+              				<h:outputText value="Connexion"/>
+              			</h:outputLink> 
+					  	<h:outputFormat rendered="#{accountContext.account != null}" value="${accountContext.username}&nbsp;|&nbsp;"></h:outputFormat>
+					    <h:outputLink id="logout" value="${facesContext.externalContext.requestContextPath}/app/logout" rendered="${accountContext.account != null}">
+					    	<h:outputText value="Logout"/>
+					    </h:outputLink>
+					    |&nbsp;<a href="${facesContext.externalContext.requestContextPath}/app/home">Home</a>&nbsp;&nbsp;
+					</td>
+				</tr>
+			</table>
+			
+			<h:form>
+			<script type="text/javascript">
+				function logout() {
+					window.location.href = "/saec/app/logout";
+				}
+			</script>
+			<p:idleMonitor timeout="1800000" onidle="logout();" />
+  			</h:form> 
+		</div> 		    
+</ui:composition>

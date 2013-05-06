@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<h:panelGroup id="formFields">
+		<div align="right">
+			<label>Recalc Required </label>
+			<p:selectBooleanCheckbox disabled="true"  value="#{dailyPositionViewModel.isReCalcRequired()}"/>
+		</div>
+		<p:dataTable id="dailyPositions" value="#{dailyPositions}" var="item" lazy="true"
+			rowIndexVar="rowIndex" paginator="true" rows="10"
+			paginatorPosition="bottom"
+			height="#{(not empty height) ? height : '500px'}"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15,25,50,100">
+			<p:column id="date" sortBy="#{item.positionDate}">
+				<f:facet name="header">
+					<h:outputText value="Date" />
+				</f:facet>
+				<h:outputText value="#{item.positionDate}" />
+			</p:column>
+			<p:column id="fund" sortBy="#{item.securityFund.fund}"
+				filterBy="#{item.securityFund.fund}">
+				<f:facet name="header">
+					<h:outputText value="Fund" />
+				</f:facet>
+				<h:outputText value="#{item.securityFund.fund}" />
+			</p:column>
+			<p:column id="cuisp" sortBy="#{item.securityFund.securityRef.cusip}"
+				filterBy="#{item.securityFund.securityRef.cusip}">
+				<f:facet name="header">
+					<h:outputText value="Cuisp" />
+				</f:facet>
+				<h:outputText value="#{item.securityFund.securityRef.cusip}" />
+			</p:column>
+			<p:column id="ticker"
+				sortBy="#{item.securityFund.securityRef.ticker}">
+				<f:facet name="header">
+					<h:outputText value="Ticker" />
+				</f:facet>
+				<h:outputText value="#{item.securityFund.securityRef.ticker}" />
+			</p:column>
+			<p:column id="position" sortBy="#{item.shareBalance}">
+				<f:facet name="header">
+					<h:outputText value="Position" />
+				</f:facet>
+				<h:outputText value="#{item.shareBalance}" />
+			</p:column>
+			<p:column id="positionType" sortBy="#{item.positionType}"
+				filterBy="#{item.positionType}">
+				<f:facet name="header">
+					<h:outputText value="Pos. Type" />
+				</f:facet>
+				<h:outputText value="#{item.positionType}" />
+			</p:column>
+			<p:column id="positionMethod" sortBy="#{item.method}"
+				filterBy="#{item.method}">
+				<f:facet name="header">
+					<h:outputText value="Pos. Method" />
+				</f:facet>
+				<h:outputText value="#{item.method}" />
+			</p:column>
+			<p:column id="calcDate" sortBy="#{item.calculatedDate}">
+				<f:facet name="header">
+					<h:outputText value="Calc Date" />
+				</f:facet>
+				<h:outputText value="#{item.calculatedDate}" />
+			</p:column>
+			<p:column id="status" sortBy="#{item.status}"
+				filterBy="#{item.status}">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:outputText value="#{item.status}" />
+			</p:column>
+		</p:dataTable>
+		<p:spacer height="10" width="0" />
+
+	</h:panelGroup>
+	<div id="buttonsection">
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<p:confirmDialog id="exitMessage"
+		message="Are you sure you want to exit?" modal="true" header="Exit"
+		severity="alert" widgetVar="confirmationExit">
+		<p:commandButton id="exitYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exit" immediate="true" />
+		<p:commandButton id="exitNoButton" value="No"
+			onclick="confirmationExit.hide()" type="button" />
+	</p:confirmDialog>
+</ui:composition>
+</html>

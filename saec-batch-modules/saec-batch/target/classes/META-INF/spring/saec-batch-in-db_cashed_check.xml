@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<job id="dbCashedCheckJob" xmlns="http://www.springframework.org/schema/batch">
+		<validator ref="inJobParametersValidator"/>
+		<step id="	dbCashedCheckStep">
+			<tasklet transaction-manager="transactionManager"
+				start-limit="100" allow-start-if-complete="true">
+				<chunk reader="dbCashedCheckReader" writer="dbCashedCheckWriterDecorator"
+					commit-interval="100" retry-policy="retryPolicy">
+					<listeners>
+						<listener ref="retryListener" />
+						<listener ref="dbcashedcheckStepExecutionListener" />
+					</listeners>
+				</chunk>
+			</tasklet>
+		</step>
+	</job>
+	
+    <bean id="dbCashedCheckReader" class="com.bfds.saec.batch.item.database.JpaItemReader" scope="step"
+         p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+         p:queryProvider-ref="dbCashedCheckQueryProvider"
+         p:pageSize="100" />
+
+    <bean id="dbCashedCheckQueryProvider" class="org.springframework.batch.item.database.orm.DefaultFileRecordQueryProvider" scope="step"
+          p:entityClass="com.bfds.saec.batch.file.domain.in.db_cashed_check.CashedCheckRec" />
+
+
+    <bean id="dbCashedCheckWriterDecorator" class="com.bfds.saec.batch.in.FileRecordItemWriterDecorator" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:target-ref="dbCashedCheckWriter"/>
+
+	<bean id="dbCashedCheckWriter" class="com.bfds.saec.batch.in.db_cashed_check.PaidCheckItemWriter" scope="step"/>
+
+
+   <bean id="dbcashedcheckStepExecutionListener" class="com.bfds.saec.batch.in.db_cashed_check.DbcashedcheckStepExecutionListener" scope="step"/>
+</beans>
+

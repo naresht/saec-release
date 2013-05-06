@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+	<p:message for="searchCriteriaFields" />
+	<h:panelGroup id="searchCriteriaFields">
+		<f:event listener="#{checkReleaseViewModel.validateCheckRelease}"
+			type="postValidate" />
+		<div id="check_bulk_div_table">
+			<div id="check_bulk_div_tr">
+				<div id="check_bulk_div_td">Payment Amount Range:</div>
+				<div id="check_bulk_div_td1">From $</div>
+				<div id="check_bulk_div_td2">
+					<p:inputText id="fromAmount" value="#{searchCriteria.fromAmount}"
+						converterMessage="Enter a numeric value for From Amount">
+					</p:inputText>
+					<p:message for="fromAmount" style="color:red" />
+
+				</div>
+				<div id="check_bulk_div_td3">To $</div>
+				<div id="check_bulk_div_td4">
+					<p:inputText id="toAmount" value="#{searchCriteria.toAmount}"
+						converterMessage="Enter a numeric value for To Amount">
+					</p:inputText>
+					<p:message for="toAmount" style="color:red" />
+
+				</div>
+			</div>
+
+			<div id="check_bulk_div_tr">
+				<div id="check_bulk_div_td">Date Range:</div>
+				<div id="check_bulk_div_td1">From</div>
+				<div id="check_bulk_div_td2">
+					<p:calendar value="#{searchCriteria.fromDate}" id="fromDate"
+						pattern="MM/dd/yyyy" size="10" maxlength="10" />
+				</div>
+				<div id="check_bulk_div_td3">To</div>
+				<div id="check_bulk_div_td4">
+					<p:calendar value="#{searchCriteria.toDate}" pattern="MM/dd/yyyy"
+						id="toDate" size="10" maxlength="10" />
+				</div>
+			</div>
+
+		</div>
+	</h:panelGroup>
+	<p:spacer height="10" width="100%" />
+	<div id="buttonsection">
+		<p:commandButton id="apply" action="search" value="Apply" ajax="false" />
+		<p:commandButton id="resetSearch" action="resetText" value="Clear"
+			ajax="true" update="@form" immediate="true" />
+	</div>
+</ui:composition>

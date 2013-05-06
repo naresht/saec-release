@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+<ui:composition>
+	<f:param name="id" value="#{claimant.claimant.id}" />
+	<ui:include src="../claimant/edit/claimantHeaderForm.xhtml" />
+	<p:panel title="Details">
+		<ui:include src="claimantAlternatePayeeSelectionTable.xhtml" />
+	</p:panel>
+
+	<div id="buttonsection">
+		<p:commandButton id="exitConfirm" action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+		<p:commandButton id="addAlternatePayee" action="addAlternatePayee" immediate="true" ajax="false" value="Add Alternate Payee" />
+	</div>
+
+
+	<p:confirmDialog id="exitMessage" message="Are you sure you want to exit ?"
+		header="Exit" severity="alert" widgetVar="confirmationExit"
+		modal="true">
+	
+		<p:commandButton id="exitYesButton" value="Yes" ajax="false" oncomplete="confirmationExit.hide()" immediate="true" action="exit" />
+		<p:commandButton id="exitNoButton" value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+
+</ui:composition>
+</html>

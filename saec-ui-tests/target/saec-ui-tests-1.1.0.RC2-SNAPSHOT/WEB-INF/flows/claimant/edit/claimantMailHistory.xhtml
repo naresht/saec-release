@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+<style>
+.bold {
+	font-weight: bold;
+}
+</style>
+<h:panelGroup id="mailsDataTable">
+<!-- <p:tooltip global="true" targetPosition="topLeft" position="bottomLeft" style="word-wrap:break-word;width:34em;" /> -->
+	<p:fieldset legend="Mailing History (#{claimant.mailCount})"
+		toggleable="true" toggleSpeed="500" id="mailsPanel" collapsed="true">
+		<!-- dummy button start -->
+			<p:commandButton style="width:0px;height:0px;cursor:none;border:0px solid #ffffff;background-color:#fff;"/>
+		<!-- dummy button end -->
+		<h:panelGroup id="mailHistoryDataTable">
+			<p:commandButton id="mailingHistoryExpand" value="Expand" action="expand"
+				 process="@this" update=":form:mailHistoryDataTable" rendered="#{!claimant.expandFlag}" >
+			</p:commandButton>
+			<p:commandButton id="mailingHistoryCollapse" value="Collapse" action="collapse" ajax="true"
+				process="@this" update=":form:mailHistoryDataTable" rendered="#{claimant.expandFlag}"></p:commandButton>
+			<p:spacer width="100%" height="10" />
+			
+		<p:dataTable id="mails" var="mail" value="#{allMails}"
+			scrollable="true" rowIndexVar="rowIndex" scrollWidth="975" scrollHeight="226" rowStyleClass="#{ (mail.letterStatus == 'NIGO' || mail.letterStatus == 'IGO' || empty mail.letterStatus)  ? 'bold' : null }">
+			<p:column headerText="#" width="25">
+						#{rowIndex+1}
+					</p:column>
+
+			<p:column id="mailingDate" width="125" sortBy="#{mail.mailDate}" filterBy="#{claimant.getFilterDateOfMail(mail)}" >
+				<f:facet name="header">
+					<h:outputText value="Mail Date:" />
+				</f:facet>
+				<h:outputText value="#{mail.mailDate}">
+					<!-- <f:convertDateTime pattern="MM/dd/yyyy KK:mm" /> -->
+				</h:outputText>
+			</p:column>
+			<p:column id="mailType" width="125"
+				sortBy="#{mail.mailTypeDescription}" filterBy="#{mail.mailTypeDescription}">
+				<f:facet name="header">
+					<h:outputText value="Mailing Type" />
+				</f:facet>
+				<h:outputText value="#{mail.mailType}" />
+			</p:column>
+			<p:column id="controlNo" width="125"
+				sortBy="#{claimant.getSortMailingControlNo(mail.mailingControlNo)}"
+				filterBy="#{mail.mailingControlNo}">
+				<f:facet name="header">
+					<h:outputText value="Mailing Control #" />
+				</f:facet>
+				<h:outputText value="#{mail.mailingControlNo}" />
+			</p:column>
+			<p:column id="mailHistoryDesc" width="125" sortBy="#{mail.description}"
+				filterBy="#{mail.description}">
+				<f:facet name="header">
+				<h:outputText value="Description" />
+				</f:facet>				
+				<h:outputText id="desc" title="#{mail.description}" value="#{mail.description}" />
+				<p:tooltip global="true" for="desc" showEffect="slide" hideEffect="slide"/>
+			</p:column>
+			<p:column id="letterCode" width="70"
+				rendered="#{claimant.expandFlag}" sortBy="#{mail.letterCode.code}">
+				<f:facet name="header">
+					<h:outputText value="Letter Code" />
+				</f:facet>
+				<h:outputText value="#{mail.letterCode.code}" />
+			</p:column>
+			<p:column id="auditable" width="70"
+				rendered="#{claimant.expandFlag}">
+				<f:facet name="header">
+					<h:outputText value="Audit" />
+				</f:facet>
+				<h:outputText value="#{mail.auditable == true ? 'A' : ''}" />
+			</p:column>
+			<p:column id="specialPull" width="70"
+				rendered="#{claimant.expandFlag}">
+				<f:facet name="header">
+					<h:outputText value="Special Pull" />
+				</f:facet>
+				<h:outputText value="#{mail.specialPull == true ? 'S' : ''}" />
+			</p:column>
+			<p:column id="groupMailCode" width="100"
+				rendered="#{claimant.expandFlag}" sortBy="#{mail.groupMailCode.code}">
+				<f:facet name="header">
+					<h:outputText value="Group Mail Code" />
+				</f:facet>
+				<h:outputText value="#{mail.groupMailCode}"/>
+			</p:column>
+			<p:column id="letterStatus" width="125"
+				sortBy="#{mail.statusDescription}" filterBy="#{mail.statusDescription}">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:outputText value="#{mail.statusDescription}" />
+			</p:column>
+			<p:column id="rpoType" width="125">
+				<f:facet name="header">
+					<h:outputText value="RPO Type" />
+				</f:facet>
+				<h:outputText value="#{mail.rpoTypeDescription}" />
+			</p:column>
+			<p:column id="rpoDate" width="125">
+				<f:facet name="header">
+					<h:outputText value="RPO Date" />
+				</f:facet>
+				<h:outputText value="#{mail.rpoDate}">
+				<!-- <f:convertDateTime pattern="MM/dd/yyyy" /> -->
+				<f:converter  converterId="dateConverter" />
+				</h:outputText>
+			</p:column>
+			<p:column id="mailHistroyComments" width="125">
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>	
+				<h:outputText id="Comments" title="#{mail.comments}" value="#{mail.comments}" />
+				 <p:tooltip for="Comments" targetPosition="topRight" position="bottomLeft" showEffect="slide" hideEffect="slide"/>  
+			</p:column>
+			<p:column id="userId" width="125" sortBy="#{mail.userId}"
+				filterBy="#{mail.userId}">
+				<f:facet name="header">
+					<h:outputText value="User Id" />
+				</f:facet>
+				<h:outputText value="#{mail.userId}" />
+			</p:column>
+		</p:dataTable>
+		</h:panelGroup>
+		<p:spacer height="10" width="0" />
+		<div class="exportlnk">
+			Export to 
+			<h:commandLink>Excel<p:dataExporter type="xls" target="mails" fileName="account-mails" excludeColumns="0" /></h:commandLink> /
+			<h:commandLink>PDF<p:dataExporter type="pdf" target="mails" fileName="account-mails" excludeColumns="0" /></h:commandLink> /
+			<h:commandLink>Csv<p:dataExporter type="csv" target="mails" fileName="account-mails" excludeColumns="0" /></h:commandLink>
+		</div>
+		<p:spacer height="10" width="0" />
+	</p:fieldset>
+	</h:panelGroup>
+</ui:composition>
+</html>

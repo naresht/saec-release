@@ -1,0 +1,5 @@
+ V 000DDA-1     000077777704251200000000120               000000000000000       RegistrationName1                                           RegistrationName2                                           
+   000DDA-1     000001234504251200000000100               000000000000000       RegistrationName1                                           RegistrationName2                                           
+   000DDA-1     006666666604251200000000120               000000000000000       RegistrationName1                                           RegistrationName2                                           
+   000DDA-1     000001234604251200000000143               000000000012347       RegistrationName1                                           RegistrationName2                                           
+ V 000DDA-1     005555555504251200000000100               000000000000000       RegistrationName1                                           RegistrationName2                                           

@@ -1,0 +1,44 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/layouts/template1CH.xhtml">
+	<ui:define name="body">
+		<p:panel header="Login" styleClass="standardContentPanel" style="width: 500px;margin:auto;">
+			<form action="${request.contextPath}/app/logincheck" method="post" autocomplete="off">
+			<div id="login_div_table">
+				<div id="login_div_tr">
+					<div id="login_div_td_lft">&nbsp;</div>
+					<div id="login_div_td_rgt">
+						<c:if test="${not empty param.login_error}">
+							<span class="red">#{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}</span>
+						</c:if>
+					</div>
+				</div>
+				<div id="login_div_tr">
+					<div id="login_div_td_lft">Username:</div>
+					<div id="login_div_td_rgt">
+						<c:if test="${not empty param.login_error}">
+							<c:set var="username" value="${sessionScope.SPRING_SECURITY_LAST_USERNAME}" />
+						</c:if>
+						<input type="text" name="j_username" value="#{username}" />
+					</div>					
+				</div>
+				<div id="login_div_tr">
+					<div id="login_div_td_lft">Password:</div>
+					<div id="login_div_td_rgt"><input type="password" name="j_password" /></div>					
+				</div>
+				<div id="login_div_tr">
+					<div id="login_div_td_lft">&nbsp;</div>
+					<div id="login_div_td_rgt"><input type="checkbox" name="_spring_security_remember_me" />Don't ask for my password for two weeks</div>					
+				</div>
+				<div id="login_div_tr">
+					<div id="login_div_td_lft">&nbsp;</div>
+					<div id="login_div_td_rgt"><input name="submit" type="submit" value="Login" /></div>					
+				</div>
+			</div>			
+			</form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

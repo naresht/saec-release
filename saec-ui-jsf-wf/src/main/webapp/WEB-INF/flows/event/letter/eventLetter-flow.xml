@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="eventViewModel" class="com.bfds.saec.web.model.EventViewModel"/>
+	<input name="eventViewModel" required="true" type="com.bfds.saec.web.model.EventViewModel" />
+	
+    
+	<view-state id="eventLetter">
+		<on-entry> 
+		 	<evaluate expression="eventViewModel.loadAllLetterCodes()" ></evaluate>		
+		 </on-entry>		
+	    <transition on="exitEventLetter"/> 
+	    <transition on="saveEventLetter"/>
+		<transition on="exit" to="exitEventLetter"/>
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	    <transition on="save" to="exitEventLetter">
+	    	<evaluate expression="eventViewModel.saveEventLetterCodes(messageContext)" />
+	    </transition>		
+	    
+		<transition on="addNewLetter">
+			<evaluate expression="eventViewModel.addNewLetter(messageContext)"></evaluate>
+		</transition>
+		<transition on="saveNewLetter">
+			<evaluate expression="eventViewModel.saveNewLetter(messageContext)"></evaluate> 
+		</transition>
+	</view-state>	
+	
+  <end-state id="exitEventLetter"/>	
+</flow>

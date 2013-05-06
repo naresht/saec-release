@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<h:panelGroup id="formFields">
+		<p:fieldset legend="Outbound Payments">
+
+			<p:dataTable id="formList" value="#{outboundPayments}" var="item"
+				binding="#{deleteViewModel.datatable}" rowIndexVar="rowIndex"
+				paginator="true" rows="5" paginatorPosition="bottom"
+				height="#{(not empty height) ? height : '500px'}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15,25,50,100" dynamic="true">
+
+				<p:column headerText="#">
+		#{rowIndex+1}
+			</p:column>
+
+				<p:column id="paymentType">
+					<f:facet name="header">
+						<h:outputText value="Payment Type" />
+					</f:facet>
+					<h:outputText value="#{item.paymentType}" />
+				</p:column>
+
+				<p:column id="checkNumber">
+					<f:facet name="header">
+						<h:outputText value="Check #" />
+					</f:facet>
+					<h:outputText value="#{item.checkNumber}" />
+				</p:column>
+
+				<p:column id="TIN">
+					<f:facet name="header">
+						<h:outputText value="TIN" />
+					</f:facet>
+					<h:outputText value="#{item.tin}" escape="false" />
+				</p:column>
+				<p:column id="name">
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{item.name}" escape="false" />
+				</p:column>
+				<p:column id="address">
+					<f:facet name="header">
+						<h:outputText value="Address" />
+					</f:facet>
+					<h:outputText value="#{item.address}" escape="false" />
+				</p:column>
+				<p:column id="city">
+					<f:facet name="header">
+						<h:outputText value="City" />
+					</f:facet>
+					<h:outputText value="#{item.city}" />
+				</p:column>
+				<p:column id="state">
+					<f:facet name="header">
+						<h:outputText value="State" />
+					</f:facet>
+					<h:outputText value="#{item.state}" />
+				</p:column>
+				<p:column id="zip">
+					<f:facet name="header">
+						<h:outputText value="Zip" />
+					</f:facet>
+					<h:outputText value="#{item.zip}" />
+				</p:column>
+				<p:column id="countryOfResidency">
+					<f:facet name="header">
+						<h:outputText value="Country Of Residency" />
+					</f:facet>
+					<h:outputText value="#{item.countryOfResidency}" />
+				</p:column>
+				<p:column id="totalPaymentAmount">
+					<f:facet name="header">
+						<h:outputText value="Total Payment Amount" />
+					</f:facet>
+					<h:outputText value="#{item.totalPaymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+
+				<p:column id="delete">
+					<f:facet name="header">
+						<h:outputText value="Delete" />
+					</f:facet>
+					<h:selectBooleanCheckbox value="#{deleteViewModel.delete}" id="unProcessedTaxDelete">
+						<f:param name="item" value="#{item}" />
+						<!-- f:ajax event="click" immediate="true"
+							listener="#{deleteViewModel.markTobeDeleted(item)}" / -->
+					</h:selectBooleanCheckbox>
+
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+	</h:panelGroup>
+	<p:spacer height="10" width="0" />
+	<div id="buttonsection">
+		<p:commandButton id="deleteConfirm" action="deleteConfirm"
+			immediate="true" oncomplete="confirmationDelete.show()"
+			value="Delete" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<p:confirmDialog id="deleteDialog"
+		message="Are you sure you want to Delete the Record(s)[Deletes the records selected if any in other pages as well]?"
+		header="Save" severity="alert" widgetVar="confirmationDelete"
+		modal="true">
+		<p:commandButton id="deleteYes" value="Yes" ajax="false"
+			update="@form" oncomplete="confirmationDelete.hide()"
+			action="deleteSelected" />
+		<p:commandButton id="deleteNo" value="No"
+			onclick="confirmationDelete.hide()" type="button" />
+	</p:confirmDialog>
+	<p:confirmDialog
+		message="Are you sure you want to exit without Deleting?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exit" immediate="true" />
+		<p:commandButton value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+</ui:composition>
+</html>

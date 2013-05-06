@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app" contentType="text/html"
+	encoding="UTF-8">
+<html>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>${resourceBundle.Title}</title>
+	<title></title>
+	<style>
+		.colorbox { width:15px; height:15px; border:1px solid #050505; float:left; margin:5px; cursor:pointer; display:block; }
+		.colorboxyellow { width:15px; height:15px; border:1px solid #050505; float:left; margin:5px; cursor:pointer; display:block; background-color: #feeebd;}
+		.colorboxgreen { width:15px; height:15px; border:1px solid #050505; float:left; margin:5px; cursor:pointer; display:block; background-color: green;}
+	</style>
+<!-- 	<script type="text/javascript" src="https://getfirebug.com/firebug-lite-beta.js"></script>	 -->
+	<script src="#{facesContext.externalContext.requestContextPath}/resource/js/styleswitch.js" type="text/javascript"></script>
+<!--<link href="#{facesContext.externalContext.requestContextPath}/resource/css/SAEC_styles.css" rel="stylesheet" type="text/css"/> -->
+	<link href="#{facesContext.externalContext.requestContextPath}/resource/sunny/skin.css" rel="stylesheet" type="text/css" />
+	<link href="#{facesContext.externalContext.requestContextPath}/resource/yellow/yellow.css" rel="alternate stylesheet" type="text/css" media="screen" title="yellow" />
+	<link href="#{facesContext.externalContext.requestContextPath}/resource/green/green.css" rel="alternate stylesheet" type="text/css" media="screen" title="green"/>
+	<script>
+		function addAutoComplete()
+			{
+				var tFields= document.getElementsByTagName('input');
+				for(var iter=0;iter&lt;tFields.length;iter++)
+					{
+						if(tFields[iter].type=='text')
+							{
+								tFields[iter].setAttribute('autocomplete','off');
+							}
+					}
+			}
+		var onError = function onError() {
+			   window.location = 'http://'+jQuery(location).attr('host')+'/saec/app/error'; 
+			 };
+			if(typeof jsf !== 'undefined' ){
+				jsf.ajax.addOnError(onError);	
+			}
+	</script> 
+</h:head>
+<body onload="addAutoComplete();" style="overflow-y:scroll">
+<table id="layout" border="0">
+	<tr>
+		<td valign="top">
+			<div>
+				<ui:include src="/WEB-INF/incl/header.xhtml"/>
+				<div id="menu"><a class="colorbox" href="javascript:chooseStyle('none',%2030)"></a> <a class="colorboxyellow" href="javascript:chooseStyle('yellow',%2030)"></a> <a class="colorboxgreen" href="javascript:chooseStyle('green',%2030)"></a><!-- <p:themeSwitcher initialText="Change Skin" buttonPreText="Skin: "/> --></div>
+				<div id="submenu"><ui:insert name="topmenu"><ui:include src="/WEB-INF/incl/topmenu.xhtml"/></ui:insert></div>
+				<div id="pagetitle"><h:outputText value="#{title}"/></div>
+				<div id="bodycontent">					
+					<ui:insert name="body"/>
+				</div>				
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign="bottom"><div id="footer">Version #{buildInfo.applicationVersion} Build# #{buildInfo.buildNo}. Copyright © 2010-2011 Boston Financial Data
+				Services Inc. All rights reserved.</div></td>
+	</tr>
+</table>	
+</body>
+</html>
+</f:view>
+

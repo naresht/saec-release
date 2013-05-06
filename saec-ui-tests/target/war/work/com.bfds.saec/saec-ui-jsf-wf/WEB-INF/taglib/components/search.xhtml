@@ -1,0 +1,51 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html" 
+  xmlns:f="http://java.sun.com/jsf/core" 
+  xmlns:c="http://java.sun.com/jsp/jstl/core"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:app="http://springfuse.jaxio.com/app">
+
+  <p:fieldset id="searchFormFieldSet" legend="${msg.search_criteria}" toggleable="true">
+    <ui:insert name="filters" />
+  	<p style="padding: 0; margin: 0; text-align: center;">
+  	<p:commandButton id="reset" action="reset" process="@form" 
+    		update="@form" value="Clear"/>
+    	<p:commandButton id="search" action="search" process="@form" icon="iconSearch" 
+    		update="#{form}List searchFormFieldSet" value="#{(empty searchValue) ? msg.Search : searchValue}"/>
+        <p:ajaxStatus>
+            <f:facet name="start">
+                <h:graphicicon value="/resource/icons/ajaxloading.gif" />
+            </f:facet>
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>    		
+  	</p>
+  </p:fieldset>
+
+  <p:fieldset legend="${msg.search_results}">
+    <p:dataTable
+      id="#{form}List"
+      value="#{data}"
+      var="item"
+      rowIndexVar="rowIndex"
+      selectionMode="single" 
+      paginator="true" rows="10" paginatorPosition="bottom" 
+      height="#{(not empty height) ? height : '500px'}" 
+      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+      rowsPerPageTemplate="5,10,15,25,50,100">      
+      <ui:insert name="result" />
+		<p:column id="open" width="#{width}" styleClass="#{styleClass}" style="#{style}">
+			<f:facet name="header">
+				<h:outputText value="${msg.actions}" />
+			</f:facet>
+            <c:if test="#{not empty select and select}">
+              <app:iconSelect action="select" />
+            </c:if>
+            <c:if test="#{empty select or not select}">
+              <app:iconEdit action="select" />
+            </c:if>
+		</p:column>
+    </p:dataTable>
+  </p:fieldset>
+</ui:component>

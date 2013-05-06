@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<div id="contact_info_div_tr">
+		<h:panelGroup rendered="#{viewModel.itemId != null}">
+			<div id="contact_info_div_lft">
+				<h:outputLabel value="Item Id :" />
+			</div>
+			<div id="contact_info_div_rgt">
+				<h:outputText value="#{viewModel.itemId}" />
+			</div>
+		</h:panelGroup>
+	</div>
+	<div id="contact_info_div_tr">
+		<div id="contact_info_div_lft">
+			<h:outputLabel value="Claim Identifier :" />
+		</div>
+		<div id="contact_info_div_rgt">
+			<h:outputText value="#{viewModel.claimantClaim.entryMethod}-#{viewModel.claimantClaim.claimIdentifier}" />
+		</div>
+	</div>
+	<div id="contact_info_div_tr">
+		<div id="contact_info_div_lft">
+			<h:outputLabel value="Control Number :" />
+		</div>
+		<div id="contact_info_div_rgt">
+			<h:outputText value="#{viewModel.claimantClaim.controlNumber}" />
+		</div>
+	</div>
+	<p:spacer width="100" height="20"/>
+	<p:panelGrid style="border:0">
+		<p:row>
+			<p:column style="vertical-align:top;width:200px" >
+				<p:panel header="Proof Type " id="pnl" >
+					<h:selectManyMenu style="width:100px;height:50px;" value="#{viewModel.selProof}">
+						<f:selectItems value="#{viewModel.proofTypes}" />
+					</h:selectManyMenu>
+					<p:commandButton value="Remove"
+						action="#{viewModel.removeCertificate}" update="pnl" />
+					<p:spacer width="100%" height="10px"/>
+					<p:selectOneMenu id="suppdoc_proofType" value="#{viewModel.selectedCerificate}" 
+						effect="fold" editable="true" style="width:100px;">
+						<f:selectItem itemLabel="" itemValue="" />
+						<f:selectItems value="#{selectItemUtil.getAllProofTypeSelectItems()}" />
+					</p:selectOneMenu>
+					<p:message id="suppdoc_proofType_error" for="suppdoc_proofType"/>
+					<p:commandButton value="Add" action="#{viewModel.addCertificate}" ajax="true" update="pnl" />
+				</p:panel>
+			</p:column>
+			<p:column style="vertical-align:top">
+				<p:panel header="Status">
+					<p:selectOneMenu id="suppdoc_status" value="#{viewModel.claimProof.status}">
+						<f:selectItem itemLabel="" itemValue="" />
+						<f:selectItem itemLabel="IGO"
+							itemValue="#{viewModel.igoProofStatus}" />
+						<f:selectItem itemLabel="NIGO"
+							itemValue="#{viewModel.nigoProofStatus}" />
+						<f:selectItem itemLabel="Pending"
+							itemValue="#{viewModel.pendingProofStatus}" />
+						<f:selectItem itemLabel="IGO Override"
+							itemValue="#{viewModel.igoOverrideProofStatus}" />
+					</p:selectOneMenu>
+					<p:message id="status_error" for="suppdoc_status"/>
+				</p:panel>
+			</p:column>
+			<p:column style="vertical-align:top">
+				<p:panel header="Date Received">
+					<p:calendar id="dateField"
+						value="#{viewModel.claimProof.dateReceived}" pattern="MM/dd/yyyy"
+						size="10" maxlength="10" />
+				</p:panel>
+			</p:column>
+			<p:column style="vertical-align:top">
+				<p:panel header="Source">
+                       <p:selectOneMenu id="suppdoc_source" value="#{viewModel.claimProof.source}">
+                               <f:selectItem itemLabel="" itemValue="" />
+                               <f:selectItem itemLabel="WEB" itemValue="#{viewModel.web}" />
+                               <f:selectItem itemLabel="MAIL" itemValue="#{viewModel.mail}" />
+                               <f:selectItem itemLabel="Data Intake" itemValue="#{viewModel.dataIntake}" />
+                       </p:selectOneMenu>
+                       <p:message id="source_error" for="suppdoc_source"/>
+               </p:panel>
+			</p:column>
+			<p:column style="vertical-align:top">
+				<p:panel header="Comments">
+					<p:inputTextarea id="comments" style="width:300px;height:100px;"
+						effectDuration="400" value="#{viewModel.claimProof.comments}"
+						autoResize="false" maxlength="255" />
+				</p:panel>
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+	<p:separator id="separator" />
+	<div id="buttonsection">
+		<div id="buttonsection">
+			<p:commandButton id="saveConfirm" ajax="false"
+				oncomplete="editClaimProofDialog.hide()" value="Save"
+				action="saveClaimProof" update="@form" />
+			<p:commandButton id="exitBtn"
+				oncomplete="editClaimProofDialog.hide()" value="Exit" />
+		</div>
+	</div>
+</ui:composition>
+</html>

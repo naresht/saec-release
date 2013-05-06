@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<script src="#{facesContext.externalContext.requestContextPath}/resource/js/styleswitch.js" type="text/javascript"></script>
+	<p:messages />
+	<h:panelGroup id="letter">
+		<ui:insert name="claimProcessHeader">
+			<ui:include src="../claimFormProcess/claimProcessHeaderForm.xhtml" />
+		</ui:insert>
+		<p:outputPanel id="mailsActivity">
+			<p:dataTable id="mails" var="mail" styleClass="fieldsetaddresstable1"
+				value="#{optOutProcessViewModel.optOutFromList}"
+				rowIndexVar="rowIndex">
+				<f:facet name="header">  
+            	Mailing Activity  
+        	</f:facet>
+
+				<p:column id="mailingDate" style="width:1000px;white-space:wrape;">
+					<f:facet name="header">
+						<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;Mail Date&nbsp;&nbsp;&nbsp;&nbsp;" />
+					</f:facet>
+					<p:calendar id="optOutMailDate" value="#{mail.letter.mailDate}" pattern="MM/dd/yyyy"
+						maxlength="10" selectListener="#{optOutProcessViewModel.handleDateSelect}"
+						rendered="#{mail.isDateEditable(optOutProcessViewModel.canEdit)}">
+					</p:calendar>
+					<h:outputText value="#{mail.letter.mailDate}"
+						rendered="#{!mail.isDateEditable(optOutProcessViewModel.canEdit)}">
+						<f:converter  converterId="dateConverter" />
+					</h:outputText>
+				</p:column>
+
+				<p:column id="mailType" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Mailing Type" />
+					</f:facet>
+					<h:selectOneMenu id="optOutMailType" value="#{mail.letter.mailType}" rendered="#{mail.isMailingEditable(optOutProcessViewModel.canEdit)}">
+						<f:ajax render="@form" event="change" listener="#{optOutProcessViewModel.generateMailingControlNo(mail.letter.mailType, mail)}" onevent="showProgress"/>
+						<f:selectItem itemLabel="Incoming"
+							itemValue="#{optOutProcessViewModel.incomingMailType}" />
+						<f:selectItem itemLabel="Outgoing"
+							itemValue="#{optOutProcessViewModel.outgoingMailType}" />
+					</h:selectOneMenu>
+					<h:outputText value="#{mail.letter.mailType}" rendered="#{!mail.isMailingEditable(optOutProcessViewModel.canEdit)}"/>
+				</p:column>
+
+				<p:column id="controlNo" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Mailing Control #" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.mailingControlNo}" rendered="#{mail.hasMailingControlNo(optOutProcessViewModel.canEdit)}"/>
+				</p:column>
+
+				<p:column id="desc" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Description" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.description}" />
+				</p:column>
+
+				<p:column id="letterCode" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Letter Code" />
+					</f:facet>
+					<app:letterCodeSelect letterType='#{mail.letterType}' id="lettercodes" value="#{mail.letter.letterCode}" rendered="#{mail.showLetterCode()}"/>
+				</p:column>
+
+				<p:column id="auditable" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Audit" />
+					</f:facet>
+					<h:selectBooleanCheckbox id="optOutAudit" value="#{mail.letter.auditable}"
+						rendered="#{mail.isAuditEditable(optOutProcessViewModel.canEdit)}">
+						<f:ajax event="click" render="@this" onevent="showProgress" />
+					</h:selectBooleanCheckbox>
+					<h:outputText value="#{mail.letter.auditable == true ? 'A' : ''}" rendered="#{!mail.isAuditEditable(optOutProcessViewModel.canEdit)}"/>
+				</p:column>
+
+				<p:column id="specialPull" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Special Pull" />
+					</f:facet>
+					<h:selectBooleanCheckbox id="optOutSpecialPull" value="#{mail.letter.specialPull}" rendered="#{mail.isSpecialPullEditable(optOutProcessViewModel.canEdit)}">
+						<f:ajax event="click" render="@this" onevent="showProgress" />
+					</h:selectBooleanCheckbox>
+					<h:outputText value="#{mail.letter.specialPull == true ? 'S' : ''}" rendered="#{!mail.isSpecialPullEditable(optOutProcessViewModel.canEdit)}"/>
+				</p:column>
+
+				<p:column id="groupMailCode" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Group Mail Code" />
+					</f:facet>
+					<p:inputMask id="optOutgroupMail" value="#{mail.letter.groupMailCode}" mask="?999" rendered="#{mail.isGroupMailEditable(optOutProcessViewModel.canEdit)}" maxlength="3">
+						<f:converter converterId="groupMailCodeConverter" />
+						<f:ajax event="change" process="@this"/>  
+					</p:inputMask>
+					<h:outputText value="#{mail.letter.groupMailCode}" rendered="#{!mail.isGroupMailEditable(optOutProcessViewModel.canEdit)}">
+						<f:converter converterId="groupMailCodeConverter" />
+					</h:outputText>
+				</p:column>
+
+				<p:column id="letterStatus" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+					<h:selectOneMenu id="status" value="#{mail.letter.letterStatus}"
+						rendered="#{mail.isStatusEditable(optOutProcessViewModel.canEdit)}">
+						<f:ajax execute="@form" render="@form" event="change"
+							listener="#{optOutProcessViewModel.onChangeStatus(mail.letter.letterStatus, mail)}" onevent="showProgress"/>
+						<f:selectItem itemValue="" itemLabel="" />
+						<f:selectItem itemLabel="IGO"
+							itemValue="#{optOutProcessViewModel.igoLetterStatus}" />
+						<f:selectItem itemLabel="NIGO"
+							itemValue="#{optOutProcessViewModel.nigoLetterStatus}" />
+					</h:selectOneMenu>
+					<h:outputText value="#{mail.letter.letterStatus}"
+						rendered="#{!mail.isStatusEditable(optOutProcessViewModel.canEdit)}" />
+				</p:column>
+				<p:column id="rpoType" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="RPO Type" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.rpoType}" />
+				</p:column>
+				<p:column id="rpoDate" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="RPO Date" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.rpoDate}" >
+						<f:converter  converterId="dateConverter" />
+					</h:outputText>
+				</p:column>
+				<p:column id="comments" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Comments" />
+					</f:facet>
+					<h:outputLabel value="#{mail.outgoingLetterCodeDescription}" />
+					<!-- <h:outputLabel value="#{mail.letter.derivedComments}" rendered="#{mail.canEditComments(optOutProcessViewModel.canEdit)}"/> -->
+					<p:inputTextarea id="optOutComments" value="#{mail.letter.comments}"
+						rendered="#{mail.canEditComments(optOutProcessViewModel.canEdit)}" maxlength="255" autoResize="false">
+						<f:ajax event="change" process="@this"/> 
+					</p:inputTextarea>
+					<h:outputText value="#{mail.letter.comments == 'null' ? '' : mail.letter.comments}"
+						rendered="#{!mail.canEditComments(optOutProcessViewModel.canEdit)}" />
+				</p:column>
+				<p:column id="userId" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="User ID" />
+					</f:facet>
+					<h:outputText value="#{mail.letter.userId}" />
+				</p:column>
+				<p:column id="editSave" style="width:103px;">
+					<f:facet name="header">
+						<h:outputText value="Edit" />
+					</f:facet>
+					<p:commandButton value="Edit" ajax="false" action="#{optOutProcessViewModel.editCurrentClaimForm(mail)}" rendered="#{mail.enableEdit}" update=":form:letter :form:mails" />
+				</p:column>
+			</p:dataTable>
+		</p:outputPanel>
+		<p:spacer width="100%" height="10" />
+		<div align="right">
+			<!-- <p:commandButton value="Edit" action="edit" update="mails" /> -->
+			<p:spacer width="10" height="10" />
+			<p:commandButton id="optOutAddNew" value="Add New" 
+				disabled="#{!sec:canDoOptOutProcess()}"
+				action="newOptOutForm" update="mails, cureLetterDialog"/>
+		</div>
+	</h:panelGroup>
+
+	<div id="buttonsection">
+		<p:commandButton id="optOutSave" ajax="false" action="validateCureLetter"  value="Save" update="@form"/>
+		<p:commandButton id="exitOptOutConfirm" action="exitOptOutConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<p:dialog header="OptOut Letter" widgetVar="cureLetterDialog"
+		id="cureLetterDialog" modal="true">
+			<p:dataTable id="letterCodesList" var="item"
+				value="#{optOutProcessViewModel.allOptOutCureLetters}"
+				selection="#{optOutProcessViewModel.selectedOptOutLetterCodes}"
+				scrollable="false" height="200">
+				<f:facet name="header">
+				</f:facet>
+				<p:column selectionMode="multiple" style="width:18px"/>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Letter #" />
+					</f:facet>
+					<h:outputText value="#{item.code}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Description" />
+					</f:facet>
+					<h:outputText value="#{item.description}" />
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton id="lov" action="lov" value="Ok"
+						update=":form:letter"
+						oncomplete="cureLetterDialog.hide()">
+					</p:commandButton>
+				</f:facet>
+			</p:dataTable>
+	</p:dialog>
+
+	<!-- <h:panelGroup id="id_noCureLetterSelectedDialog"> -->
+		<p:dialog header="No cure letter was selected" widgetVar="noCureLetterSelectedDialog"
+				id="noCureLetterSelectedDialog" modal="true" resizable="false">
+				<p><span style="float: left; margin: 0pt 7px 20px 0pt;" class="ui-icon ui-icon-alert"></span>
+					No cure letter was selected, are you sure you want to save the changes ?</p>
+					<p:spacer width="100%" height="10" />
+				<p:separator />
+				<p:commandButton value="Yes" ajax="false" oncomplete="noCureLetterSelectedDialog.hide()" action="save"
+					immediate="true" update="@form" />
+				<p:commandButton value="No" onclick="noCureLetterSelectedDialog.hide();optOutLetterDialog.show()"
+					type="button" />
+			</p:dialog>
+	<!-- </h:panelGroup>
+	
+	<h:panelGroup id="id_saveConfirmationDialog"> -->
+		<p:dialog header="Save" widgetVar="saveConfirmation"
+			id="saveConfirmation" modal="true" resizable="false">
+				<p><span style="float: left; margin: 0pt 7px 20px 0pt;" class="ui-icon ui-icon-alert"></span>
+				Are you sure you want to save the changes ?</p>
+				<p:spacer width="100%" height="10" />
+			<p:separator />
+			<p:commandButton id="optOutSaveMessYes" value="Yes" ajax="false" oncomplete="saveConfirmation.hide()" action="save"
+				immediate="true" update="@form" />
+			<p:commandButton id="optOutSaveMessNo" value="No" onclick="saveConfirmation.hide()"
+				type="button" />
+		</p:dialog>
+	<!-- </h:panelGroup> -->
+
+	<p:confirmDialog id="optOutExitMessage"
+		message="Are you sure you want to exit without saving the changes?"
+		header="Exit" severity="alert" widgetVar="confirmationExit"
+		modal="true">
+		<p:commandButton id="optOutExitMessageYes" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" immediate="true" action="exit" />
+		<p:commandButton id="oprOutExitMessageNo" value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+</ui:composition>
+</html>

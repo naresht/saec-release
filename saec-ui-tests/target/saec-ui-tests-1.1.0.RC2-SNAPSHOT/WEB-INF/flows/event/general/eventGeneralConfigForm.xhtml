@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:app="http://springfuse.jaxio.com/app"
+        >
+       
+<ui:composition>	
+<h:panelGroup id="claimant_new_fields">
+<p:growl id="growl" showDetail="false" globalOnly="true" life="20000"/>
+<p:fieldset legend="Event Configuration">
+<div id="event_config_div_table">
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Event General Information</div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Event Type:</div>
+		<div id="event_config_div_rgt">
+			<h:selectOneMenu id="event_eventtype"
+				value="#{saecEvent.eventType}" maxlength="15">	
+				<f:ajax render="otherDescription" />							
+				<f:selectItem itemValue="Class Action" itemLabel="Class Action" />
+				<f:selectItem itemValue="SEC Fair Funds" itemLabel="SEC Fair Funds" />
+				<f:selectItem itemValue="Call Center" itemLabel="Call Center" />
+				<f:selectItem itemValue="Other" itemLabel="Other" />
+			</h:selectOneMenu>		
+				<h:panelGroup id="otherDescription">
+				<p:message for="abc" />
+						<p:inputTextarea id="abc" value="#{saecEvent.comments}" maxlength="255"
+							rendered="#{saecEvent.eventType=='Other'}" required="true"
+							requiredMessage="Please fill the other field" autoResize="false">
+							<f:ajax process="@this" event="valueChange" />
+						</p:inputTextarea>
+				</h:panelGroup>						
+		</div>
+	</div>
+	
+
+		
+
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Event Name:</div>
+		<div id="event_config_div_rgt"><p:inputText id="name" value="#{saecEvent.name}" maxlength="35"></p:inputText></div>
+	</div>
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Event description:</div>
+		<div id="event_config_div_rgt"><p:inputText id="description" value="#{saecEvent.description}" maxlength="255" /></div>
+	</div>
+			
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Event short code:</div>
+		<div id="event_config_div_rgt"><p:inputText id="code" value="#{saecEvent.code}" maxlength="10"/></div>
+	</div>
+			
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Event Start Date:</div>
+		<div id="event_config_div_rgt"><p:calendar id="startDate" value="#{saecEvent.startDate}" pattern="MM/dd/yyyy" maxlength="10" /></div>
+	</div>
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Event Target End Date:</div>
+		<div id="event_config_div_rgt"><p:calendar id="targetEndDate" value="#{saecEvent.targetEndDate}" pattern="MM/dd/yyyy" maxlength="10" /></div>
+	</div>	
+
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">SAEC Issue ID:</div>
+		<div id="event_config_div_rgt"><p:inputText id="saecIssueId" value="#{saecEvent.saecIssueId}" maxlength="5" /></div>
+	</div>		
+			
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Claim CutOff:</div>
+		<div id="event_config_div_rgt">			
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.claimCuttOff}" />									
+		</div>
+	</div>		
+			
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">Bank Information</div>
+	</div>		
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Bank Name:</div>
+		<div id="event_config_div_rgt">
+			<h:selectOneMenu id="event_bankcode" value="#{saecEvent.bankCode}" >
+				<f:selectItems value="#{eventViewModel.bankList}" required="true"  />
+			</h:selectOneMenu>		
+		</div>
+	</div>	
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">ABA #:</div>
+		<div id="event_config_div_rgt"><p:inputText id="ABA" value="#{saecEvent.bank.abaNo}" maxlength="9"></p:inputText></div>
+	</div>
+
+		
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">DDA:</div>
+		<div id="event_config_div_rgt"><p:inputText id="dda" value="#{saecEvent.dda}" maxlength="9" /></div>
+	</div>	
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">User Id:</div>
+		<div id="event_config_div_rgt"><p:inputText id="userid" value="#{saecEvent.deutscheBankUserId}" maxlength="8" /></div>
+	</div>
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Check Name for SSC Bottomline Outbound File:</div>
+		<div id="event_config_div_rgt"><p:inputText id="checkNameforBottomlineOutFile" value="#{saecEvent.checkNameforBottomlineOutFile}" /></div>
+	</div>
+
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Foreign Account Solicitations:</div>
+		<div id="event_config_div_rgt">			
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.foreignAccountSolicitation}" />									
+		</div>
+	</div>	
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Library ID:</div>
+		<div id="event_config_div_rgt"><p:inputText id="libraryId" value="#{saecEvent.libraryId}" maxlength="10" /></div>
+	</div>	
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Closed event:</div>
+		<div id="event_config_div_rgt">
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.closedEvent}" />						
+		</div>
+	</div>
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Closed Date:</div>
+		<div id="event_config_div_rgt"><p:calendar id="closedDate" value="#{saecEvent.closedDate}" pattern="MM/dd/yyyy" maxlength="10" /></div>
+	</div>
+	
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Omnibus Outreach:</div>
+		<div id="event_config_div_rgt">
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.omnibusOutreach}" />						
+		</div>
+	</div>
+
+	<div id="event_config_div_tr">
+		<div id="event_config_div_td">STALE CHECK Information</div>
+	</div>
+		
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Stale Date days:</div>
+		<div id="event_config_div_rgt">
+			<p:inputText id="checkStaleInDays" value="#{saecEvent.checkStaleInDays}"
+						converterMessage="Enter a numeric value for checkStaleInDays">
+						<!-- 							<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/> -->
+			</p:inputText>
+					<p:message for="checkStaleInDays" style="color:red" />
+		
+		</div>
+	</div>
+
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Stale by date:</div>
+		<div id="event_config_div_rgt"><p:calendar id="checkStaleByDate" value="#{saecEvent.checkStaleByDate}" pattern="MM/dd/yyyy" maxlength="10" /></div>
+	</div>
+		
+	<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Status Change to Stale:</div>
+		<div id="event_config_div_rgt">			
+			<h:selectBooleanCheckbox 
+							value="#{saecEvent.canChangeStausOfStaleCheck}" />									
+		</div>
+	</div>	
+	
+<div id="event_config_div_tr">
+		<div id="event_config_div_lft">Display Reminders:</div>
+		<div id="event_config_div_rgt">
+			<h:selectBooleanCheckbox id="reminder"
+							value="#{saecEvent.hideReminders}" />			
+		</div>
+	</div>	
+</div>
+
+
+</p:fieldset>
+  </h:panelGroup>
+		<div id="buttonsection"><p:commandButton id="saveConfirm" action="saveConfirm" immediate="true" oncomplete="confirmationSave.show()"  
+		value="Save"  /><p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" 
+		value="Exit" /></div>		
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>
+		
+

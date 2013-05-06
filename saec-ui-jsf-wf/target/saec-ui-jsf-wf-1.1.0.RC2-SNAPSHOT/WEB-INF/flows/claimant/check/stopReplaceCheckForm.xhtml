@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+<f:param name="id" value="#{claimant.claimant.id}" />
+<ui:include src="../edit/claimantHeaderForm.xhtml" />
+<p:panel>
+<center><span style="font-family:Arial, Helvetica, sans-serif;color:#003968;font-size:17pt;font-weight:normal;text-decoration:none;font-style:normal;text-align:center;margin-top:17px;margin-bottom:17px;">Stop Replace Check</span></center><br />
+	<div id="stop_replace_check_div_table">
+		<div id="stop_replace_check_div_tr">
+			<div id="stop_replace_check_div_lft">Reference #:</div>
+			<div id="stop_replace_check_div_rgt"><h:outputText value="#{claimantViewModel.claimant.referenceNo}"></h:outputText></div>
+		</div>
+		<div id="stop_replace_check_div_tr">
+			<div id="stop_replace_check_div_lft">Stop/Replace Check #:</div>
+			<div id="stop_replace_check_div_rgt"><h:outputText value="#{checkViewModel.check.identificatonNo}"></h:outputText></div>
+		</div>
+		<div id="stop_replace_check_div_tr">
+			<div id="stop_replace_check_div_lft">Payment Amount:</div>
+			<div id="stop_replace_check_div_rgt"><h:outputText value="#{check.paymentAmount}"><f:convertNumber currencySymbol="$" type="currency" minFractionDigits="2" maxFractionDigits="2"/></h:outputText></div>
+		</div>
+	</div>
+	<h:panelGroup id="checkListFieldSet">
+		<table border="0" class="fieldsetreissuetable" summary="">
+			<tr class="header">
+				<td>Name</td>
+				<td>Address</td>
+				<td>Letter Code</td>
+				<td>Special Pull or Audit</td>
+				<td>Group Mail Code</td>
+			</tr>
+			<tr class="row1">
+				<td><h:outputText escape="false" value="#{checkViewModel.check.payTo.claimantRegistration.getRegistrationLinesAsString('&lt;br/&gt;')}" /></td>
+				<td><h:outputText escape="false" value="#{checkViewModel.check.payTo.addressOfRecord.getAddressAsString('&lt;br/&gt;')}" /></td>
+				<td><h:outputText value="#{checkViewModel.check.letterCode}" /></td>
+				<td><h:outputText value="" /></td>
+				<td><h:outputText value="" /></td>
+			</tr>
+		</table>
+	</h:panelGroup>
+</p:panel>
+<div id="buttonsection">
+	<p:commandButton id="saveConfirm" action="saveConfirm"
+		immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+	<p:commandButton id="exitConfirm" action="exitConfirm"
+		immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+</div>
+
+	<p:confirmDialog id="saveMessage" message="Are you sure you want to save?" modal="true"
+		header="Save" severity="alert" widgetVar="confirmationSave">
+		<p:commandButton id="saveYesButton" value="Yes" ajax="false" update="checkListFieldSet"
+			oncomplete="confirmationSave.hide()" action="saveCheck" />
+		<p:commandButton id="saveNoButton" value="No" onclick="confirmationSave.hide()"
+			type="button" />
+	</p:confirmDialog>
+
+	<p:confirmDialog id="exitMessage" message="Are you sure you want to exit ?"
+		header="Exit" severity="alert" widgetVar="confirmationExit"
+		modal="true">
+		<p:commandButton id="exitYesButton" value="Yes" ajax="false" oncomplete="confirmationExit.hide()"		
+			disabled="#{!sec:canStopReplaceCheck()}"
+			immediate="true" action="exit" />
+		<p:commandButton id="exitNoButton" value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+</ui:composition>
+</html>

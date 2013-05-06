@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<job id="foreignTaxInboundJob" xmlns="http://www.springframework.org/schema/batch">
+		<step id="foreignTaxInJobStep">
+			<tasklet transaction-manager="transactionManager"
+				start-limit="100" allow-start-if-complete="true">
+				<chunk reader="foreignTaxInboundReader" writer="foreignTaxInboundWriterDecorator"
+					commit-interval="100" retry-policy="retryPolicy">
+					<listeners>
+						<listener ref="retryListener" />
+						<listener ref="defaultStepExecutionListener" />
+					</listeners>
+				</chunk>
+			</tasklet>
+		</step>
+	</job>
+	
+    <bean id="foreignTaxInboundReader" class="com.bfds.saec.batch.item.database.JpaItemReader" scope="step"
+         p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+         p:queryProvider-ref="foreignTaxInboundQueryProvider"
+         p:pageSize="100" />
+
+    <bean id="foreignTaxInboundQueryProvider" class="org.springframework.batch.item.database.orm.DefaultFileRecordQueryProvider" scope="step"
+          p:entityClass="com.bfds.saec.batch.file.domain.in.foreign_tax.ForeignTaxInRec" />
+
+
+    <bean id="foreignTaxInboundWriterDecorator" class="com.bfds.saec.batch.in.FileRecordItemWriterDecorator" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:target-ref="foreignTaxInboundWriter"/>
+
+	<bean id="foreignTaxInboundWriter" class="com.bfds.saec.batch.in.foreign_tax_processing.ForeignTaxInboundWriter" scope="step"/>
+
+</beans>
+

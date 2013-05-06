@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+  <var name="tranchAssignmentViewModel" class="com.bfds.saec.web.model.TranchAssignmentViewModel"/> 
+  <input name="tranchMode" type="string" required="true"/>
+  <decision-state id="chooseView">
+		<if test="tranchMode=='add'" then="tranchAssignment" else="tranchAssignment" />
+  </decision-state>   
+	<view-state id="tranchAssignment">	
+<!-- 		<var name="searchCriteria" class="com.bfds.saec.domain.dto.TranchAssignmentSearchCriteriaDto"/>	 -->
+		<on-entry>
+			<set name="viewScope.searchCriteria" value="T(com.bfds.saec.domain.dto.TranchAssignmentSearchCriteriaDto).newInstance(tranchMode)"></set>
+			<evaluate expression="tranchAssignmentViewModel.clearResults()" />			
+		</on-entry>				
+		<transition on="search">
+			<evaluate expression="tranchAssignmentViewModel.validateSearchCriteria(searchCriteria, messageContext)" />
+			<evaluate expression="tranchAssignmentViewModel.loadChecksForTranchAssignment(searchCriteria, messageContext)" />
+			<evaluate expression="tranchAssignmentViewModel.loadWiresForTranchAssignment(searchCriteria, messageContext)" />
+			 <evaluate expression="tranchAssignmentViewModel.hasResults() ? 'true' : messageUtil.info('No match for your entry, please refine your search criteria.', messageContext)" />
+			 <set name="viewScope.showResults" value="tranchAssignmentViewModel.hasResults()"></set>
+			 <evaluate expression="tranchAssignmentViewModel.loadAssignableTranches(messageContext)" />
+		</transition>
+		<transition on="selectTranch">
+			<evaluate expression="tranchAssignmentViewModel.showTranchSelection(messageContext)"></evaluate>
+		</transition>		
+		<transition on="addToTranch">
+			<evaluate expression="tranchAssignmentViewModel.addToTranch(searchCriteria, messageContext)"></evaluate>
+			<evaluate expression="tranchAssignmentViewModel.clearResults()"></evaluate>
+			<set name="viewScope.searchCriteria" value="T(com.bfds.saec.domain.dto.TranchAssignmentSearchCriteriaDto).newInstance(searchCriteria.tranchMode)"></set>
+			<set name="showResults" value="false"></set>
+		</transition>
+		<transition on="removeFromTranch">
+			<evaluate expression="tranchAssignmentViewModel.removeFromTranch(searchCriteria, messageContext)"></evaluate>
+			<evaluate expression="tranchAssignmentViewModel.clearResults()"></evaluate>
+			<set name="viewScope.searchCriteria" value="T(com.bfds.saec.domain.dto.TranchAssignmentSearchCriteriaDto).newInstance(searchCriteria.tranchMode)"></set>
+			<set name="showResults" value="false"></set>
+		</transition>		
+		<transition on="refreshResults">
+			<evaluate expression="tranchAssignmentViewModel.refreshResults(messageContext)"></evaluate>
+		</transition>		
+		<transition on="clearResults">
+			<evaluate expression="tranchAssignmentViewModel.clearResults()"></evaluate>
+			<set name="showResults" value="false"></set>	
+		</transition>
+		<transition on="exitConfirm" />
+		<transition on="exit" to="endEdit" />					
+	</view-state>
+  <end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />  
+</flow>

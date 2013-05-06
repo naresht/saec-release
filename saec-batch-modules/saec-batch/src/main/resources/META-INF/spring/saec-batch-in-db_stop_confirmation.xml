@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<job id="dbStopConfirmationJob" xmlns="http://www.springframework.org/schema/batch">
+		<validator ref="inJobParametersValidator"/>
+		<step id="dbStopConfirmationStep">
+			<tasklet transaction-manager="transactionManager"
+				start-limit="100" allow-start-if-complete="true">
+				<chunk reader="dbStopConfirmationReader" writer="dbStiopConfirmationWriterDecorator"
+					commit-interval="1" retry-policy="retryPolicy">					
+				</chunk>
+				<listeners>
+					<listener ref="retryListener" />
+					<listener ref="defaultStepExecutionListener" />
+				</listeners>
+			</tasklet>
+		</step>
+	</job>
+
+    <bean id="retryPolicy"
+          class="org.springframework.batch.retry.policy.ExceptionClassifierRetryPolicy">
+        <property name="policyMap">
+            <map>
+                <entry key="org.springframework.dao.ConcurrencyFailureException">
+                    <bean class="org.springframework.batch.retry.policy.SimpleRetryPolicy">
+                        <property name="maxAttempts" value="3" />
+                    </bean>
+                </entry>
+                <entry key="org.springframework.dao.DeadlockLoserDataAccessException">
+                    <bean class="org.springframework.batch.retry.policy.SimpleRetryPolicy">
+                        <property name="maxAttempts" value="5" />
+                    </bean>
+                </entry>
+                <entry key="org.springframework.dao.OptimisticLockingFailureException">
+                    <bean class="org.springframework.batch.retry.policy.SimpleRetryPolicy">
+                        <property name="maxAttempts" value="5" />
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+	<bean id="retryListener" class="com.bfds.saec.batch.in.db_stop_confirmation.BatchRetryListener"></bean>
+
+    <bean id="dbStopConfirmationReader" class="com.bfds.saec.batch.item.database.JpaItemReader" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:queryProvider-ref="dbStopConfirmationQueryProvider"
+          p:pageSize="100" />
+
+    <bean id="dbStopConfirmationQueryProvider" class="org.springframework.batch.item.database.orm.DefaultFileRecordQueryProvider" scope="step"
+          p:entityClass="com.bfds.saec.batch.file.domain.in.db_stop_confirmation.StopConfirmationRec" />
+          
+    <bean id="dbStiopConfirmationWriterDecorator" class="com.bfds.saec.batch.in.FileRecordItemWriterDecorator" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:target-ref="dbStopConfirmationWriter"/>
+
+	<bean id="dbStopConfirmationWriter" class="com.bfds.saec.batch.in.db_stop_confirmation.StopConfirmationItemWriter" scope="step">
+	</bean>
+
+</beans>
+

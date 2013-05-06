@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+	<f:param name="id" value="#{claimant.claimant.id}" />
+	<ui:include src="../edit/claimantHeaderForm.xhtml" />
+	<p:panel>
+		<center>
+			<span
+				style="font-family: Arial, Helvetica, sans-serif; color: #003968; font-size: 17pt; font-weight: normal; text-decoration: none; font-style: normal; text-align: center; margin-top: 17px; margin-bottom: 17px;">Void
+				Check</span>
+		</center>
+		<br />
+		<div id="void_check_div_table">
+			<div id="void_check_div_tr">
+				<div id="void_check_div_lft">
+					<b>Reference #:</b><br />
+					<h:outputText value="#{claimantViewModel.claimant.referenceNo}"></h:outputText>
+					<p:spacer height="15" width="100%" />
+					<b>Pay to:</b><br />
+					<h:outputText escape="false"
+						value="#{checkViewModel.paytoNameAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+				<div id="void_check_div_rgt">
+					<b>Address:</b><br />
+					<h:outputText escape="false"
+						value="#{checkViewModel.checkAddressAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+			</div>
+			<p:spacer height="20" width="100%" />
+			<div id="void_check_div_tr">
+				<div id="void_check_div_lft">
+					<b>Check #: </b>
+					<h:outputText value="#{checkViewModel.check.identificatonNo}"></h:outputText>
+				</div>
+				<div id="void_check_div_rgt">
+					<b>Amount: </b>
+					<h:outputText value="#{check.paymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</div>
+			</div>
+		</div>
+		<p:spacer height="20" width="100%" />
+		<div id="check_select_div_table">
+			<div id="void_check_div_tr">
+				<div id="void_check_div_lft1">
+					<font color="red">*</font>Select void type:
+				</div>
+				<div id="void_check_div_rgt1">
+					<p:message for="void_check" />
+					<h:selectOneMenu id="void_check"
+						value="#{checkViewModel.voidType}" required="true"
+						requiredMessage="Please, fill the void type">
+						<f:selectItem itemLabel="" />
+						<f:selectItem itemValue="VOID" itemLabel="Void" />
+						<f:selectItem itemValue="VOID_NO_RE_ISSUE" itemLabel="Void - No Reissue" />
+						<f:selectItem itemValue="VOID_DAMASCO" itemLabel="Void - Damasco" />
+						<f:selectItem itemValue="VOID_HOLD" itemLabel="Void Hold" />
+					</h:selectOneMenu>
+				</div>
+			</div>
+			<div id="void_check_div_tr">
+				<div id="void_check_div_lft1">Comments:</div>
+				<div id="void_check_div_rgt1">
+					<p:inputTextarea id="comments"
+						value="#{checkViewModel.check.comments}" maxlength="255"
+						style="width:300px;height:100px;" autoResize="false"></p:inputTextarea>
+				</div>
+			</div>
+			<p:spacer height="20" width="100%" />
+			<div id="void_check_div_tr">
+				<div id="void_check_div_td">
+					<div id="buttonsection">
+						Are you sure you want to VOID this check?&nbsp;&nbsp;
+						<p:commandButton id="yes" action="save" value="Yes" ajax="false"
+							disabled="#{!sec:canVoidCheck()}" update="@form" />
+						<p:commandButton id="No" action="exit" immediate="true"
+							ajax="false" oncomplete="confirmationNo.show()" value="No" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</p:panel>
+</ui:composition>
+</html>

@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+	<p:message for="searchCriteriaFields" />
+	<h:panelGroup id="searchCriteriaFields">
+<!-- 		<f:event listener="#{checkReleaseViewModel.validateCheckRelease}" -->
+<!-- 			type="postValidate" /> -->
+		<div id="check_bulk_div_table">
+			<div id="check_bulk_div_tr">
+			<h:panelGroup rendered="#{searchCriteria.isTranchModeRemove()}">
+				<div id="check_bulk_div_td">Tranche Code:</div>
+				<div id="check_bulk_div_td2">
+					<p:inputText id="tranchCode" value="#{searchCriteria.tranchCode}" /><br/>
+				</div>
+			</h:panelGroup>
+			</div>
+			<p:spacer width="100%" height="5" />
+			<div id="check_bulk_div_tr">
+				<div id="check_bulk_div_td">State Of Residency:</div>
+				<div id="check_bulk_div_td2">
+					<app:stateSelect id="stateCode" value="#{searchCriteria.stateCode}" /><br/>
+				</div>
+			</div>
+			<p:spacer width="100%" height="5" />		
+			<div id="check_bulk_div_tr">
+				<div id="check_bulk_div_td">Payment Amount Range:</div>
+				<div id="check_bulk_div_td1">From $</div>
+				<div id="check_bulk_div_td2">
+					<p:inputText id="fromAmount" value="#{searchCriteria.fromAmount}"
+						converterMessage="Enter a numeric value for fromAmount">
+						<!-- 							<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/> -->
+					</p:inputText>
+					<p:message for="fromAmount" style="color:red" />
+
+				</div>
+				<div id="check_bulk_div_td3">To $</div>
+				<div id="check_bulk_div_td4">
+					<p:inputText id="toAmount" value="#{searchCriteria.toAmount}"
+						converterMessage="Enter a numeric value for toAmount">
+						<!-- 							<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/> -->
+					</p:inputText>
+					<p:message for="toAmount" style="color:red" />
+
+				</div>
+			</div>
+			<div id="check_bulk_div_tr">
+				<div id="check_bulk_div_td">Check Number Range:</div>
+				<div id="check_bulk_div_td1">From</div>
+				<div id="check_bulk_div_td2">
+					<p:inputMask id="fromCheckNo"
+							value="#{searchCriteria.fromCheckNo}"
+							mask="?99999999999999999999999" placeHolder="" maxlength="15" />
+					<p:message for="fromCheckNo" style="color:red" />
+
+				</div>
+				<div id="check_bulk_div_td3">To</div>
+				<div id="check_bulk_div_td4">
+					<p:inputMask id="toCheckNo"
+							value="#{searchCriteria.toCheckNo}"
+							mask="?99999999999999999999999" placeHolder="" maxlength="15" />
+					<p:message for="toCheckNo" style="color:red" />
+				</div>
+			</div>
+			<div id="check_bulk_div_tr">
+				<div id="check_bulk_div_td">Account Number Range:</div>
+				<div id="check_bulk_div_td1">From</div>
+				<div id="check_bulk_div_td2">
+					<p:inputMask mask="?999999999" placeHolder="" id="fromAccountNo"
+							value="#{searchCriteria.fromAccountNo}"
+							maxlength="9" />
+					<p:message for="fromAccountNo" style="color:red" />
+
+				</div>
+				<div id="check_bulk_div_td3">To</div>
+				<div id="check_bulk_div_td4">
+					<p:inputMask mask="?999999999" placeHolder="" id="toAccountNo"
+							value="#{searchCriteria.toAccountNo}"
+							maxlength="9" />					
+					<p:message for="toAccountNo" style="color:red" />
+				</div>
+			</div>						
+			<div id="check_bulk_div_tr">
+				<div id="check_bulk_div_td">Broker #:</div>
+				<div id="check_bulk_div_td2">
+					<p:inputText id="brokerId" value="#{searchCriteria.brokerId}" maxlength="5"/>
+				</div>
+			</div>
+			<div id="check_bulk_div_tr">
+				<div id="check_bulk_div_td">Account # Search:</div>
+				<div id="check_bulk_div_td2">
+					<p:inputMask mask="?999999999" placeHolder="" id="accountNo"
+							value="#{searchCriteria.accountNo}"
+							maxlength="9" />					
+				</div>
+			</div>			
+		</div>
+	</h:panelGroup>
+	<p:spacer height="10" width="100%" />
+	<div id="buttonsection">
+		<p:commandButton id="seacrh" action="search" value="Search" ajax="false" />
+	</div>
+</ui:composition>

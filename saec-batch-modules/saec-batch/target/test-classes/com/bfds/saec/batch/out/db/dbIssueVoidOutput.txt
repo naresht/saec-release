@@ -1,0 +1,5 @@
+   DBOI0001     000012345809091100000003050IVCDBV00001DB  AdditionalVDat1       aaaaaaaaa                                                   bbbbbbbb                                                    
+   DBOI0001     000012345609091100000000100IVCDBV00001DB  AdditionalVDat1       aaaaaaaaa                                                   bbbbbbbb                                                    
+ O DBOI0001     000012345809091100000003050IVCDBV00001DB  AdditionalVDat1       aaaaaaaaa                                                   bbbbbbbb                                                    
+ V DBOI0001     000000123409091100000000450IVCDBV00001DB  AdditionalVDat1       aaaaaaaaa                                                   bbbbbbbb                                                    
+   DBOI0001     000012345709091100000000200IVCDBV00001DB  AdditionalVDat1       aaaaaaaaa                                                   bbbbbbbb                                                    

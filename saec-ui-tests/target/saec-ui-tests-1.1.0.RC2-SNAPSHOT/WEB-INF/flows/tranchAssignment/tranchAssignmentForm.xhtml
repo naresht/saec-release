@@ -1,0 +1,49 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+
+	<p:fieldset id="searchFormFieldSet" legend="Search Criteria" toggleable="true" collapsed="#{tranchAssignmentViewModel.hasResults()}">
+		<h:form id="formSearchFields">
+			<ui:include src="./tranchAssignmentSearchFields.xhtml" />
+		</h:form>
+	</p:fieldset>
+	<p:outputPanel id="results">
+		<h:panelGroup rendered="#{showResults}">
+			<p:fieldset legend="Search Results - Tranche Assignment">
+				<p:message for="formCheckResults"/>
+				<h:form id="formCheckResults">
+					<ui:include src="./tranchAssignmentResults.xhtml">
+						<ui:param name="paymentList"
+							value="#{tranchAssignmentViewModel.checkList}" />
+						<ui:param name="paymentTypeName" value="Check" />
+						<ui:param name="paymentTypeTotal"
+							value="#{tranchAssignmentViewModel.checkTotal}" />
+					</ui:include>
+				</h:form>
+				<br/><br/>
+				<p:message for="formWireResults"/>
+				<h:form id="formWireResults">
+					<ui:include src="./tranchAssignmentResults.xhtml">
+						<ui:param name="paymentList"
+							value="#{tranchAssignmentViewModel.wireList}" />
+						<ui:param name="paymentTypeName" value="Wire" />
+						<ui:param name="paymentTypeTotal"
+							value="#{tranchAssignmentViewModel.wireTotal}" />
+					</ui:include>
+				</h:form>
+				<br />
+			</p:fieldset>
+		Tranche Total : #{tranchAssignmentViewModel.tranchTotal}	
+		</h:panelGroup>
+		<h:form id="submitForm">
+		<ui:include src="./tranchAssignmentSubmitSection.xhtml"/>
+		</h:form>
+	</p:outputPanel>
+</ui:composition>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<view-state id="claimantNew" model="claimant">
+		<var name="primaryContact" class="com.bfds.saec.domain.Contact" />
+		<on-entry>
+			<set name="flowScope.menuModel" value="'claimant'" />
+			<set name="flowScope.menuModelRenderer" value="'claimantItems'" />
+			<set name="flowScope.claimant"
+				value="T(com.bfds.saec.web.model.ClaimantViewModel).newClaimant" />
+		</on-entry>
+		<transition on="save" to="edit">
+			<evaluate expression="claimant.create(primaryContact, messageContext, claimantService)" />
+		</transition>
+		<transition on="exit" to="endEdit" />
+		<transition on="exitCreateConfirm" />
+		<transition on="saveCreateConfirm" />
+	</view-state>
+	
+	<end-state id="edit" view="externalRedirect:contextRelative:/app/claimant/edit?id=#{claimant.claimant.id}" />
+	<end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />
+	
+	
+</flow>

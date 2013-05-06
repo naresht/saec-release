@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+<style type="text/css">
+	.rednigo {
+		color: #ff0000 !important;
+	}
+	
+	.yellowpending {
+		color: #FBB917 !important;
+	}
+	
+	.grey {
+      background-color: #D3D3D3 !important;
+      background-image: none !important;
+      color: #000000 !important;
+     }
+</style>
+	<p:fieldset legend="Position">
+		<ui:include src="/WEB-INF/incl/claimantClaimHeader.xhtml">
+			<ui:param name="claimantClaimHeader"
+				value="#{claimantPositionViewModel.getClaimantClaimHeader()}" />
+		</ui:include>
+		
+		<p:dataTable id="claimantPositions" value="#{claimantPositions}" var="item" lazy="true"
+			rowIndexVar="rowIndex" paginator="true" rows="10"
+			paginatorPosition="bottom"
+			height="#{(not empty height) ? height : '500px'}"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15,25,50,100"
+			rowStyleClass="#{item.deleted == 'true'  ? 'grey' : null}">
+				<p:column id="rowId">
+					<f:facet name="header">
+						<h:outputText value="ID" />
+					</f:facet>
+					<p:commandLink action="loadPositionById" update="@form">
+						<h:outputText value="#{item.id}"/>
+						<f:param name="id" value="#{item.id}"/>
+					</p:commandLink>
+				</p:column>
+				
+				<p:column id="controlNo">
+					<f:facet name="header">
+						<h:outputText value="ControlNumber" />
+					</f:facet>
+					<h:outputText value="#{item.claimantClaim.controlNumber}"/>
+				</p:column>
+				
+				<p:column id="fund" filterBy="#{item.securityFund.fund}">
+					<f:facet name="header">
+						<h:outputText value="Fund" />
+					</f:facet>
+					<h:outputText value="#{item.securityFund.fund}"/>
+				</p:column>
+				
+				<p:column id="cuisp" filterBy="#{item.securityFund.securityRef.cusip}">
+					<f:facet name="header">
+						<h:outputText value="Cuisp" />
+					</f:facet>
+					<h:outputText value="#{item.securityFund.securityRef.cusip}"/>
+				</p:column>
+				<p:column id="ticker" filterBy="#{item.securityFund.securityRef.ticker}">
+					<f:facet name="header">
+						<h:outputText value="Ticker" />
+					</f:facet>
+					<h:outputText value="#{item.securityFund.securityRef.ticker}"/>
+				</p:column>
+				
+				<p:column id="position">
+					<f:facet name="header">
+						<h:outputText value="Position" />
+					</f:facet>
+					<h:outputText value="#{item.shareBalance}"/>
+				</p:column>
+				
+				<p:column id="positionType" filterBy="">
+					<f:facet name="header">
+						<h:outputText value="Position Type" />
+					</f:facet>
+					<h:outputText value="#{item.positionType}"/>
+				</p:column>
+				
+				<p:column id="positionDate">
+					<f:facet name="header">
+						<h:outputText value="Position Date" />
+					</f:facet>
+					<h:outputText value="#{item.positionDate}">
+						<f:converter converterId="dateConverter" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column id="comment">
+					<f:facet name="header">
+						<h:outputText value="Comments" />
+					</f:facet>
+					<h:outputText value="#{item.comments}"/>
+				</p:column>
+				
+				<p:column id="proofStatus">
+					<f:facet name="header">
+						<h:outputText value="Proof Status" />
+					</f:facet>
+					<h:panelGroup styleClass="#{claimantPositionViewModel.getCSSStyleClass(item.proof)}">
+						<h:outputText value="#{item.proof.status}"/>
+					</h:panelGroup>
+					<p:commandButton value="Edit" action="loadClaimProof" oncomplete="editClaimProofDialog.show()" update="@form" rendered="#{(item.proof.status != null) and !(item.proof.status == 'IGO') }">
+						<f:param name="id" value="#{item.id}"/>
+					</p:commandButton>
+				</p:column>
+		</p:dataTable>
+		<br/>
+		<div align="right">
+			<p:spacer width="10" height="10" />
+			<p:commandButton id="addNewButton" value="Add New" action="addNewClaimantPosition" ajax="false" update=":form:editDialog"/>
+		</div>
+	</p:fieldset>
+	<p:dialog header="Edit" width="500"
+		widgetVar="editDialog" id="editDialog" modal="true">
+		<h:panelGroup id="positionEditDialog" rendered="#{claimantPositionViewModel.showDialog}">
+			<ui:include src="./claimantPositionEdit.xhtml"/>
+		</h:panelGroup>
+	</p:dialog>
+	
+	<p:dialog header="Edit Claim Proof" widgetVar="editClaimProofDialog"
+		id="editClaimProofDialog" modal="true" width="1000" resizable="false">
+		<ui:include src="../../edit/claimSupportingDocumentsForm.xhtml"/>
+	</p:dialog>
+	
+	<div id="buttonsection">
+		<p:commandButton id="exitClaimDetlsConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<p:confirmDialog id="exitMessage"
+		message="Are you sure you want to exit ?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton id="exitYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exit"
+			immediate="true" />
+		<p:commandButton id="exitNoButton" value="No"
+			onclick="confirmationExit.hide()" type="button" />
+	</p:confirmDialog>
+	
+	<p:confirmDialog id="deleteMessage"
+		message="Are you sure you want to delete ?" modal="true"
+		header="Delete" severity="alert" widgetVar="confirmationDelete">
+		<p:commandButton id="deleteYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationDelete.hide()"
+			action="deleteClaimantPosition" immediate="true" />
+		<p:commandButton id="deleteNoButton" value="No"
+			onclick="confirmationDelete.hide()" type="button" />
+	</p:confirmDialog>
+	
+	<p:confirmDialog id="restoreMessage"
+		message="Are you sure you want to restore ?" modal="true"
+		header="Restore" severity="alert" widgetVar="confirmationRestore">
+		<p:commandButton id="restoreYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationRestore.hide()"
+			action="restoreClaimantPosition" immediate="true" />
+		<p:commandButton id="restoreNoButton" value="No"
+			onclick="confirmationRestore.hide()" type="button" />
+	</p:confirmDialog>
+</ui:composition>
+</html>

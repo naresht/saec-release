@@ -1,0 +1,65 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<script src="#{facesContext.externalContext.requestContextPath}/resource/js/payment.js" type="text/javascript"></script>
+	<div id="claimantform">
+	<a onclick="Toggle(this)">&curren; Account Maintenance Menu</a><div style='display:none'>
+		<div class="a1"><p:commandLink ajax="false" action="contact"><div style="padding-left:10px;">&dagger; Contact Update</div></p:commandLink></div>
+		<div class="a1"><p:commandLink ajax="false" action="address"><div style="padding-left:10px;">&dagger; Address Update</div></p:commandLink></div>
+		<div class="a1"><p:commandLink ajax="false" action="registration"><div style="padding-left:10px;">&dagger; Name Update</div></p:commandLink></div>
+		<div class="a1"><p:commandLink ajax="false" action="tax"><div style="padding-left:10px;">&dagger; Tax Update</div></p:commandLink></div>
+		<div class="a1"><p:commandLink ajax="false" action="gam"><div style="padding-left:10px;">&dagger; General Account Maintenance Update</div></p:commandLink></div>
+		</div>
+		<div class="a1"><p:commandLink ajax="false" action="addAlternatePayee"
+			rendered="#{sec:canAddAlternatePayees()}">&curren; Add Alternate Payee</p:commandLink></div>
+	<c:choose>
+		<c:when test="#{sec:canViewClaimDetails()}">
+		<a onclick="Toggle(this)">&curren; Claim Form Process</a><div style='display:none'>			
+			<div class="a1"><p:commandLink ajax="false" action="claimDetails"><div style="padding-left:10px;">&dagger; Claim Details </div></p:commandLink></div>
+			<div class="a1"><p:commandLink ajax="false" action="eventSpecificQuestions" disabled ="#{claimant.claimant.singleClaimantClaim == null}"><div style="padding-left:10px;">&dagger; Event Specific Questions</div></p:commandLink></div>
+			<div class="a1"><p:commandLink ajax="false" action="claimantPosition"  disabled ="#{claimant.claimant.singleClaimantClaim == null}"><div style="padding-left:10px;">&dagger; Claimant Position </div></p:commandLink></div>
+			<div class="a1"><p:commandLink ajax="false" action="claimantTransactions"  disabled ="#{claimant.claimant.singleClaimantClaim == null}"><div style="padding-left:10px;">&dagger; Claimant Transactions </div></p:commandLink></div>
+		</div>
+		</c:when>
+	</c:choose>
+		<div class="a1"><p:commandLink ajax="false" action="followUpReminders" rendered="#{sec:canSeeClaimantReminders() and sec:canseeClaimantRemindersByEvent()}">&curren; Follow - Up Reminders</p:commandLink></div>
+		<div class="a1"><p:commandLink ajax="false" action="correspondenceProcess" rendered="#{sec:canViewCorrespondence()}">&curren; Correspondence Process</p:commandLink></div>
+		<!-- <p:commandLink ajax="false">
+			<div style="color:#000;">&curren; Payment Maintainace Menu 
+			<p:commandLink ajax="false" action="reissueProcess"><div style="padding-left:10px;">&dagger; WireReissue</div></p:commandLink>
+			<p:commandLink ajax="false" action="rofProcess" rendered="#{sec:canDoROF()}"><div style="padding-left:10px;">&dagger; Return Of Funding</div></p:commandLink>
+			</div>
+		</p:commandLink> -->
+		<a onclick="Toggle(this)">&curren; Payment Maintenance Menu</a><div style='display:none'>			
+			<div class="a1"><p:commandLink ajax="false" action="reissueProcess"><div style="padding-left:10px;">&dagger; Reissue Payment </div></p:commandLink></div>
+			<div class="a1"><p:commandLink ajax="false" action="rofProcess" rendered="#{sec:canDoROF()}"><div style="padding-left:10px;">&dagger; Return Of Funding</div></p:commandLink></div>
+			<div class="a1"><p:commandLink ajax="false" action="paymentRpoProcess" rendered="#{sec:canDoROF()}"><div style="padding-left:10px;">&dagger; RPO Maintenance </div></p:commandLink></div>
+		</div>
+		<div class="a1"><p:commandLink ajax="false" action="sendSpecialhandling">&curren; Special Handling</p:commandLink></div>
+		<div class="a1"><p:commandLink ajax="false" action="dailyPosition" rendered="#{sec:canSeeDailyPosition()}">&curren; Daily Position</p:commandLink></div>
+	</div>
+	<div>
+		<p:fieldset legend="Account Details">
+			<ui:insert name="claimantHeader">
+				<ui:include src="claimantHeaderForm.xhtml" />
+				<ui:include src="claimantCallHistory.xhtml" />
+				<ui:include src="claimantActivityHistory.xhtml" />
+				<ui:include src="claimantPaymentHistory.xhtml" />
+				<ui:include src="claimantMailHistory.xhtml" />
+				<ui:include src="claimActivityHistory.xhtml" />
+				<ui:include src="claimProof.xhtml" rendered="#{sec:canShowClaimProofs()}"/>
+				<div id="buttonsection">
+					<p:commandButton id="exit" action="exit" ajax="false"
+						immediate="true" value="Exit" />
+				</div>
+			</ui:insert>
+		</p:fieldset>
+	</div>
+</ui:composition>

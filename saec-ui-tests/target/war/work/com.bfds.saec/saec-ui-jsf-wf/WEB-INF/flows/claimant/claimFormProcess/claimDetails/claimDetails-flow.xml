@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="viewModel" class="com.bfds.saec.web.model.ClaimDetailsViewModel" />
+	<input name="claimantId" required="true" />
+
+	<on-start>
+		<evaluate expression="viewModel.prepareViewModel(claimantId)" />
+	</on-start>
+	<view-state id="claimDetails">
+			
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+		<transition on="exit" to="exitClaimProcess" />
+		<transition on="save" to="exitClaimProcess">
+			<evaluate expression="viewModel.saveClaimDetails(claimantId)" />
+		</transition>
+	</view-state>
+
+	<end-state id="exitClaimProcess" />
+</flow>                                                                

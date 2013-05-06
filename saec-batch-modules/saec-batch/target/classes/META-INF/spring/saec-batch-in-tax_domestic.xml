@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<job id="taxDomesticInJob" xmlns="http://www.springframework.org/schema/batch">
+		<validator ref="inJobParametersValidator"/>
+		<step id="	taxDomesticInStep">
+			<tasklet transaction-manager="transactionManager"
+				start-limit="100" allow-start-if-complete="true">
+				<chunk reader="taxDomesticInReader" writer="taxDomesticInWriterDecorator"
+					commit-interval="100" retry-policy="retryPolicy">
+					<listeners>
+						<listener ref="retryListener" />
+						<listener ref="defaultStepExecutionListener" />
+					</listeners>
+				</chunk>
+			</tasklet>
+		</step>
+	</job>
+	
+    <bean id="taxDomesticInReader" class="com.bfds.saec.batch.item.database.JpaItemReader" scope="step"
+         p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+         p:queryProvider-ref="taxDomesticInQueryProvider"
+         p:pageSize="100" />
+
+    <bean id="taxDomesticInQueryProvider" class="org.springframework.batch.item.database.orm.DefaultFileRecordQueryProvider" scope="step"
+          p:entityClass="com.bfds.saec.batch.file.domain.in.damasco_domestic.DamascoInRec" />
+
+
+    <bean id="taxDomesticInWriterDecorator" class="com.bfds.saec.batch.in.FileRecordItemWriterDecorator" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:target-ref="taxDomesticInWriter"/>
+
+	<bean id="taxDomesticInWriter" class="com.bfds.saec.batch.in.tax_domestic.TaxDomesticInItemWriter" scope="step" />
+
+</beans>
+

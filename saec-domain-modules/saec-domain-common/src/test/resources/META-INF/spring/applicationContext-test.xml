@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <context:property-placeholder
+            location="classpath:/META-INF/spring/${environment.type:saec}-environment.properties"
+            system-properties-mode="OVERRIDE"
+            ignore-unresolvable="true"/>
+
+    <context:spring-configured/>
+
+    <context:annotation-config />
+
+    <context:component-scan base-package="com.bfds.saec">
+        <context:exclude-filter expression=".*_Roo_.*" type="regex"/>
+    </context:component-scan>
+
+    <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager" />
+
+    <bean id="dataSource"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close"
+          p:driverClass="${database.driverClassName}"
+          p:jdbcUrl="${database.url}"
+          p:user="${database.username}"
+          p:password="${database.password}" />
+
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager"
+          p:entityManagerFactory-ref="entityManagerFactory" />
+
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          p:packagesToScan-ref="packagesToScan"
+          p:dataSource-ref="dataSource"
+          p:jpaPropertyMap-ref="jpaPropertyMap">
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+                  p:generateDdl="false"
+                  p:showSql="false" />
+        </property>
+        <property name="jpaDialect" >
+            <bean id="hibernateJpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+        </property>
+    </bean>
+
+    <util:list id="packagesToScan">
+        <value>com.bfds.saec.domain</value>
+    </util:list>
+
+    <util:map id="jpaPropertyMap">
+        <entry key="hibernate.dialect" value="${hibernate.dialect}" />
+        <entry key="jpaDialect" value="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+        <entry key="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" />
+        <entry key="hibernate.show_sql" value="${hibernate.show_sql}" />
+        <entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}" />
+        <entry key="javax.persistence.validation.mode" value="none" />
+        <entry key="hibernate.cache.use_second_level_cache" value="false" />
+        <entry key="hibernate.cache.use_query_cache" value="false" />
+    </util:map>
+
+</beans>

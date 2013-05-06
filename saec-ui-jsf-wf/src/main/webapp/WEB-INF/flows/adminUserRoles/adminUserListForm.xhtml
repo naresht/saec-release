@@ -1,0 +1,46 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div id="buttonsection">
+        <p:commandButton id="search" action="addNewUser"  ajax="false"
+            value="Add New approved user" />
+    </div>
+    
+    <h:panelGroup id="formFields">
+        <p:fieldset legend="${msg.search_results}">
+            <p:dataTable id="formList"
+                         value="#{adminUserRolesViewModel.loadUsers()}" var="user"
+                         rowIndexVar="rowIndex" paginator="true"
+                         rows="50" paginatorPosition="bottom"
+                         height="#{(not empty height) ? height : '500px'}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,25,50,100">
+                
+                <p:column headerText="#">
+                    #{rowIndex+1}
+                </p:column>
+                <p:column id="username" sortBy="#{user.userName}"
+                          filterBy="#{user.userName}">
+                    <f:facet name="header">
+                        <h:outputText value="Username"/>
+                    </f:facet>
+                    <h:outputText value="#{user.userName}"/>
+                </p:column>
+                <p:column id="roles">
+                    <f:facet name="header">
+                        <h:outputText value="Role"/>
+                    </f:facet>
+                    <h:outputText value="#{user.roles}"/>
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
+    </h:panelGroup>
+
+</ui:composition>
+    

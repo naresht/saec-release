@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <description>
+        This configuration file is loaded from web.xml as the parent application context.
+        Beans from the parent application context are accessible from pure JSF pages whereas beans declared in the
+        web application context are only accessible from 'webflow/mvc' views.
+        Since the menu flowsMenuHandler needs to be accessible from anywhere, it is declared here.
+    </description>
+
+    <bean class="org.springframework.webflow.scope.ScopeRegistrar"/>
+    <import resource="classpath*:META-INF/spring/applicationContext-core.xml"/>
+   
+    <!-- Loads domain and other module dependent contexts -->
+    <import resource="classpath*:META-INF/spring/applicationContext.xml"/>
+    
+    <!-- Load Security Strategy -->
+    <!-- Default Simple Spring Authentication -->
+    <import resource="classpath*:META-INF/spring/simple-saec-security.xml"/>
+
+    <!-- Uncomment to load Spring LDAP Integration
+    <import resource="classpath*:META-INF/spring/ldap-saec-security.xml"/> -->
+
+    <!-- Uncomment to load Waffle Spring ActiveDirectory Authentication Provider -->
+    <!-- <import resource="classpath*:META-INF/spring/waffle-saec-security.xml"/> -->
+
+    <!-- Uncomment to load Waffle ActiveDirectory Filter implementation     -->
+    <!-- <import resource="classpath*:META-INF/spring/waffle-saec-security-filter.xml"/> -->
+    
+</beans>

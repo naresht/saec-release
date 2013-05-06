@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	                    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<import resource="classpath*:/META-INF/spring/applicationContext.xml"/>
+
+    <bean id="filterSql" class="org.sqlrecorder.events.filter.ContainsSQLFilter">
+        <constructor-arg>
+            <util:list>
+                <value>SELECT 1</value>
+                <value>INFORMATION_SCHEMA</value>
+                <value>INT_MESSAGE</value>
+                <value>call identity</value>
+                <value>create </value>
+                <value>alter </value>
+                <value>drop </value>
+                <!-- <value>select </value> -->
+            </util:list>
+        </constructor-arg>
+    </bean>
+
+	<bean id="sqlRecorder" class="org.sqlrecorder.SqlRecorder">
+        <constructor-arg value="${database.driverClassName}" />
+        <constructor-arg>
+            <util:list>
+                <bean  id="fileLogger" class="org.sqlrecorder.events.listener.FileOutputListener">
+                    <constructor-arg value="saec-query.log" />
+                    <constructor-arg ref="filterSql" />
+                </bean>
+                <ref local="queryOutputCollectorListener"></ref>                
+            </util:list>
+        </constructor-arg>
+    </bean>
+    <bean id="queryOutputCollectorListener" class="org.sqlrecorder.events.listener.QueryOutputCollectorListener"></bean>
+</beans>

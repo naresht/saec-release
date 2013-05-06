@@ -1,0 +1,111 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>		
+		<h:panelGroup id="#{paymentTypeName}_formFields">
+			<p:spacer height="20" width="100%" />
+			<h:panelGroup rendered="#{!searchCriteria.isTranchModeRemove()}">
+			Select All : <h:selectBooleanCheckbox value="#{paymentList.includeAll}">
+						<f:ajax event="click" immediate="true"
+							listener="#{paymentList.togglePaymentsForTranch()}"
+							render="@form" onevent="showProgress"/>
+					</h:selectBooleanCheckbox>
+			</h:panelGroup> 
+			<p:spacer height="20" width="100%" />
+			<p:dataTable id="#{paymentTypeName}_formList" value="#{paymentList}"
+				var="item" rowIndexVar="rowIndex" 
+				paginator="true" rows="5" paginatorPosition="bottom" 
+				height="#{(not empty height) ? height : '500px'}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15,25,50,100" dynamic="true">
+				<f:facet name="header">  
+		        Pay Type :  #{paymentTypeName}               
+	        	</f:facet> 				
+				<p:column id="select" style="width:8px">
+				<f:facet name="header" >
+					<h:panelGroup rendered="#{!searchCriteria.isTranchModeRemove()}">  
+					<h:selectBooleanCheckbox value="#{paymentList.includeAllOnPage}">
+						<f:ajax event="click" immediate="true"
+							listener="#{paymentList.togglePaymentsOnPageForTranch()}"
+							render="@form" onevent="showProgress"/>
+					</h:selectBooleanCheckbox>
+					</h:panelGroup>            
+	        	</f:facet>
+				<h:selectBooleanCheckbox value="#{item.include}">
+						<f:ajax event="click" immediate="true"
+							listener="#{paymentList.selectPaymentForTranch(item.id)}"
+							render="@form" onevent="showProgress"/>
+					</h:selectBooleanCheckbox>
+				</p:column>					
+				<p:column headerText="#" style="width:8px">
+						#{rowIndex+1}
+				</p:column>			
+				<p:column id="#{paymentTypeName}_reference" sortBy="#{item.referenceNo}" >
+					<f:facet name="header">
+						<h:outputText value="Reference#" />
+					</f:facet>
+					<h:outputText value="#{item.referenceNo}" />
+				</p:column>
+				<p:column id="#{paymentTypeName}_name" sortBy="#{item.name}">
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{item.name}" escape="false" />
+				</p:column>			
+				<p:column id="#{paymentTypeName}_address1">
+					<f:facet name="header">
+						<h:outputText value="Address Line 1" />
+					</f:facet>
+					<h:outputText value="#{item.address1}" escape="false" />
+				</p:column>
+				<p:column id="#{paymentTypeName}_address2">
+					<f:facet name="header">
+						<h:outputText value="Address Line 2" />
+					</f:facet>
+					<h:outputText value="#{item.address2}" escape="false" />
+				</p:column>				
+				<p:column id="#{paymentTypeName}_city">
+					<f:facet name="header">
+						<h:outputText value="City" />
+					</f:facet>
+					<h:outputText value="#{item.city}" escape="false" />
+				</p:column>	
+				<p:column id="#{paymentTypeName}_state">
+					<f:facet name="header">
+						<h:outputText value="State, Zip" />
+					</f:facet>
+					<h:outputText value="#{item.state} #{item.zipCode}" escape="false" />
+				</p:column>								
+				<p:column id="#{paymentTypeName}_paymentAmount" sortBy="#{item.paymentAmount}" >
+					<f:facet name="header">
+						<h:outputText value="Distrib Amount" />
+					</f:facet>
+					<h:outputText value="#{item.paymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</p:column>     	
+        	<p:columnGroup type="footer">  
+                <p:row>  
+                    <p:column footerText="#{paymentTypeName} Total : " colspan="8" style="text-align:right"/>  
+                    <p:column footerText="#{paymentTypeTotal}" />    
+                </p:row>  
+            </p:columnGroup>
+		</p:dataTable>
+		<p:spacer height="10" width="0" />
+		<h:panelGroup rendered="#{searchCriteria.isTranchModeRemove()}">
+		<div class="exportlnk">
+			Export to 
+			<h:commandLink>Excel<p:dataExporter type="xls" target="#{paymentTypeName}_formList" fileName="tranch-payments" excludeColumns="0,1" /></h:commandLink> / 
+			<h:commandLink>PDF<p:dataExporter type="pdf" target="#{paymentTypeName}_formList" fileName="tranch-payments" excludeColumns="0,1" /></h:commandLink> / 
+			<h:commandLink>Csv<p:dataExporter type="csv" target="#{paymentTypeName}_formList" fileName="tranch-payments" excludeColumns="0,1" /></h:commandLink>  
+		</div>	
+		</h:panelGroup>		
+		</h:panelGroup>
+</ui:composition>
+</html>

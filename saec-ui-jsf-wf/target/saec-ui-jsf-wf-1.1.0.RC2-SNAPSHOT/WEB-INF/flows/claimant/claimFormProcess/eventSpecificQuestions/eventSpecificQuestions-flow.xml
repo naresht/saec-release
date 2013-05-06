@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="eventSpecificQuestionsViewModel" class="com.bfds.saec.web.model.EventSpecificQuestionsViewModel" />
+	<var name="viewModel" class="com.bfds.saec.web.model.QuestionsClaimProofViewModel" />
+	<input name="claimantViewModel" required="true"
+		type="com.bfds.saec.web.model.ClaimantViewModel" />
+
+	<view-state id="eventSpecificQuestions">
+		<on-entry>
+			<evaluate
+				expression="eventSpecificQuestionsViewModel.setClaimantId(claimantViewModel.claimant.id)"></evaluate>
+			<evaluate expression="eventSpecificQuestionsViewModel.buildClaimQuestionnaire()"></evaluate>
+		</on-entry>
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+		<transition on="exit" to="exitClaimProcess" />
+		<transition on="loadClaimProof" />
+		<transition on="save" to="exitClaimProcess">
+			<evaluate expression="eventSpecificQuestionsViewModel.saveClaim()" />
+		</transition>
+		<transition on="saveClaimProof">
+			<evaluate expression="viewModel.saveClaimSupportingDocuments()" />
+		</transition>
+	</view-state>
+
+	<end-state id="exitClaimProcess" />
+</flow>                                                                 

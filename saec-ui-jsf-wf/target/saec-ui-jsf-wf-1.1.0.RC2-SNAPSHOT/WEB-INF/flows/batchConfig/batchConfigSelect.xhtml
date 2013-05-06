@@ -1,0 +1,33 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+	<app:panelMenu fid="claimantPanel" title="Batch Configuration"
+		bean="#{claimant}">
+		<h:form id="form">
+			<div id="buttonsection">
+				<p:commandButton value="Refresh Holiday Calendar" ajax="true"
+					action="refreshHolidayCalander" immediate="true" update="@form" />
+			</div>
+			<div id="buttonsection">
+				<h:outputText style="align:center"
+					value="Click this button if you have updated holidays directly to the database,It will register those holidays for jobs!">
+				</h:outputText>
+			</div>
+			<div id="buttonsection">
+				<p:commandButton value="Refresh Job Schedules" ajax="true"
+					action="rescheduleAllJobs" immediate="true" update="@form" />
+			</div>
+			<div id="buttonsection">
+				<h:outputText style="align:center"
+					value="Click this button if you have updated the cron schedule of one or more Job directly to the database. All Jobs will be rescheduled!">
+				</h:outputText>
+			</div>
+			<ui:include src="./batchConfigSelectForm.xhtml" />
+		</h:form>
+	</app:panelMenu>
+</ui:composition>

@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:app="http://springfuse.jaxio.com/app"
+        >
+       
+<ui:composition>	
+<f:param name="id" value="#{claimant.claimant.id}" />
+<ui:include src="../edit/claimantHeaderForm.xhtml" />
+<p:panel>
+<center><span style="font-family:Arial, Helvetica, sans-serif;color:#003968;font-size:17pt;font-weight:normal;text-decoration:none;font-style:normal;text-align:center;margin-top:17px;margin-bottom:17px;">Confirmation</span></center><br />
+<div id="check_confirmation_div_table">
+	<div id="check_confirmation_div_tr">
+		<div id="check_confirmation_div_lft">
+			<b>Reference #:</b><br />
+			<h:outputText value="#{claimantViewModel.claimant.referenceNo}"></h:outputText>
+			<p:spacer height="15" width="100%" />
+			<b>Pay to:</b><br />
+			<h:outputText escape="false" value="#{checkViewModel.paytoNameAsString('&lt;br/&gt;')}"></h:outputText>
+		</div>
+		<div id="check_confirmation_div_rgt">
+			<b>Address:</b><br />
+			<h:outputText escape="false" value="#{checkViewModel.checkAddressAsString('&lt;br/&gt;')}"></h:outputText>
+		</div>
+	</div>
+	<p:spacer height="20" width="100%" />
+	<div id="check_confirmation_div_tr">
+		<div id="check_confirmation_div_lft"><b>Check #: </b><h:outputText value="#{checkViewModel.check.identificatonNo}"></h:outputText></div>
+		<div id="check_confirmation_div_rgt"><b>Amount: </b><h:outputText value="#{check.paymentAmount}"><f:convertNumber currencySymbol="$" type="currency" minFractionDigits="2" maxFractionDigits="2"/></h:outputText></div>
+	</div>
+	<p:spacer height="10" width="100%" />
+	<div id="check_confirmation_div_tr">
+		<div id="check_confirmation_div_td">
+			<div id="buttonsection">
+				<div align="left">Stop has been requested</div><br />
+				Would you like to re-issue?&nbsp;&nbsp;<p:commandButton id="yes" action="save" ajax="false" immediate="true" oncomplete="confirmationYes.show()"  
+				value="Yes"/><p:commandButton id="No" action="exit" ajax="false" immediate="true" oncomplete="confirmationNo.show()" value="No"/>
+			</div>
+		</div>
+	</div>
+</div>
+</p:panel>                                         
+</ui:composition>
+</html>

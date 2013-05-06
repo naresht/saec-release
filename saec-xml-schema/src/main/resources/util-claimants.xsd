@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0"
+	xmlns="http://saec.bfds.com/schema/util/claimant" targetNamespace="http://saec.bfds.com/schema/util/claimant"
+	elementFormDefault="qualified">
+
+	<xsd:element name="claimants">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="claimant" maxOccurs="unbounded" type="Claimant" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="Claimant">
+		<xsd:sequence>
+			<xsd:element name="referenceNo" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="firstName" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="middleName" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="lastName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="registration1" type="xsd:string" />
+			<xsd:element name="registration2" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="registration3" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="registration4" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="registration5" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="registration6" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="fundAccountNo" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="accountStatus" type="AccountStatusType"
+				minOccurs="0" />
+			<xsd:element name="accountType" type="AccountType"
+				minOccurs="0" />
+			<xsd:element name="brokerId" type="xsd:string" minOccurs="0" />
+			<xsd:element name="bin" type="xsd:string" minOccurs="0" />
+			<xsd:choice>
+				<xsd:element name="ssn" type="xsd:string" />
+				<xsd:element name="ein" type="xsd:string" />
+				<xsd:element name="tin" type="xsd:string" />
+			</xsd:choice>
+			<xsd:element name="isCorporate" type="xsd:boolean"
+				minOccurs="0" />
+			<xsd:element name="address" minOccurs="1" maxOccurs="2"
+				type="Address">
+
+			</xsd:element>
+			<xsd:element name="payment" minOccurs="0" maxOccurs="100"
+				type="Payment" />
+			<xsd:element name="letter" minOccurs="0" maxOccurs="100"
+				type="Letter" />
+
+		</xsd:sequence>
+		<xsd:attribute name="country" type="xsd:NMTOKEN" fixed="US" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Payment">
+		<xsd:sequence>
+			<xsd:element name="identificatonNo" type="xsd:string"
+				minOccurs="1" />
+			<xsd:element name="paymentAmount" type="xsd:double"
+				minOccurs="0" />
+			<xsd:element name="statusChangeDate" type="xsd:date"
+				minOccurs="0" />
+			<xsd:element name="paymentType" type="paymentType"
+				minOccurs="0" />
+			<xsd:element name="paymentCode" type="PaymentCode"
+				minOccurs="1" />
+			<xsd:element name="rpoType" type="RpoType" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Letter">
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="comments" type="xsd:string" minOccurs="0" />
+			<xsd:element name="mailDate" type="xsd:date" minOccurs="0" />
+			<xsd:element name="rpoDate" type="xsd:date" minOccurs="0" />
+			<xsd:element name="mailingControlNo" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="mailType" type="MailType" minOccurs="0" />
+			<xsd:element name="letterCode" type="xsd:string" />
+			<xsd:element name="rpoType" type="RpoType" minOccurs="0" />
+			<xsd:element name="letterStatus" type="LetterStatus"
+				minOccurs="0" />
+			<xsd:element name="auditable" type="xsd:boolean"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Address">
+		<xsd:sequence>
+			<xsd:element name="addressType" type="AddressType" />
+			<xsd:element name="line1" type="xsd:string" minOccurs="1" />
+			<xsd:element name="line2" type="xsd:string" minOccurs="0" />
+			<xsd:element name="line3" type="xsd:string" minOccurs="0" />
+			<xsd:element name="line4" type="xsd:string" minOccurs="0" />
+			<xsd:element name="line5" type="xsd:string" minOccurs="0" />
+			<xsd:element name="line6" type="xsd:string" minOccurs="0" />
+			<xsd:element name="city" type="xsd:string" minOccurs="1" />
+			<xsd:element name="stateCode" type="xsd:string"
+				minOccurs="1" />
+			<xsd:element name="countryCode" type="xsd:string"
+				minOccurs="1" />
+			<xsd:element name="zip" type="xsd:string" minOccurs="0" />
+			<xsd:element name="zipExt" type="xsd:string" minOccurs="0" />
+			<xsd:element name="requiresAddressResearch" type="xsd:boolean"
+				minOccurs="0" />
+			<xsd:element name="requiresInfoAgePrescrub" type="xsd:boolean"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="PaymentCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="FIRST_ISSUE_CREATED_FI_FI" />
+			<xsd:enumeration value="FIRST_ISSUE_OUTSTANDING_FI_FIO" />
+			<xsd:enumeration value="FIRST_ISSUE_CASHED_C_FIC" />
+			<xsd:enumeration value="ISSUANCE_CREATED_IS_IS" />
+			<xsd:enumeration value="ISSUANCE_OUTSTANDING_IS_ISO" />
+			<xsd:enumeration value="ISSUANCE_CASHED_C_ISC" />
+			<xsd:enumeration value="VOID_NO_REISSUE_VOIDED_VO_VO" />
+			<xsd:enumeration value="VOID_DAMASCO_VOIDED_VD_VD" />
+			<xsd:enumeration value="VOID_DAMASCO_RE_ISSUE_REQUESTED_I_VDR" />
+			<xsd:enumeration value="VOID_DAMASCO_RE_ISSUE_APPROVED_I_VDA" />
+			<xsd:enumeration value="VOID_DAMASCO_RE_ISSUE_REJECTED_IR_VDJ" />
+			<xsd:enumeration value="VOID_DAMASCO_RE_ISSUE_COMPLETED_XX_VDX" />
+			<xsd:enumeration value="VOID_RPO_FORWARDABLE_VOIDED_VF_VF" />
+			<xsd:enumeration value="VOID_RPO_FORWARDABLE_RE_ISSUE_REQUESTED_I_VFR" />
+			<xsd:enumeration value="VOID_RPO_FORWARDABLE_RE_ISSUE_APPROVED_I_VFA" />
+			<xsd:enumeration value="VOID_RPO_FORWARDABLE_RE_ISSUE_REJECTED_IR_VFJ" />
+			<xsd:enumeration value="VOID_RPO_FORWARDABLE_RE_ISSUE_COMPLETED_XX_VFX" />
+			<xsd:enumeration value="VOID_RPO_NON_FORWARDABLE_VOIDED_VN_VN" />
+			<xsd:enumeration value="VOID_RPO_NON_FORWARDABLE_RE_ISSUE_REQUESTED_I_VNR" />
+			<xsd:enumeration value="VOID_RPO_NON_FORWARDABLE_RE_ISSUE_APPROVED_I_VNA" />
+			<xsd:enumeration value="VOID_RPO_NON_FORWARDABLE_RE_ISSUE_REJECTED_IR_VNJ" />
+			<xsd:enumeration value="VOID_RPO_NON_FORWARDABLE_RE_ISSUE_COMPLETED__VNX" />
+			<xsd:enumeration value="VOID_HOLD_VOIDED_VH_VH" />
+			<xsd:enumeration value="VOID_HOLD_RE_ISSUE_REQUESTED_I_VHR" />
+			<xsd:enumeration value="VOID_HOLD_RE_ISSUE_APPROVED_I_VHA" />
+			<xsd:enumeration value="VOID_HOLD_RE_ISSUE_REJECTED_IR_VHJ" />
+			<xsd:enumeration value="VOID_HOLD_RE_ISSUE_COMPLETED_XX_VHX" />
+			<xsd:enumeration value="VOID_VOIDED_V_V" />
+			<xsd:enumeration value="VOID_RE_ISSUE_REQUESTED_I_VR" />
+			<xsd:enumeration value="VOID_RE_ISSUE_APPROVED_I_VA" />
+			<xsd:enumeration value="VOID_RE_ISSUE_REJECTED_IR_VJ" />
+			<xsd:enumeration value="VOID_RE_ISSUE_COMPLETED_XX_VX" />
+			<xsd:enumeration value="VOID_LIFT_OUTSTANDING_VL_VL" />
+			<xsd:enumeration value="VOID_VOID_TO_WIRE_CONFIRMED_VW_VW" />
+			<xsd:enumeration value="STOP_STOP_REQUESTED_S_SR" />
+			<xsd:enumeration value="STOP_STOP_CONFIRMED_S_SC" />
+			<xsd:enumeration value="STOP_STOP_REJECTED_SR_SJ" />
+			<xsd:enumeration value="STOP_REPLACE_REQUESTED_R_SRR" />
+			<xsd:enumeration value="STOP_REPLACE_APPROVED_R_SRA" />
+			<xsd:enumeration value="STOP_REPLACE_REJECTED_RR_SRJ" />
+			<xsd:enumeration value="STOP_REPLACE_COMPLETED_XX_SRX" />
+			<xsd:enumeration value="STOP_DAMASCO_STOP_REQUESTED_P_PR" />
+			<xsd:enumeration value="STOP_DAMASCO_STOP_CONFIRMED_P_PC" />
+			<xsd:enumeration value="STOP_DAMASCO_STOP_REJECTED_SR_PJ" />
+			<xsd:enumeration value="STOP_DAMASCO_REPLACE_REQUESTED_R_PRR" />
+			<xsd:enumeration value="STOP_DAMASCO_REPLACE_APPROVED_R_PRA" />
+			<xsd:enumeration value="STOP_DAMASCO_REPLACE_REJECTED_RR_PRJ" />
+			<xsd:enumeration value="STOP_DAMASCO_REPLACE_COMPLETED_XX_PRX" />
+			<xsd:enumeration value="STOP_WIRE_STOP_TO_WIRE_CONFIRMED_SW_SW" />
+			<xsd:enumeration value="STOP_LIFT_OUTSTANDING_L_L" />
+			<xsd:enumeration value="ROF_FULL_RESIDUAL_PROCESSED_RFR_RFR" />
+			<xsd:enumeration value="ROF_FULL_PROCESSED_RF_RF" />
+			<xsd:enumeration value="ROF_PARTIAL_RESIDUAL_PROCESSED_RPR_RPR" />
+			<xsd:enumeration value="ROF_PARTIAL_PROCESSED_RP_RP" />
+			<xsd:enumeration value="ROF_INTEREST_PROCESSED_INT_INT" />
+			<xsd:enumeration value="NEW_ISSUE_CREATED_NI_NI" />
+			<xsd:enumeration value="NEW_ISSUE_OUTSTANDING_NI_NIO" />
+			<xsd:enumeration value="NEW_ISSUE_CASHED_C_NIC" />
+			<xsd:enumeration value="WIRE_REQUESTED_W_W" />
+			<xsd:enumeration value="WIRE_APPROVED_WA_WA" />
+			<xsd:enumeration value="WIRE_REJECTED_WR_WR" />
+			<xsd:enumeration value="STALE_DATE_OUTSTANDING_X_X" />
+			<xsd:enumeration value="TRANCHE_ITEM_CREATED_TI_TI" />
+			<xsd:enumeration value="TRANCHE_ITEM_OUTSTANDING_TI_TIO" />
+			<xsd:enumeration value="TRANCHE_ITEM_CASHED_C_TIC" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="paymentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CHECK" />
+			<xsd:enumeration value="WIRE" />
+			<xsd:enumeration value="ACH" />
+			<xsd:enumeration value="ROF" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AddressType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ADDRESS_OF_RECORD" />
+			<xsd:enumeration value="SEASONAL_ADDRESS" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AccountStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Open" />
+			<xsd:enumeration value="Closed" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AccountType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Custodial" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LetterStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="IGO" />
+			<xsd:enumeration value="NIGO" />
+			<xsd:enumeration value="RPO" />
+			<xsd:enumeration value="SUBMITTED" />
+			<xsd:enumeration value="PENDING" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="RpoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="FORWARDABLE" />
+			<xsd:enumeration value="NONFORWARDABLE" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="MailType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OUTGOING" />
+			<xsd:enumeration value="INCOMING" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+</xsd:schema>

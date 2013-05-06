@@ -1,0 +1,56 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<!-- <h:form id="formSubmit"> -->
+		<div id="buttonsection">
+			<p:commandButton value="Add To Tranche"  action="selectTranch"
+				immediate="true" update="@form :results" rendered="#{!searchCriteria.isTranchModeRemove() and showResults}"/>
+			<p:commandButton value="Remove From Tranche"  action="removeFromTranch"
+				immediate="true" update="@form :results" rendered="#{searchCriteria.isTranchModeRemove() and showResults}"/>
+			<p:commandButton value="Refresh" ajax="true" action="refreshResults"
+				immediate="true" update="@form :results" rendered="#{!searchCriteria.isTranchModeRemove() and showResults}"/>
+			<p:commandButton id="resetSearch" action="clearResults" rendered="#{showResults}"
+				value="Cancel" ajax="true" update=":results" immediate="true" oncomplete="tranchDialog.hide()"/>
+			<p:commandButton id="exitConfirm" action="exitConfirm"
+				immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+		</div>
+		<p:confirmDialog
+			message="Are you sure you want to exit without saving?" modal="true"
+			header="Exit" severity="alert" widgetVar="confirmationExit">
+			<p:commandButton value="Yes" ajax="false"
+				oncomplete="confirmationExit.hide()" action="exit" immediate="true" />
+			<p:commandButton value="No" onclick="confirmationExit.hide()"
+				type="button" />
+		</p:confirmDialog>
+	<!-- </h:form> -->
+	<p:dialog header="Tranche Indicator" id="tranchDialog" widgetVar="tranchDialog"
+		resizable="false" modal="true">
+		<!-- <h:form> -->
+			<p:messages />
+			<h:panelGrid columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="newTranchCode" value="New Tranche Indicator:" />
+				<p:inputText id="newTranchCode"
+					value="#{tranchAssignmentViewModel.newTranchCode}" />					
+				<h:outputLabel for="tranchCode" value="Tranche Indicator:" />
+				<h:selectOneMenu id="tranchCode"
+					value="#{searchCriteria.tranchCode}">
+					<f:selectItem itemLabel="" itemValue="" />
+					<f:selectItems value="#{tranchAssignmentViewModel.tranchList}"
+						var="tranch" itemLabel="#{tranch.code}" itemValue="#{tranch.code}" />
+				</h:selectOneMenu>
+				<h:outputLabel for="lettercodes" value="Letter Code:" />
+				<app:paymentLetterCodeSelect id="lettercodes" value="#{tranchAssignmentViewModel.letterCode}" rendered="true"/>
+			</h:panelGrid>
+			<p:commandButton value="Save" ajax="true"
+				action="addToTranch" update="@form :results :msgs :formSearchFields" />
+			<p:commandButton value="Cancel" type="button"  onclick="tranchDialog.hide()" />
+		<!-- </h:form> -->
+	</p:dialog>
+</ui:composition>
+</html>

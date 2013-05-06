@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+
+<ui:composition>
+	<f:param name="id" value="#{claimant.claimant.id}" />
+	<ui:include src="../edit/claimantHeaderForm.xhtml" />
+	<p:panel>
+		<center>
+			<span
+				style="font-family: Arial, Helvetica, sans-serif; color: #003968; font-size: 17pt; font-weight: normal; text-decoration: none; font-style: normal; text-align: center; margin-top: 17px; margin-bottom: 17px;">Confirmation</span>
+		</center>
+		<br />
+		<div id="check_confirmation_div_table">
+			<div id="check_confirmation_div_tr">
+				<div id="check_confirmation_div_lft">
+					<b>Reference #:</b><br />
+					<h:outputText value="#{claimantViewModel.claimant.referenceNo}"></h:outputText>
+					<p:spacer height="15" width="100%" />
+					<b>Pay to:</b><br />
+					<h:outputText escape="false"
+						value="#{checkViewModel.paytoNameAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+				<div id="check_confirmation_div_rgt">
+					<b>Address: </b><br />
+					<h:outputText escape="false"
+						value="#{checkViewModel.checkAddressAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+			</div>
+			<p:spacer height="20" width="100%" />
+			<div id="check_confirmation_div_tr">
+				<div id="check_confirmation_div_lft">
+					<b>Check #: </b>
+					<h:outputText value="#{checkViewModel.check.identificatonNo}"></h:outputText>
+				</div>
+				<div id="check_confirmation_div_rgt">
+					<b>Amount: </b>
+					<h:outputText value="#{check.paymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</div>
+			</div>
+			<p:spacer height="10" width="100%" />
+			<div id="check_confirmation_div_tr">
+				<div id="check_confirmation_div_td">
+					<div id="buttonsection">
+						<div align="left">Void has been requested</div>
+						<br />
+						<h:panelGroup rendered="#{check.isReissueable()}">
+					Would you like to re-issue?&nbsp;&nbsp;<p:commandButton id="yes"
+								ajax="false" action="save" disabled="#{!sec:canReissueCheck()}"
+								immediate="true" oncomplete="confirmationYes.show()" value="Yes" />
+							<p:commandButton id="No" action="exit" ajax="false"
+								immediate="true" oncomplete="confirmationNo.show()" value="No" />
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+		</div>
+	</p:panel>
+	<h:panelGroup rendered="#{!check.isReissueable()}">
+		<div id="buttonsection">
+			<p:commandButton id="exitConfirm" action="exitConfirm"
+				immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+		</div>
+	</h:panelGroup>
+	<p:confirmDialog message="Are you sure you want to exit ?"
+		header="Exit" severity="alert" widgetVar="confirmationExit"
+		modal="true">
+		<p:commandButton value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" immediate="true" action="exit" />
+		<p:commandButton value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+</ui:composition>
+</html>

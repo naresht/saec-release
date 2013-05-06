@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+	<p:fieldset legend="Call History (#{claimant.phoneCallCount}) Calls"
+		toggleable="true" toggleSpeed="500" id="callLogPanel" collapsed="true">
+		<p:dataTable id="calLog" var="calLog" value="#{allCalls}"
+			scrollable="true" scrollWidth="975" scrollHeight="226" rowIndexVar="rowIndex">
+			<p:column headerText="#"  width="25">
+				<f:facet name="header">
+					<h:outputText value="#" />
+				</f:facet>
+				<h:outputText value="#{rowIndex+1}" />
+			</p:column>
+			<p:column id="Date" width="125" sortBy="#{calLog.activityDate}"
+				filterBy="#{claimant.getFilterDateOfCall(calLog)}">
+				<f:facet name="header">
+					<h:outputText value="Date" />
+				</f:facet>
+				<h:outputText value="#{calLog.activityDate}" />
+			</p:column>
+			<p:column id="callType" width="125"
+				sortBy="#{calLog.activityTypeDescription}"
+				filterBy="#{calLog.activityTypeDescription}">
+				<f:facet name="header">
+					<h:outputText value="CallType" />
+				</f:facet>
+				<h:outputText value="#{calLog.activityTypeDescription}" />
+			</p:column>
+			<p:column id= "callHistoryDesc" width="250" sortBy="#{calLog.description}">
+				<f:facet name="header">
+					<h:outputText  value="Description" />
+				</f:facet>
+				<h:outputText id="call_shortDescription"
+					value="#{calLog.shortDescription}" title="#{calLog.description}"
+					escape="false" />
+				<p:tooltip global="true" for="call_shortDescription" targetPosition="topRight" position="bottomLeft" showEffect="slide" hideEffect="slide"/>
+			</p:column>
+			<p:column id="userID" width="125" sortBy="#{calLog.userId}"
+				filterBy="#{calLog.userId}">
+				<f:facet name="header">
+					<h:outputText  value="UserID" />
+				</f:facet>
+				<h:outputText value="#{calLog.userId}" />
+			</p:column>
+			<p:column id="callHistoryComments" width="200"
+				sortBy="#{calLog.comments}">
+				<f:facet name="header">
+					<h:outputText value="Comments"
+						style="word-wrap:break-word;width:34em;" />
+				</f:facet>
+				<h:outputText id="Comments" style="word-wrap:break-word;width:34em;"
+					title="#{calLog.comments}" value="#{calLog.comments}" />
+			</p:column>
+
+		</p:dataTable>
+		<p:spacer height="10" width="0" />
+		<div class="exportlnk">
+			Export to
+			<h:commandLink>Excel<p:dataExporter type="xls"
+					target="calLog" fileName="account-call-log" excludeColumns="0" />
+			</h:commandLink>
+			/
+			<h:commandLink>PDF<p:dataExporter type="pdf"
+					target="calLog" fileName="account-call-log" excludeColumns="0" />
+			</h:commandLink>
+			/
+			<h:commandLink>Csv<p:dataExporter type="csv"
+					target="calLog" fileName="account-call-log" excludeColumns="0" />
+			</h:commandLink>
+		</div>
+		<p:spacer height="10" width="0" />
+
+		<!-- <p:separator />
+				<p:commandButton id="callLogsDisplayButton" value="Show all" update="callLogPanel" 
+					actionListener="#{claimant.showAllCallLogs}">
+						
+					</p:commandButton>
+					 -->
+	</p:fieldset>
+</ui:composition>
+</html>

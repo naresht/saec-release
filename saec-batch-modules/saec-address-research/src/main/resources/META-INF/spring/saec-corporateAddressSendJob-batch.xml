@@ -1,0 +1,51 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<import resource="address-research-common-batch.xml" />
+    <batch:job id="corporateAddressSendJob" parent="loggerJob">
+    	<batch:validator ref="addressSendJobParametersValidator"/>
+        <batch:step id="outCorpAddressStep">
+            <batch:tasklet transaction-manager="transactionManager" start-limit="100" allow-start-if-complete="true">
+                <batch:chunk
+                        reader="outCorporateItemReader"
+                        processor="outCorporateItemProcessor"
+                        writer="outCorporateItemWriter"
+                        commit-interval="100" skip-limit="10" retry-policy="infoageretryPolicy">
+                        <batch:skippable-exception-classes>
+						<batch:include class="java.lang.Exception"/>
+						<batch:include class="java.net.ConnectException"/>
+						<batch:include class="java.lang.NullPointerException" />
+						</batch:skippable-exception-classes>
+                    <batch:streams>
+                        <batch:stream ref="outCorporateItemReader"/>
+                    </batch:streams>
+                </batch:chunk>
+                <batch:listeners>
+					<batch:listener ref="outAddressResearchSkipListener" />
+					<batch:listener ref="infoageretryListener" />
+					<batch:listener ref="infoAgestepListener" />
+				</batch:listeners>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+        
+    <bean id="outCorporateItemReader" class="org.springframework.batch.item.database.JpaPagingItemReader">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        <property name="pageSize"  value="100"/>
+        <property name="queryProvider" ref="addressResearchSendCriteria"/>
+    </bean> 
+    
+    <bean id="outCorporateItemProcessor" class="com.bfds.saec.batch.out.infoage_corporate.CorporateItemProcessor" scope="step" />
+
+    <bean id="outCorporateItemWriter" class="org.springframework.batch.item.database.TransactionalJpaItemWrite" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"  />
+
+</beans>

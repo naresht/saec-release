@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+		<groupId>com.bfds.saec</groupId>
+        <artifactId>saec-core-parent</artifactId>        
+        <version>1.1.0.RC2-SNAPSHOT</version>
+		<relativePath>../saec-core-parent/pom.xml</relativePath>
+        <!-- empty to workaround 3.0.x warning: see
+              http://jira.codehaus.org/browse/MNG-4687 -->
+    </parent>
+	<groupId>com.bfds.saec</groupId>
+    <artifactId>saec-xml-schema</artifactId>
+    <name>SAEC Schema and JaxB (deprecated)</name>	
+    <description>SAEC XML Schemas and JaxB objects</description>
+
+    <dependencies>
+         <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb22-plugin</artifactId>
+				<version>0.8.0</version>
+                <configuration>
+                    <extension>true</extension>
+                    <args>
+                        <arg>-Xfluent-api</arg>
+                    </args>
+                    <plugins>
+                        <plugin>
+                            <groupId>net.java.dev.jaxb2-commons</groupId>
+                            <artifactId>jaxb-fluent-api</artifactId>
+                            <version>${jaxb.fluent.api.version}</version>
+                        </plugin>
+                    </plugins>
+                    <bindingDirectory>src/main/resources/binding</bindingDirectory>
+					<lifecycleMappingMetadata>
+					  <pluginExecutions>
+						<pluginExecution>
+						  <pluginExecutionFilter>
+							<groupId>some-group-id</groupId>
+							<artifactId>some-artifact-id</artifactId>
+							<versionRange>[0.8.0,)</versionRange>
+							<goals>
+							  <goal>generate</goal>
+							</goals>
+						  </pluginExecutionFilter>
+						  <action>
+							<ignore />
+						  </action>
+						</pluginExecution>
+					  </pluginExecutions>
+					</lifecycleMappingMetadata>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="batchConfigViewModel" class="com.bfds.saec.web.model.BatchConfigViewModel" />
+	<on-start>
+		<evaluate expression="batchConfigViewModel.setRemote(requestParameters.remote)"></evaluate>
+	</on-start>
+	<view-state id="batchConfigSelect">
+		<on-entry>
+			<evaluate expression="batchConfigViewModel.loadJobConfigList(messageContext)"></evaluate>
+		</on-entry>
+		<transition on="edit" to="batchConfigEdit"/>
+		<transition on="exit" to="endEdit"/>
+		<transition on="exitConfirm" />
+		<transition on="enable" >
+			<evaluate expression="batchConfigViewModel.enableJobSchedule(requestParameters.id, true, messageContext)"></evaluate>
+		</transition>
+		<transition on="disable" >
+			<evaluate expression="batchConfigViewModel.enableJobSchedule(requestParameters.id, false, messageContext)"></evaluate>
+		</transition>
+		<transition on="execute" >
+			<evaluate expression="batchConfigViewModel.executeJob(requestParameters.id, messageContext)"></evaluate>
+		</transition>
+		<transition on="refreshHolidayCalander" >
+			<evaluate expression="batchConfigViewModel.updateHolidays()"></evaluate>
+		</transition>
+		<transition on="rescheduleAllJobs" >
+			<evaluate expression="batchConfigViewModel.rescheduleAllJobs()"></evaluate>
+		</transition>		
+		
+	</view-state>
+	
+	<view-state id="batchConfigEdit">
+		<on-entry>
+			<evaluate expression="batchConfigViewModel.loadJobConfig(requestParameters.id)" ></evaluate>
+		</on-entry>
+		<transition on="exit" to="batchConfigSelect"/>
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	    <transition on="save" to="batchConfigSelect">
+	    	<evaluate expression="batchConfigViewModel.saveJobConfig(messageContext)" />
+	    </transition>
+	</view-state>
+	
+	<end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />
+</flow>

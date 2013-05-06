@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Details">
+		<div id="address_update_div_table">
+			<div id="address_update_div_tr">
+				<div id="address_update_div_lft">Reference #:</div>
+				<div id="address_update_div_rgt">
+					<h:outputText value="#{claimant.claimant.referenceNo}" />
+				</div>
+			</div>
+			<p:spacer width="100%" height="10" />
+			<div id="address_update_div_tr">
+				<div id="address_update_div_lft">Name:</div>
+				<div id="address_update_div_rgt">
+					<h:outputText escape="false" value="#{claimant.registrationText}" />
+				</div>
+			</div>
+		</div>
+		Countrycode: #{address.entity.countryCode}
+		<h:panelGroup id="addressListFieldSet">
+			<h:panelGroup id="PrimaryAddress">
+				<ui:include src="./claimantAddress.xhtml">
+					<ui:param name="addressType" value="Primary Address"/>
+					<ui:param name="addressId" value="primaryAddress"/>
+					<ui:param name="addressFlag" value="false"/>
+					<ui:param name="claimantAddress" value="#{claimant.claimant.addressOfRecord}" />
+					<ui:param name="addressList" value="#{claimant.aorList}" />
+				</ui:include>
+			</h:panelGroup>
+			<p:spacer height="10" width="100%" />
+			<p:outputPanel rendered="#{!hasAddressOfRecord}">
+				The account does not have an address of record. A seasonal address can be created after the an address of record has been created. 
+			</p:outputPanel>
+			<p:outputPanel id="mailingAddressContainer"
+					rendered="#{hasAddressOfRecord}">
+					<b>Mailing Address: </b>
+					<p:outputPanel id="mailingAddressFlag">
+						<h:selectOneRadio value="#{claimant.mailingAddressType}"
+							title="Mailing Address:">
+							<f:selectItem itemLabel="Primary Address"
+								itemValue="#{claimant.primaryAddressType}" />
+							<f:selectItem itemLabel="Seasonal Address"
+								itemValue="#{claimant.seasonalAddressType}" />
+						</h:selectOneRadio>
+					</p:outputPanel>
+					<p:spacer height="20" width="100%" />
+					<ui:include src="./claimantAddress.xhtml">
+						<ui:param name="addressType" value="Seasonal Address"/>
+						<ui:param name="addressId" value="seasonalAddress"/>
+						<ui:param name="addressFlag" value="true"/>
+						<ui:param name="claimantAddress" value="#{claimant.claimant.seasonalAddress}" />
+						<ui:param name="addressList" value="#{claimant.seasonalList}" />
+					</ui:include>
+			</p:outputPanel>
+			<div id="buttonsection">
+				<p:commandButton id="saveAddressConfirm" action="saveAddressConfirm"
+					immediate="true" oncomplete="confirmationSave.show()" value="Save"
+					disabled="#{!sec:canChangeAddress()}" />
+				<p:commandButton id="exitAddressConfirm" action="exitAddressConfirm"
+					immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+			</div>
+		</h:panelGroup>
+	</p:fieldset>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>

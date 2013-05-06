@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<h:panelGroup id="followupReminderDtls">
+	<p:messages/>
+		<div id="grid" class="contact_info_div_table">
+ 			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft"><font color="red">*</font>
+					<h:outputLabel value="Follow-up Type:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<h:selectOneMenu value="#{viewModel.claimantReminder.reminderType}">  
+						<p:ajax update=":form:reminderDueDate" event="change" listener="#{viewModel.onChangeReminderType(viewModel.claimantReminder.reminderType)}"/>
+					 	<f:selectItem itemLabel="" itemValue="" /> 
+           				<f:selectItems value="#{selectItemUtil.getReminderTypeSelectItems()}" />  
+        			</h:selectOneMenu>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft"><font color="red">*</font>
+					<h:outputLabel value="Due Date:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:calendar id="reminderDueDate"
+						value="#{viewModel.claimantReminder.reminderDueDate}" size="10"
+						pattern="MM/dd/yyyy" maxlength="10" />
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft"><font color="red">*</font>
+					<h:outputLabel value="Contact Method:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<h:selectOneMenu value="#{viewModel.claimantReminder.contactMethod}">  
+           				 <f:selectItem itemLabel="" itemValue="" />  
+           				 <f:selectItem itemLabel="DIALER" itemValue="#{viewModel.dailer}" />
+						<f:selectItem itemLabel="EMAIL" itemValue="#{viewModel.email}" />
+						<f:ajax event="change" process="@this"/>  
+        			</h:selectOneMenu>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft"><font color="red">*</font>
+					<h:outputLabel value="Action Date:" />
+				</div>
+				<div id="contact_info_div_rgt">
+						<p:calendar id="actionDate"
+						value="#{viewModel.claimantReminder.actionDate}" size="10"
+						pattern="MM/dd/yyyy" maxlength="10"/>
+				</div>
+			</div> 
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft"><font color="red">*</font>
+					<h:outputLabel value="Status:" />
+				</div>
+				<div id="contact_info_div_rgt">
+					<h:selectOneMenu value="#{viewModel.claimantReminder.reminderStatus}">  
+           				<f:selectItem itemLabel="PENDING" itemValue="#{viewModel.pendingstatus}" /> 
+           				<f:selectItem itemLabel="COMPLETE" itemValue="#{viewModel.completestatus}" />
+						<f:selectItem itemLabel="REJECT" itemValue="#{viewModel.rejectstatus}" />
+						<f:selectItem itemLabel="AUTO_RESOLVED" itemValue="#{viewModel.autoresolvedstatus}" />  
+						<f:selectItem itemLabel="MAN_RESOLVED" itemValue="#{viewModel.manresolvedstatus}" /> 
+						<f:selectItem itemLabel="NO_ADDRESS_AVAILABLE" itemValue="#{viewModel.noaddressstatus}" />  
+						<f:selectItem itemLabel="INSUFFICIENT_AMOUNT" itemValue="#{viewModel.insufficientstatus}" />    
+        			</h:selectOneMenu>
+				</div>
+			</div>
+			<div id="contact_info_div_tr">
+				<div id="contact_info_div_lft">
+					<h:outputLabel value="Comments: " />
+				</div>
+				<div id="contact_info_div_rgt">
+					<p:inputTextarea id="comments" value="#{viewModel.claimantReminder.reminderDescription}" style="width:300px;height:100px;" effectDuration="400"
+						autoResize="false" maxlength="255"/>
+				</div>
+			</div>
+		</div>
+		<br /><br />
+		<p:separator id="customSeparator" />  
+		<div id="buttonsection">
+			<p:commandButton id="saveConfirm" oncomplete="editDialog.hide()" value="Save" action="save" ajax="false"/>
+		</div>
+	</h:panelGroup>
+</ui:composition>
+</html>

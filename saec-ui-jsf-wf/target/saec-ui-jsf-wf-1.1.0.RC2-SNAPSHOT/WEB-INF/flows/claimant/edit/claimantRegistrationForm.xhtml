@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Details">
+		<h:panelGroup id="grid">
+			<div id="name_update_div_table">
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Reference #:</div>
+					<div id="name_update_div_rgt">
+						<h:outputText value="#{claimant.claimant.referenceNo}" />
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">&nbsp;</div>
+					<div id="name_update_div_rgt">
+						<h:outputText escape="false" value="#{claimant.addressText}" />
+					</div>
+				</div>
+				<div id="name_update_div_tr"></div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">.</div>
+					<div id="name_update_div_rgt">
+						<a href="#">Edit Registration</a>
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">
+						<font color="red">*</font>First Name:
+					</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="claimant_firstname"
+							value="#{claimant.claimant.name.firstName}" maxlength="60"
+							required="true" autocomplete="off"
+							requiredMessage="Please, fill First Name"></p:inputText>
+						<p:message id="claimant_firtname_error" for="claimant_firstname" />
+					</div>
+				</div>
+				
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Middle Name:</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="claimant_middlename"
+							value="#{claimant.claimant.name.middleName}" autocomplete="off"
+							maxlength="60"></p:inputText>
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Last Name:</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="claimant_lastname"
+							value="#{claimant.claimant.name.lastName}" autocomplete="off"
+							maxlength="60"></p:inputText>
+					</div>
+				</div>
+
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">
+						<font color="red">*</font>Name1:
+					</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="registration1"
+							value="#{claimant.claimant.claimantRegistration.registration1}"
+							required="true" requiredMessage="Please fill Name1"
+							maxlength="60" />
+						<p:message for="registration1" />
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Name2:</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="claimantName2Update"
+							value="#{claimant.claimant.claimantRegistration.registration2}"
+							maxlength="60" />
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Name3:</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="claimantName3Update"
+							value="#{claimant.claimant.claimantRegistration.registration3}"
+							maxlength="60" />
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Name4:</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="claimantName4Update"
+							value="#{claimant.claimant.claimantRegistration.registration4}"
+							maxlength="60" />
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Name5:</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="claimantName5Update"
+							value="#{claimant.claimant.claimantRegistration.registration5}"
+							maxlength="60" />
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Name6:</div>
+					<div id="name_update_div_rgt">
+						<p:inputText id="claimantName6Update"
+							value="#{claimant.claimant.claimantRegistration.registration6}"
+							maxlength="60" />
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">Last Maintenance Date:</div>
+					<div id="name_update_div_rgt">
+						<h:outputText
+							value="#{claimantRegistrationRevisionInfo.revisionDate}" />
+					</div>
+				</div>
+				<div id="name_update_div_tr">
+					<div id="name_update_div_lft">User:</div>
+					<div id="name_update_div_rgt">
+						<h:outputText value="#{claimantRegistrationRevisionInfo.userName}" />
+					</div>
+				</div>
+			</div>
+		</h:panelGroup>
+	</p:fieldset>
+	<div id="buttonsection">
+		<p:commandButton id="saveRegistrationConfirm"
+			action="saveRegistrationConfirm" immediate="true"
+			disabled="#{!sec:canChangeName()}"
+			oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitRegistrationConfirm"
+			action="exitRegistrationConfirm" immediate="true"
+			oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+<ui:composition>
+	<p:fieldset legend="Questions">
+		<ui:include src="/WEB-INF/incl/claimantClaimHeader.xhtml">
+			<ui:param name="claimantClaimHeader"
+				value="#{eventSpecificQuestionsViewModel.getClaimantClaimHeader()}" />
+		</ui:include>
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<c:forEach
+			items="#{eventSpecificQuestionsViewModel.questionnaire.answerGroups}"
+			var="responseGroup">
+			<p:panel header="#{responseGroup.questionGroup.groupDescription}">
+				<h:panelGroup id="singular_question_proof_required"
+					rendered="#{responseGroup.questionGroup.proofRequiredInd}">
+					<ui:include src="proofRequired.xhtml">
+						<ui:param name="claimProof" value="#{responseGroup.claimProof}" />
+						<ui:param name="claim"
+							value="#{eventSpecificQuestionsViewModel.claim}" />
+						<ui:param name="proofFor" value="claimAnswerGroup" />
+						<ui:param name="answerGroup" value="#{responseGroup}" />
+					</ui:include>
+				</h:panelGroup>
+
+				<p:dataTable rendered="#{!responseGroup.multiOccuring}"
+					value="#{responseGroup.answers}" var="userResponse"
+					rowIndexVar="userResponseRow">
+
+					<p:column>
+						<div class="userInputLabel">
+							<h:outputText
+								value="#{userResponse.question.questionDescription}" />
+							<h:outputText value="*" styleClass="userInputRequired"
+								rendered="#{userResponse.question.required}" />
+						</div>
+					</p:column>
+
+					<p:column>
+						<div class="userInputField">
+							<p:inputText maxlength="#{userResponse.question.length}"
+								size="18"
+								rendered="#{userResponse.question.responseDisplayCode=='TEXT'}"
+								required="#{userResponse.question.required}"
+								requiredMessage="Please fill '#{userResponse.question.questionDescription}' the field"
+								value="#{userResponse.textAnswer}" />
+							<h:selectOneMenu
+								rendered="#{userResponse.question.responseDisplayCode=='SELECTION'}"
+								required="#{userResponse.question.required}"
+								requiredMessage="Please fill '#{userResponse.question.questionDescription}' the field"
+								value="#{userResponse.textAnswer}">
+								<p:ajax update="@form" event="change" process="@form" />
+								<f:selectItems var="selectItem"
+									value="#{userResponse.question.additionalQuestionsResponses}"
+									itemLabel="#{selectItem.responseDescription}"
+									itemValue="#{selectItem.responseDescription}" />
+							</h:selectOneMenu>
+							<p:calendar size="18" maxlength="10" pattern="MM/dd/yyyy"
+								value="#{userResponse.dateAnswer}"
+								required="#{userResponse.question.required}"
+								requiredMessage="Please fill the '#{userResponse.question.questionDescription}' field"
+								rendered="#{userResponse.question.responseDisplayCode=='DATE'}" />
+						</div>
+						<h:panelGroup id="singular_question_proof_required"
+							rendered="#{eventSpecificQuestionsViewModel.isProofRequired(userResponse)}">
+							<ui:include src="proofRequired.xhtml">
+								<ui:param name="claimProof" value="#{userResponse.claimProof}" />
+								<ui:param name="claim"
+									value="#{eventSpecificQuestionsViewModel.claim}" />
+								<ui:param name="proofFor" value="claimAnswer" />
+								<ui:param name="claimAnswer" value="#{userResponse}" />
+							</ui:include>
+						</h:panelGroup>
+					</p:column>
+
+				</p:dataTable>
+
+				<p:accordionPanel rendered="#{responseGroup.multiOccuring}"
+					value="#{responseGroup.rowList}" var="item" multiple="true"
+					id="multi_occuring_questions">
+
+					<p:tab title="#{item.displayResponsesDescription}">
+
+
+						<p:dataGrid
+							columns="#{responseGroup.questionGroup.noOfColumnsToDisplay}"
+							rendered="#{responseGroup.multiOccuring}" value="#{item.answers}"
+							var="userResponse" styleClass="groupQuestionsPanel">
+
+							<p:column>
+								<p:panel header="#{userResponse.question.questionDescription}">
+									<h:panelGrid columns="1">
+										<p:inputText id="event_textquestion" size="18"
+											maxlength="#{userResponse.question.length}"
+											rendered="#{userResponse.question.responseDisplayCode=='TEXT'}"
+											required="#{userResponse.question.required and item.rowId lt responseGroup.maxRowId}"
+											requiredMessage="Please fill the #{userResponse.question.questionDescription} field"
+											value="#{userResponse.textAnswer}" />
+										<h:selectOneMenu id="event_selectionquestion"
+											rendered="#{userResponse.question.responseDisplayCode=='SELECTION'}"
+											required="#{userResponse.question.required and item.rowId lt responseGroup.maxRowId}"
+											requiredMessage="Please fill the #{userResponse.question.questionDescription} field"
+											value="#{userResponse.textAnswer}">
+											<p:ajax update=":form:multi_occuring_questions" process=":form:multi_occuring_questions"  event="change" onevent="showProgress" />
+											<f:selectItems var="selectItem"
+												value="#{userResponse.question.additionalQuestionsResponses}"
+												itemLabel="#{selectItem.responseDescription}"
+												itemValue="#{selectItem.responseDescription}" />
+										</h:selectOneMenu>
+										<p:calendar id="event_datequestion" pattern="MM/dd/yyyy"
+											size="18" maxlength="10" value="#{userResponse.dateAnswer}"
+											required="#{userResponse.question.required and item.rowId lt responseGroup.maxRowId}"
+											requiredMessage="Please fill the #{userResponse.question.questionDescription} field"
+											rendered="#{userResponse.question.responseDisplayCode=='DATE'}" />
+									</h:panelGrid>
+									<h:panelGroup id="multi_question_proof_required"
+										rendered="#{eventSpecificQuestionsViewModel.isProofRequired(userResponse)}">
+										<ui:include src="proofRequired.xhtml">
+											<ui:param name="claimProof"
+												value="#{userResponse.claimProof}" />
+											<ui:param name="claim"
+												value="#{eventSpecificQuestionsViewModel.claim}" />
+											<ui:param name="proofFor" value="claimAnswer" />
+											<ui:param name="claimAnswer" value="#{userResponse}" />
+										</ui:include>
+									</h:panelGroup>
+								</p:panel>
+							</p:column>
+						</p:dataGrid>
+
+						<div class="panelButtons">
+							<p:commandButton value="Delete" immediate="true" process="@form"
+								update="@form"
+								action="#{eventSpecificQuestionsViewModel.deleteRowFromGroup(responseGroup, item.rowId)}"
+								rendered="#{item.rowId lt responseGroup.maxRowId}" />
+							<p:commandButton value="Add"
+								action="#{eventSpecificQuestionsViewModel.addRowRowToGroup(responseGroup)}"
+								process="@form" update="@form"
+								rendered="#{item.rowId == responseGroup.maxRowId}" />
+						</div>
+
+					</p:tab>
+
+				</p:accordionPanel>
+
+			</p:panel>
+
+		</c:forEach>
+		<div id="buttonsection">
+			<p:commandButton id="claimSave" action="saveConfirm" immediate="true"
+				oncomplete="confirmationSave.show()" value="Save" />
+			<p:commandButton id="exitConfirm" action="exitConfirm"
+				immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+		</div>
+	</p:fieldset>
+	<p:dialog header="Edit Claim Proof" widgetVar="editClaimProofDialog"
+		id="editClaimProofDialog" modal="true" width="1000" resizable="false">
+		<ui:include src="../../edit/claimSupportingDocumentsForm.xhtml" />
+	</p:dialog>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml" />
+
+</ui:composition>
+</html>

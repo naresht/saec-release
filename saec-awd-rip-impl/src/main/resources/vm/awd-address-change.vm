@@ -1,0 +1,38 @@
+@@KEY HOSTNAME=$!e.hostName
+@@BEGIN
+@@KEY ACTION=C,CASE=WORKCASE,STAT=RIPPED,UNIT=$!e.businessUnit
+@@BEGIN
+@@KEY ACTION=W,WRKT=$!e.workType,STAT=RIPPED,UNIT= $!e.businessUnit
+@@LOB MISC=$!e.referenceNo,FUND=9999999,ACCT=99999999999,SYST=DTO
+@@BEGIN
+@@KEY ACTION=S,OBJT=RIP,UNIT= $!e.businessUnit
+REFERENCE_NUM:$!e.referenceNo
+OLD-ADADR_TYP:$!e.fromAddressType
+OLD-ADDR1:$!e.fromAddress1
+OLD-ADDR2:$!e.fromAddress2
+OLD-ADDR3:$!e.fromAddress3
+OLD-ADDR4:$!e.fromAddress4
+OLD-ADDR5:$!e.fromAddress5
+OLD-ADDR6:$!e.fromAddress6
+OLD-CITY:$!e.fromCity
+OLD-STATE:$!e.fromStateCode
+OLD-ZIP:$!e.fromZipCode
+OLD_ZIP_PLUS4:$!e.fromZipExt
+OLD-COUNTRY:$!e.fromCountryCode
+
+NEW-ADADR_TYP:$!e.toAddressType
+NEW-ADDR1:$!e.toAddress1
+NEW-ADDR2:$!e.toAddress2
+NEW-ADDR3:$!e.toAddress3
+NEW-ADDR4:$!e.toAddress4
+NEW-ADDR5:$!e.toAddress5
+NEW-ADDR6:$!e.toAddress6
+NEW-CITY:$!e.toCity
+NEW-STATE:$!e.toStateCode
+NEW-ZIP:$!e.toZipCode
+NEW_ZIP_PLUS4:$!e.toZipExt
+NEW-COUNTRY:$!e.toCountryCode
+
+@@END
+@@END
+@@END

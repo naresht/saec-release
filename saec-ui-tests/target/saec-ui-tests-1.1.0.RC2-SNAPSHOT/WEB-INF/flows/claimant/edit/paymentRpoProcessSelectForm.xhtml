@@ -1,0 +1,149 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+	<h:panelGroup id="formFields">
+		<ui:insert name="claimantHeader">
+			<ui:include src="claimantHeaderForm.xhtml" />
+		</ui:insert>
+		<p:spacer height="20" width="100%" />
+		<p:spacer height="20" width="100%" />
+		<p:dataTable id="payments" var="payment" value="#{paymentRpoProcessViewModel.payments}"
+			rowIndexVar="rowIndex">
+			<f:facet name="header">  
+            	Payment History  
+        	</f:facet>
+
+	        <p:column style="width:16px">  
+	            <p:rowToggler />  
+	        </p:column>
+	                	
+			<p:column id="PaymentType" style="width:50px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Payment Type:" />
+				</f:facet>
+				<h:outputText value="#{payment.paymentType}" />
+			</p:column>
+
+			<p:column id="CheckNumber" style="width:103px;">
+				<f:facet name="header">
+					<h:outputText value="Check/Wire #" />
+				</f:facet>
+				<p:commandLink action="loadPaymentForRPO" ajax="false"
+					immediate="true">
+					<h:outputText value="#{payment.identificatonNo}" />
+					<f:param name="id" value="#{payment.id}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column id="Date" style="width:105px">
+				<f:facet name="header">
+					<h:outputText value="Date" />
+				</f:facet>
+				<h:outputText value="#{payment.paymentDate}">
+					<f:converter converterId="dateConverter" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="PayTo" style="width:20px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Pay To" />
+				</f:facet>
+				<h:outputText value="#{payment.getPayToAsText('&lt;br/&gt;')}"
+					escape="false" />
+			</p:column>
+
+			<p:column id="Amount" style="width:104px">
+				<f:facet name="header">
+					<h:outputText value="Amount" />
+				</f:facet>
+				<h:outputText value="#{payment.paymentAmount}">
+					<f:convertNumber currencySymbol="$" type="currency"
+						minFractionDigits="2" maxFractionDigits="2" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="PaymentStatus" style="width:104px">
+				<f:facet name="header">
+					<h:outputText value="Payment Status" />
+				</f:facet>
+				<h:outputText value="#{payment.statusDescription}" />
+			</p:column>
+
+			<p:column id="StatusDate" style="width:35px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Status Date" />
+				</f:facet>
+				<h:outputText value="#{payment.statusChangeDate}">
+					<f:convertDateTime pattern="MM/dd/yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="LetterCode" style="width:32px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Letter Code" />
+				</f:facet>
+				<h:outputText value="#{payment.letterCode}" />
+			</p:column>
+
+			<p:column id="Audit" style="width:25px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Audit" />
+				</f:facet>
+				<h:outputText value="#{payment.auditable}" />
+			</p:column>
+
+			<p:column id="SpecialPull" style="width:40px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Special Pull" />
+				</f:facet>
+				<h:outputText value="#{payment.specialPullCode}" />
+			</p:column>
+
+			<p:column id="GroupMailCode" style="width:33px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Group Mail Code" />
+				</f:facet>
+				<h:outputText value="#{payment.groupMailCode}" >
+					<f:converter converterId="groupMailCodeConverter" />
+				</h:outputText>
+			</p:column>
+
+			<p:column style="word-wrap:break-word;width:34em;">
+				<f:facet name="header">
+					<h:outputText value="Comments"
+						style="word-wrap:break-word;width:34em;" />
+				</f:facet>
+				<h:outputText id="Comments" style="word-wrap:break-word;width:34em;"
+					title="#{payment.comments}" value="#{payment.comments}" />
+			</p:column>
+			
+			<p:rowExpansion>
+				<app:paymentAmounts/>
+			</p:rowExpansion>
+						
+		</p:dataTable>
+	</h:panelGroup>
+
+	<div id="buttonsection">
+		<p:commandButton id="exitRpoConfirm" action="exitRpoConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<p:confirmDialog
+		message="Are you sure you want to exit without saving?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exitRpo"
+			immediate="true" />
+		<p:commandButton value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+
+
+</ui:composition>

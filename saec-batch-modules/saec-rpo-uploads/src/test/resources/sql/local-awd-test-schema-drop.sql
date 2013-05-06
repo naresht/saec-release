@@ -1,0 +1,5 @@
+drop TABLE WC1U999S ;
+
+drop TABLE WA5U999S;
+
+drop TABLE PS027PF;

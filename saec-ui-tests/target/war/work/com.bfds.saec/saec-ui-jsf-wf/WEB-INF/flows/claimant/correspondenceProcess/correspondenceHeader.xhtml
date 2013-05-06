@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+<div id="Account_Details_div_table">
+	<div id="Account_Details_div_tr">
+		<div id="Account_Details_div_td">
+			<b>Reference #: </b> <h:outputText value="#{claimantViewModel.claimant.referenceNo}"/><br /><br />
+			<h:outputText escape="false" value="#{claimantViewModel.registrationText}"/><br />
+			<h:outputText escape="false" value="#{claimantViewModel.addressText}"/>
+			<p:spacer width="100%" height="30" />
+		</div>
+		<div id="Account_Details_div_td">
+			<div id="Account_Details_div_table1">
+				<div id="Account_Details_div_tr1">
+					<div id="Account_Details_div_td1_1"><b>ACCOUNT INFORMATION</b></div>
+				</div>
+				<div id="Account_Details_div_tr1">
+					<div id="Account_Details_div_td1_lft">Fund Account #:</div>
+					<div id="Account_Details_div_td1_rgt"><h:outputText value="#{claimantViewModel.claimant.fundAccountNo}"/></div>
+				</div>
+				<div id="Account_Details_div_tr1">
+					<div id="Account_Details_div_td1_lft">Account Status:</div>
+					<div id="Account_Details_div_td1_rgt"><h:outputText value="#{claimantViewModel.claimant.accountStatus}"/></div>
+				</div>
+				<div id="Account_Details_div_tr1">
+					<div id="Account_Details_div_td1_lft">Account Type:</div>
+					<div id="Account_Details_div_td1_rgt"><h:outputText value="#{claimantViewModel.claimant.accountType}"/></div>
+				</div>
+				<div id="Account_Details_div_tr1">
+					<div id="Account_Details_div_td1_lft">Omni Bus:</div>
+					<div id="Account_Details_div_td1_rgt"><h:outputText value="#{claimantViewModel.claimant.omniBus}"/></div>
+				</div>
+				<div id="Account_Details_div_tr1">
+					<div id="Account_Details_div_td1_lft">Broker ID:</div>
+					<div id="Account_Details_div_td1_rgt"><h:outputText value="#{claimantViewModel.claimant.brokerId}"/></div>
+				</div>
+
+				<div id="Account_Details_div_tr1">
+					<div id="Account_Details_div_td1_lft">BIN #:</div>
+					<div id="Account_Details_div_td1_rgt"><h:outputText value="#{claimantViewModel.claimant.bin}"/></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</ui:composition>
+</html>

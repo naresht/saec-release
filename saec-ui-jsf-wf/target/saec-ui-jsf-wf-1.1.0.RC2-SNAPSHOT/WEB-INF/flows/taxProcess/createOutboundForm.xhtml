@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:app="http://springfuse.jaxio.com/app">
+<ui:composition>
+	<p:fieldset legend="Tax Information">
+		<div id="new_account_div_table">
+			<div id="new_account_div_tr">
+				<div id="new_account_div_td">
+					<div id="new_account_div_lft">
+						<font color="red">*</font>Name1:
+					</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_registration1"
+							value="#{outboundTaxRec.name_1}" maxlength="60" required="true"
+							autocomplete="off" requiredMessage="Please, fill Name1"></p:inputText>
+						<p:message id="claimant_registration1_error"
+							for="claimant_registration1" />
+					</div>
+					<div id="new_account_div_lft">Name2:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_registration2"
+							value="#{outboundTaxRec.name_2}" autocomplete="off"
+							maxlength="60"></p:inputText>
+					</div>
+					<div id="new_account_div_lft">Name3:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_registration3"
+							value="#{outboundTaxRec.name_3}" autocomplete="off"
+							maxlength="60"></p:inputText>
+					</div>
+
+					<div id="new_account_div_lft">Name4:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_registration4"
+							value="#{outboundTaxRec.name_4}" autocomplete="off"
+							maxlength="60"></p:inputText>
+					</div>
+					<div id="new_account_div_lft">Name5:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_registration5"
+							value="#{outboundTaxRec.name_5}" autocomplete="off"
+							maxlength="60"></p:inputText>
+					</div>
+					<div id="new_account_div_lft">Name6:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_registration6"
+							value="#{outboundTaxRec.name_6}" autocomplete="off"
+							maxlength="60"></p:inputText>
+					</div>
+					<p:spacer width="100%" height="10" />
+					<div id="new_account_div_lft">
+						<font color="red">*</font>Address1:
+					</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="address1" value="#{outboundTaxRec.address_1}"
+							maxlength="60" required="true" autocomplete="off"
+							requiredMessage="Please, fill Address1"></p:inputText>
+						<p:message id="address1_error" for="address1" />
+					</div>
+					<div id="new_account_div_lft">Address2:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="address2" value="#{outboundTaxRec.address_2}"
+							autocomplete="off" maxlength="60"></p:inputText>
+					</div>
+					<div id="new_account_div_lft">Address3:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="address3" value="#{outboundTaxRec.address_3}"
+							autocomplete="off" maxlength="60"></p:inputText>
+					</div>
+
+					<div id="new_account_div_lft">Address4:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="address4" value="#{outboundTaxRec.address_4}"
+							autocomplete="off" maxlength="60"></p:inputText>
+					</div>
+
+					<div id="new_account_div_lft">Address5:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="address5" value="#{outboundTaxRec.address_5}"
+							autocomplete="off" maxlength="60"></p:inputText>
+					</div>
+
+					<div id="new_account_div_lft">Address6:</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="address6" value="#{outboundTaxRec.address_6}"
+							autocomplete="off" maxlength="60"></p:inputText>
+					</div>
+
+					<div id="new_account_div_lft">
+						<font color="red">*</font>City:
+					</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_City" value="#{outboundTaxRec.city}"
+							maxlength="20" required="true" autocomplete="off"
+							requiredMessage="Please, fill the city"></p:inputText>
+						<p:message id="claimant_City_error" for="claimant_City" />
+					</div>
+					<div id="new_account_div_lft">
+						<font color="red">*</font>State:
+					</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_State" value="#{outboundTaxRec.state}"
+							required="true" requiredMessage="Please, fill the Statecode"></p:inputText>
+						<p:message id="claimant_State_error" for="claimant_State" />
+					</div>
+					<div id="new_account_div_lft">
+						<font color="red">*</font>Zip:
+					</div>
+					<div id="new_account_div_rgt">
+						<p:inputText id="claimant_Zip" value="#{outboundTaxRec.zip}"
+							required="true" requiredMessage="Please, fill the Zipcode"
+							maxlength="8"></p:inputText>
+						<p:message id="claimant_Zip_error" for="claimant_Zip" />
+					</div>
+				</div>
+				<div id="new_account_div_td">
+					<table width="100%">
+						<tr>
+							<td id="new_account_div_lft">Payment Type:</td>
+							<td id="new_account_div_rgt"><h:outputText id="paymentType"
+									value="#{outboundTaxRec.paymentType}" autocomplete="off" maxlength="60"
+									disabled="true"></h:outputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Check No:</td>
+							<td id="new_account_div_rgt"><h:outputText id="checkNo"
+									value="#{outboundTaxRec.checkNumber}" /></td>
+						</tr>
+					</table>
+				</div>
+				<div id="new_account_div_td">
+					<table width="100%">
+						<tr>
+							<td id="new_account_div_lft">Total Payment Amount:</td>
+							<td id="new_account_div_rgt"><h:outputText
+									id="total_payment_amount" disabled="true"
+									value="#{outboundTaxRec.totalPaymentAmount}">
+								</h:outputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Payment Comp1:</td>
+							<td id="new_account_div_rgt"><h:outputText id="paymentComp1"
+									disabled="true" value="#{outboundTaxRec.paymentComp1}"
+									maxlength="15">
+								</h:outputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Payment Comp2:</td>
+							<td id="new_account_div_rgt"><h:outputText id="paymentComp2"
+									disabled="true" value="#{outboundTaxRec.paymentComp2}"
+									maxlength="15">
+								</h:outputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Payment Comp3:</td>
+							<td id="new_account_div_rgt"><h:outputText id="paymentComp3"
+									disabled="true" value="#{outboundTaxRec.paymentComp3}"
+									maxlength="15">
+								</h:outputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Payment Comp4:</td>
+							<td id="new_account_div_rgt"><h:outputText id="paymentComp4"
+									disabled="true" value="#{outboundTaxRec.paymentComp4}"
+									maxlength="15">
+								</h:outputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Payment Comp5:</td>
+							<td id="new_account_div_rgt"><h:outputText id="paymentComp5"
+									disabled="true" value="#{outboundTaxRec.paymentComp5}"
+									maxlength="15">
+								</h:outputText></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div id="new_account_div_tr">
+				<div id="new_account_div_td"></div>
+			</div>
+			<p:spacer width="100%" height="10" />
+			<div id="new_account_div_tr">
+				<div id="new_account_div_td">
+					<div id="new_account_div_lft">
+						<h2>Tax Information</h2>
+					</div>
+				</div>
+				<div id="new_account_div_td">&nbsp;</div>
+				<div id="new_account_div_td">
+					<div id="new_account_div_rgt">
+						<h2>Account Information</h2>
+					</div>
+				</div>
+			</div>
+			<div id="new_account_div_tr">
+				<div id="new_account_div_td">
+					<table width="100%">
+						<tr>
+							<td id="new_account_div_lft">Tax ID/SSN:</td>
+							<td id="new_account_div_rgt"><p:inputText id="tin"
+									value="#{outboundTaxRec.tin}">
+								</p:inputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Certification Status:</td>
+							<td id="new_account_div_rgt"><p:inputText
+									id="certificationStatus"
+									value="#{outboundTaxRec.certificationStatus}" maxlength="15">
+								</p:inputText></td>
+						</tr>
+
+						<tr>
+							<td id="new_account_div_lft">W9 Received:</td>
+							<td id="new_account_div_rgt"><p:inputText id="w9Received"
+									value="#{outboundTaxRec.w9Received}">
+								</p:inputText></td>
+						</tr>
+
+						<tr>
+							<td id="new_account_div_lft">W8Received:</td>
+							<td id="new_account_div_rgt"><p:inputText id="w8Received"
+									value="#{outboundTaxRec.w8Received}"></p:inputText></td>
+						</tr>
+
+						<tr>
+							<td id="new_account_div_lft">Part II Completed:</td>
+							<td id="new_account_div_rgt"><p:inputText
+									id="part2Completed" value="#{outboundTaxRec.part2Completed}"></p:inputText>
+							</td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Withholding Request:</td>
+							<td id="new_account_div_rgt"><p:inputText
+									id="withholdingRequest"
+									value="#{outboundTaxRec.withholdingRequest}"></p:inputText></td>
+						</tr>
+
+						<tr>
+							<td id="new_account_div_lft"><font color="red">*</font>Country
+								Of Tax Residency:</td>
+							<td id="new_account_div_rgt"><h:selectOneMenu
+									id="countryOfResidency"
+									value="#{outboundTaxRec.countryOfResidency}">
+									<f:selectItems value="#{viewModel.countryList}" required="true" />
+								</h:selectOneMenu></td>
+						</tr>
+					</table>
+				</div>
+				<div id="new_account_div_td">
+					<table width="100%">
+						<tr>
+							<td id="new_account_div_lft">US Citizen:</td>
+							<td id="new_account_div_rgt"><h:selectOneMenu id="usCitizen"
+									value="#{outboundTaxRec.usCitizen}" maxlength="3">
+									<f:selectItem itemValue="" itemLabel="" />
+									<f:selectItem itemValue="true" itemLabel="Yes" />
+									<f:selectItem itemValue="false" itemLabel="No" />
+								</h:selectOneMenu></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Certification Date:</td>
+							<td id="new_account_div_rgt"><p:calendar
+									id="certificationDate"
+									value="#{outboundTaxRec.certificationDate}" size="10"
+									pattern="MM/dd/yyyy" maxlength="10" /></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">TaxType:</td>
+							<td id="new_account_div_rgt"><p:inputText id="taxType"
+									value="#{outboundTaxRec.taxType}"></p:inputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">w8 Form Type:</td>
+							<td id="new_account_div_rgt"><p:inputText id="w8FormType"
+									value="#{outboundTaxRec.w8FormType}"></p:inputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">State Of Residency:</td>
+							<td id="new_account_div_rgt"><p:inputText
+									id="stateOfResidency"
+									value="#{outboundTaxRec.stateOfResidency}"></p:inputText></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Federal Withholding:</td>
+							<td id="new_account_div_rgt"><p:inputText
+									id="federalWithholding"
+									value="#{outboundTaxRec.federalWithholding}"></p:inputText></td>
+						</tr>
+					</table>
+				</div>
+				<div id="new_account_div_td">
+					<table width="100%">
+						<tr>
+							<td id="new_account_div_lft">Date of Birth :</td>
+							<td id="new_account_div_rgt"><p:calendar id="dob"
+									value="#{outboundTaxRec.dob}" size="10" pattern="MM/dd/yyyy"
+									maxlength="10" /></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Deceased Flag:</td>
+							<td id="new_account_div_rgt"><h:selectOneMenu
+									id="deceasedFlag" value="#{outboundTaxRec.deceasedFlag}"
+									maxlength="3">
+									<f:selectItem itemValue="" itemLabel="" />
+									<f:selectItem itemValue="true" itemLabel="Yes" />
+									<f:selectItem itemValue="false" itemLabel="No" />
+								</h:selectOneMenu></td>
+						</tr>
+						<tr>
+
+							<td id="new_account_div_lft">Original Account Type:</td>
+							<td id="new_account_div_rgt"><h:selectOneMenu
+									id="claimant_AccountType"
+									value="#{outboundTaxRec.originalAccountType}" maxlength="25">
+									<f:selectItem itemValue="Custodial" itemLabel="Custodial" />
+									<f:selectItem itemValue="Individual" itemLabel="Individual" />
+									<f:selectItem itemValue="IRA" itemLabel="IRA" />
+									<f:selectItem itemValue="Joint" itemLabel="Joint" />
+									<f:selectItem itemValue="Plan" itemLabel="Plan" />
+									<f:selectItem itemValue="other" itemLabel="Other" />
+								</h:selectOneMenu></td>
+						</tr>
+						<tr>
+							<td id="new_account_div_lft">Organization/Individual:</td>
+							<td id="new_account_div_rgt"><h:selectOneMenu
+									id="organizationOrIndividual"
+									value="#{outboundTaxRec.organizationOrIndividual}"
+									maxlength="3">
+									<f:selectItem itemValue="" itemLabel="" />
+									<f:selectItem itemValue="O" itemLabel="Organization" />
+									<f:selectItem itemValue="I" itemLabel="Individual" />
+								</h:selectOneMenu></td>
+						</tr>
+					</table>
+
+
+					<p:spacer width="100%" height="30" />
+					<h:panelGroup id="voidStopButtonSection"
+						rendered="#{viewModel.paymentMustBeVoidedOrStopped}">
+						<div align="center">
+							<p:commandButton id="voidConfirm" action="voidConfirm"
+								immediate="true" oncomplete="confirmationVoid.show()"
+								value="Void" />
+							<p:commandButton id="stopConfirm" action="stopConfirm"
+								immediate="true" oncomplete="confirmationStop.show()"
+								value="Stop" />
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+		</div>
+	</p:fieldset>
+
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<p:confirmDialog id="voidDialog"
+		message="Are you sure you want to void the check?" header="Void"
+		severity="alert" widgetVar="confirmationVoid" modal="true">
+		<p:commandButton id="voidYes" value="Yes" ajax="false"
+			update="voidStopButtonSection" oncomplete="confirmationVoid.hide()"
+			action="void" />
+		<p:commandButton id="voidNo" value="No"
+			onclick="confirmationVoid.hide()" type="button" />
+	</p:confirmDialog>
+
+	<p:confirmDialog id="stopDialog"
+		message="Are you sure you want to stop the check?" header="Stop"
+		severity="alert" widgetVar="confirmationStop" modal="true">
+		<p:commandButton id="stopYes" value="Yes" ajax="false"
+			update="voidStopButtonSection" oncomplete="confirmationStop.hide()"
+			action="stop" />
+		<p:commandButton id="stopNo" value="No"
+			onclick="confirmationStop.hide()" type="button" />
+	</p:confirmDialog>
+	
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+	
+</ui:composition>
+</html>

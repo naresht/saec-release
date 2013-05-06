@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+	<h:panelGroup id="claimant_new_fields">
+	<p:fieldset legend="Batch Configuration">
+		
+		<h:panelGrid id="jobConfigEditTable" columns="3" cellpadding="4" style="margin:0 auto;">  
+  			<h:outputText value="Job Name:" /> 
+  			<h:outputText value="#{batchConfigViewModel.selectedJobConfig.jobName}" />  
+  			<h:outputText value="" />  
+  			
+  			<h:outputText value="Vendor:" /> 
+  			<h:outputText value="#{batchConfigViewModel.selectedJobConfig.vendorName}" />  
+  			<h:outputText value="" />  			
+  			
+  			<h:outputText value="Incoming/Outgoing:" /> 
+  			<h:outputText value="#{jobConfig.incoming ? 'Incoming' : 'Outgoing'}" />  
+  			<h:outputText value="" /> 
+  			  			
+            <h:outputText value="Cron:" />  
+            <p:inputText id="cronExpression" value="#{batchConfigViewModel.selectedJobConfig.scheduleConfig.cronExpression}" required="true" maxlength="50" requiredMessage="Please, fill Cron"/>  
+            <p:message for="cronExpression" />
+            
+            <h:outputText value="File" rendered="#{batchConfigViewModel.selectedJobConfig.isFielJob()}"/>  
+            <h:panelGroup rendered="#{batchConfigViewModel.selectedJobConfig.isFielJob()}">
+            	<h:outputText value="#{batchConfigViewModel.selectedJobConfig.fileConfig.rootFolder}" /> 
+            	<p:inputText id="filePath" value="#{batchConfigViewModel.selectedJobConfig.fileConfig.filePath}" required="true" size="80" maxlength="200" requiredMessage="Please, File location"/>
+            </h:panelGroup>  
+            <p:message for="filePath" rendered="#{batchConfigViewModel.selectedJobConfig.isFielJob()}"/>
+            
+            <h:outputText value="Archive File" rendered="#{batchConfigViewModel.selectedJobConfig.isFielJob()}"/>  
+            <h:panelGroup rendered="#{batchConfigViewModel.selectedJobConfig.isFielJob()}">
+            	<h:outputText value="#{batchConfigViewModel.selectedJobConfig.fileConfig.archiveFolderRoot}" /> 
+            	<p:inputText id="archiveFilePath" value="#{batchConfigViewModel.selectedJobConfig.fileConfig.archiveFilePath}" size="80" maxlength="200" />            	
+            </h:panelGroup>  
+            <p:message for="archiveFilePath" rendered="#{batchConfigViewModel.selectedJobConfig.isFielJob()}"/>
+                                    
+            <h:outputText value="Contact Name:" />  
+            <p:inputText id="contactName" value="#{batchConfigViewModel.selectedJobConfig.contactName}" maxlength="60"/> 
+            <p:message for="contactName" />
+            
+            <h:outputText value="Contact Phone:" />  
+            <p:inputMask id="contactPhone" value="#{batchConfigViewModel.selectedJobConfig.contactPhone}" maxlength="10" mask="999-999-9999" />
+            <p:message for="contactPhone" />
+            
+            <h:outputText value="Contact Email:" />  
+            <p:inputText id="contactEmail" value="#{batchConfigViewModel.selectedJobConfig.contactEmail}" />
+            <p:message for="contactEmail" />
+  
+        </h:panelGrid>	  
+    	
+	</p:fieldset>
+	</h:panelGroup>		
+		
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm" immediate="true" oncomplete="confirmationSave.show()"  
+			value="Save"  />
+		<p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" 
+		value="Exit" />	
+	</div>
+
+	<p:confirmDialog message="Are you sure you want to save the changes?"
+		header="Save" severity="alert"
+		widgetVar="confirmationSave" modal="true">
+		<p:commandButton value="Yes" ajax="false" update="claimant_new_fields"
+			oncomplete="confirmationSave.hide()" action="save" />		
+		<p:commandButton value="No" onclick="confirmationSave.hide()"
+			type="button" />		
+	</p:confirmDialog>
+	
+	<p:confirmDialog message="Are you sure you want to exit ?"
+		header="Exit" severity="alert"
+		widgetVar="confirmationExit"  modal="true">
+		<p:commandButton value="Yes" ajax="false" oncomplete="confirmationExit.hide()"
+			immediate="true" action="exit" />		
+		<p:commandButton value="No" onclick="confirmationExit.hide()"
+			type="button" />		
+	</p:confirmDialog> 
+</ui:composition>
+
+</html>
+
+

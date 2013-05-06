@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="viewModel" class="com.bfds.saec.web.model.PaymentSplitViewModel" />
+	
+	<!--  The id of the Payment being split-->
+	<input name="paymentId" required="true" type="long"/>
+					
+	<decision-state id="chooseFirstPage">			
+		<if test="requestParameters.alternatePayeeId == null and viewModel.hasAlternatePayees(viewModel.getPayto(viewModel.findPayment(paymentId)).getId())" then="claimantAlternatePayeeSelect" else="claimantSplit" />
+	</decision-state>
+	
+	<view-state id="claimantAlternatePayeeSelect">
+		<on-entry>	
+			<set name="viewScope.claimant" value="viewModel.asClaimantViewModel(viewModel.getPayto(viewModel.findPayment(paymentId)))" />
+			<set name="viewScope.alternatePayeeList" value="viewModel.getAlternatePayeeList(claimant.claimant.id)" />
+		</on-entry>	
+		<transition on="select" to="claimantSplit">
+			<evaluate expression="requestParameters.alternatePayeeId != null"></evaluate>
+		</transition>
+		<transition on="addAlternatePayee" to="claimantSplit"></transition>
+		<transition on="exit" to="exit" />
+		<transition on="exitConfirm" />	
+	</view-state>
+	
+	<view-state id="claimantSplit">		
+		<on-entry>
+	<!--  The id of the Claimant(alternate payee) who is receiving the split. 
+	      If null than a new Claimant(alternate payee) must be created. -->	
+			<set name="viewScope.alternatePayeeId" value="requestParameters.alternatePayeeId" type="long"></set>
+			<set name="viewScope.actualPayment" value="viewModel.findPayment(paymentId)" />
+			<set name="viewScope.parentClaimant" value="viewModel.getPayto(actualPayment)" />
+			<set name="viewScope.alternatePayeeViewModel" value="viewModel.newAlternatePayeeViewModel(alternatePayeeId, parentClaimant, actualPayment)" />
+			<evaluate expression="viewModel.createNewSplitPayment(actualPayment)" result="viewScope.payment"></evaluate>
+		</on-entry>
+		<transition on="addMore" to="claimantSplit">
+			<evaluate expression="viewModel.savePaymentSplit(parentClaimant, alternatePayeeViewModel.claimant, actualPayment, payment, messageContext)"></evaluate>			
+		</transition>
+		<transition on="save" to="claimantAlternatePayeeSelect">
+			<evaluate expression="viewModel.savePaymentSplit(parentClaimant, alternatePayeeViewModel.claimant, actualPayment, payment, messageContext)"></evaluate>
+		</transition>
+		<transition on="exit" to="claimantAlternatePayeeSelect" />
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	</view-state>
+	
+	<end-state id="exit" view="externalRedirect:contextRelative:/app/home" />
+
+</flow>

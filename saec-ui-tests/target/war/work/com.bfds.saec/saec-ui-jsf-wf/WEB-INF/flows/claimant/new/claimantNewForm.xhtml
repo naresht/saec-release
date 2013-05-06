@@ -1,0 +1,368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app"
+	xmlns:saec="http://www.bostonfinancial.com/saec/tags">
+<ui:composition>
+	<h:panelGroup id="claimant_new_fields">
+		<p:growl id="growl" showDetail="false" globalOnly="true" life="20000" />
+		<p:fieldset legend="New Account">
+			<div id="new_account_div_table">
+				<div id="new_account_div_tr">
+					<div id="new_account_div_td">
+						<div id="new_account_div_table">
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft"><font color="red">*</font>First Name:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_firstname"
+										value="#{claimant.claimant.name.firstName}" maxlength="60" required="true" autocomplete="off"
+										requiredMessage="Please, fill First Name"></p:inputText>
+									<p:message id="claimant_firtname_error" for="claimant_firstname"/>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Middle Name:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_middlename"
+										value="#{claimant.claimant.name.middleName}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Last Name:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_lastname"
+										value="#{claimant.claimant.name.lastName}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div> 
+							
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">
+									<font color="red">*</font>Name1:
+								</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_registration1"
+										value="#{claimant.claimant.claimantRegistration.registration1}"
+										maxlength="60" required="true" autocomplete="off"
+										requiredMessage="Please, fill Name1"></p:inputText>
+									<p:message id="claimant_registration1_error" for="claimant_registration1" />
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Name2:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_registration2"
+										value="#{claimant.claimant.claimantRegistration.registration2}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Name3:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_registration3"
+										value="#{claimant.claimant.claimantRegistration.registration3}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Name4:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_registration4"
+										value="#{claimant.claimant.claimantRegistration.registration4}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Name5:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_registration5"
+										value="#{claimant.claimant.claimantRegistration.registration5}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Name6:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_registration6"
+										value="#{claimant.claimant.claimantRegistration.registration6}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<p:spacer width="100%" height="10" />
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">
+									<font color="red">*</font>Address1:
+								</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="address1"
+										value="#{claimant.claimant.addressOfRecord.address1}"
+										maxlength="60" required="true" autocomplete="off"
+										requiredMessage="Please, fill Address1"></p:inputText>
+									<p:message id="address1_error" for="address1" />
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Address2:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="address2"
+										value="#{claimant.claimant.addressOfRecord.address2}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Address3:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="address3"
+										value="#{claimant.claimant.addressOfRecord.address3}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Address4:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="address4"
+										value="#{claimant.claimant.addressOfRecord.address4}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Address5:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="address5"
+										value="#{claimant.claimant.addressOfRecord.address5}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Address6:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="address6"
+										value="#{claimant.claimant.addressOfRecord.address6}"
+										autocomplete="off" maxlength="60"></p:inputText>
+								</div>
+							</div>
+							<p:spacer width="100%" height="10" />
+						</div>
+					</div>
+					<div id="new_account_div_td1">
+						<div id="new_account_div_table">
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">									
+									<h:selectOneMenu id="claimant_TaxId"
+										value="#{claimant.identificationType}" maxlength="3">										
+										<f:ajax render="identificationFields" />
+										<f:selectItem itemValue="SSN" itemLabel="SSN" />
+										<f:selectItem itemValue="TIN" itemLabel="TIN" />
+										<f:selectItem itemValue="EIN" itemLabel="EIN" />
+									</h:selectOneMenu>
+								</div>
+								<div id="new_account_div_rgt">
+									<h:panelGroup id="identificationFields">
+										<p:inputMask value="#{claimant.claimant.ssn}"
+											mask="***-**-****" maxlength="9" id="claimant_ssn"											
+											rendered="#{claimant.identificationType=='SSN'}"></p:inputMask>  
+										<p:message id= "claimant_ssn_error" for="claimant_ssn" />
+										<p:inputMask value="#{claimant.claimant.tin}"
+											mask="**-*******" maxlength="9" id="claimant_tin"					
+											rendered="#{claimant.identificationType=='TIN'}"></p:inputMask>  
+										<p:message id= "claimant_tin_error" for="claimant_tin" />
+										<p:inputMask value="#{claimant.claimant.ein}"
+											mask="**-*******" maxlength="9" id="claimant_ein"											
+											rendered="#{claimant.identificationType=='EIN'}"></p:inputMask>  
+										<p:message id= "claimant_ein_error" for="claimant_ein" />
+									</h:panelGroup>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_td_group">
+									<p:fieldset legend="Contact Information" style="width:100%">
+										<p:message id="contact_info_error" for="contactNumberFields" />
+										<div id="new_account_div_table">
+											<!-- <p:message for="claimant_HomePhone" /> -->
+											<h:panelGroup id="contactNumberFields">												
+												<div id="new_account_div_tr">
+													<div id="new_account_div_lft">
+														<font color="red">*</font>Home Phone:
+													</div>
+													<div id="new_account_div_rgt">
+														<p:inputText id="claimant_HomePhone"
+															value="#{primaryContact.phoneNo}" maxlength="15">
+														</p:inputText>
+													</div>
+												</div>
+												<div id="new_account_div_tr">
+													<div id="new_account_div_lft">
+														<font color="red">*</font>Cell Phone:
+													</div>
+													<div id="new_account_div_rgt">
+														<p:inputText id="claimant_CellPhone"
+															value="#{primaryContact.cellPhoneNo}" maxlength="15">
+														</p:inputText>
+													</div>
+												</div>
+												<div id="new_account_div_tr">
+													<div id="new_account_div_lft">
+														<font color="red">*</font>Work Phone:
+													</div>
+													<div id="new_account_div_rgt">
+														<p:inputText id="claimant_WorkPhone"
+															value="#{primaryContact.workPhoneNo}" maxlength="15">
+														</p:inputText>
+													</div>
+												</div>
+												<div id="new_account_div_tr">
+													<div id="new_account_div_lft">Email:</div>
+													<div id="new_account_div_rgt">
+														<p:inputText id="claimant_Email"
+															value="#{primaryContact.email}"></p:inputText>
+													</div>
+												</div>
+											</h:panelGroup>
+										</div>
+									</p:fieldset>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="new_account_div_td2">
+						<div id="new_account_div_table">
+							<div id="new_account_div_tr">
+							<div id="new_account_div_lft">Corporate / Individual:</div>
+								<div id="new_account_div_rgt">
+									<h:selectOneMenu id="claimant_corporate"
+										value="#{claimant.claimant.corporate}" maxlength="25">
+										<f:selectItem itemValue="true" itemLabel="Corporate" />
+										<f:selectItem itemValue="false" itemLabel="Individual" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Account Type:</div>
+								<div id="new_account_div_rgt">
+									<h:selectOneMenu id="claimant_AccountType"
+										value="#{claimant.claimant.accountType}" maxlength="25">
+										<f:ajax render="otherAccountDescription" />
+										<f:selectItem itemValue="Custodial" itemLabel="Custodial" />
+										<f:selectItem itemValue="Individual" itemLabel="Individual" />
+										<f:selectItem itemValue="IRA" itemLabel="IRA" />
+										<f:selectItem itemValue="Joint" itemLabel="Joint" />
+										<f:selectItem itemValue="Plan" itemLabel="Plan" />
+										<f:selectItem itemValue="other" itemLabel="Other" />										
+									</h:selectOneMenu>
+									<br />
+									<h:panelGroup id="otherAccountDescription">
+										<p:message for="abc" />
+										<p:inputTextarea id="abc"
+											value="#{claimant.claimant.accountTypeOtherDescription}"
+											rendered="#{claimant.claimant.accountType=='other'}"
+											required="true"
+											requiredMessage="Please, fill the other field"
+											maxlength="255" autoResize="false" />
+									</h:panelGroup>
+								</div>
+							</div>
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Account Status:</div>
+								<div id="new_account_div_rgt">
+									<h:selectOneMenu id="claimant_AccountStatus"
+										value="#{claimant.claimant.accountStatus}">
+										<f:selectItem itemValue="Open" itemLabel="Open" />
+										<f:selectItem itemValue="Closed" itemLabel="Closed" />
+										<f:selectItem itemValue="Un known" itemLabel="Un known" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="new_account_div_tr">
+					<div id="new_account_div_td">
+						<div id="new_account_div_table">
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">
+									<font color="red">*</font>City:
+								</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_City"
+										value="#{claimant.claimant.addressOfRecord.city}"
+										maxlength="20" required="true" autocomplete="off"
+										requiredMessage="Please, fill the city"></p:inputText>
+									<p:message id="claimant_City_error" for="claimant_City" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="new_account_div_td1">
+						<table border="0" width="100%" align="center">
+							<tr>
+								<td align="right"><font color="red">*</font><b>State:</b>
+								</td>
+								<td><p:spacer width="5" height="0" /> <p:inputText
+										id="claimant_State"
+										value="#{claimant.claimant.addressOfRecord.stateCode}"
+										required="true"
+										requiredMessage="Please, fill the Statecode"></p:inputText> <p:message id="claimant_State_error"
+										for="claimant_State" />
+								</td>
+								<td align="right"><p:spacer width="10" height="0" /><font
+									color="red">*</font><b>Zip Code:</b> <p:spacer width="5"
+										height="0" />
+								</td>
+								<td><p:inputText id="claimant_Zip"
+										value="#{claimant.claimant.addressOfRecord.zipCode.zip}"
+										required="true"
+										requiredMessage="Please, fill the Zipcode" maxlength="8"></p:inputText> <p:message id="claimant_Zip_error"
+										for="claimant_Zip" /></td>
+							</tr>
+						</table>
+					</div>
+					<div id="new_account_div_td2">
+						<div id="new_account_div_table">
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Zip ext:</div>
+								<div id="new_account_div_rgt">
+									<p:inputText id="claimant_Zip4"
+										value="#{claimant.claimant.addressOfRecord.zipCode.ext}" maxlength="4">
+									</p:inputText>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<div id="new_account_div_tr">
+					<div id="new_account_div_td">
+						<div id="new_account_div_table">
+							<div id="new_account_div_tr">
+								<div id="new_account_div_lft">Country:</div>
+								<div id="new_account_div_rgt">
+									<h:selectOneMenu id="claimant_country" value="#{claimant.claimant.addressOfRecord.countryCode}" >
+										<f:selectItems value="#{claimant.countryList}" required="true"  />
+									</h:selectOneMenu>																
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</p:fieldset>
+	</h:panelGroup>
+	<div id="buttonsection">
+		<p:commandButton id="saveCreateConfirm" action="saveCreateConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitCreateConfirm" action="exitCreateConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>
+
+
+

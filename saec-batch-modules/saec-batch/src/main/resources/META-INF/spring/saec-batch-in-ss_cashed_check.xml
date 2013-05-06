@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:integration="http://www.springframework.org/schema/integration"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-1.0.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file-1.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd">
+
+	<job id="ssCashedCheckJob" xmlns="http://www.springframework.org/schema/batch">
+		<validator ref="inJobParametersValidator"/>
+		<step id="SsibCashedCheckJobStep">
+			<tasklet transaction-manager="transactionManager"
+				start-limit="100" allow-start-if-complete="true">
+				<chunk reader="ssCashedCheckReader" writer="ssCashedCheckWriterDecorator"
+					commit-interval="100" skip-limit="10" retry-policy="retryPolicy">
+					<skippable-exception-classes>
+						<include class="java.lang.Exception" />
+						<include class="java.net.ConnectException" />
+						<include class="java.lang.NullPointerException" />
+					</skippable-exception-classes>
+				</chunk>
+				<listeners>
+					<listener ref="retryListener" />
+					<listener ref="sscashedcheckStepExecutionListener" />
+				</listeners>
+			</tasklet>
+		</step>
+	</job>
+
+    <bean id="ssCashedCheckReader" class="com.bfds.saec.batch.item.database.JpaItemReader" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:queryProvider-ref="ssCashedCheckProvider"
+          p:pageSize="100" />
+
+    <bean id="ssCashedCheckProvider" class="org.springframework.batch.item.database.orm.DefaultFileRecordQueryProvider" scope="step"
+          p:entityClass="com.bfds.saec.batch.file.domain.in.ss_cashed_check.SsCashedCheckRec" />
+    
+    <bean id="ssCashedCheckWriterDecorator" class="com.bfds.saec.batch.in.FileRecordItemWriterDecorator" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:target-ref="SsibCashedCheckJobWriter"/>
+
+	<bean id="SsibCashedCheckJobWriter"
+		class="com.bfds.saec.batch.in.ss_cashed_check.CashedCheckItemWriter"
+		scope="step">
+	</bean>
+	
+	<bean id="sscashedcheckStepExecutionListener" class="com.bfds.saec.batch.in.ss_cashed_check.SscashedcheckStepExecutionListener" scope="step"/>
+
+</beans>

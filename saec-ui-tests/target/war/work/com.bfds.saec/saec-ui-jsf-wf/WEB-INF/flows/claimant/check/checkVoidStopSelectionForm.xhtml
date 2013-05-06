@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+<ui:composition>
+	<f:param name="id" value="#{claimant.claimant.id}" />
+	<ui:include src="../edit/claimantHeaderForm.xhtml" />
+	<p:panel title="Details">
+		<div id="check_select_div_table">
+			<div id="check_select_div_tr">
+				<div id="check_select_div_lft">
+					<b>Reference #:</b><br />
+					<h:outputText value="#{claimantViewModel.claimant.referenceNo}" />
+					<p:spacer height="15" width="100%" />
+					<b>Pay to:</b><br />
+					<h:outputText escape="false"
+						value="#{checkViewModel.paytoNameAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+				<div id="check_select_div_rgt">
+					<b>Address:</b><br />
+					<h:outputText escape="false"
+						value="#{checkViewModel.checkAddressAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+			</div>
+			<p:spacer height="20" width="100%" />
+			<div id="check_select_div_tr">
+				<div id="check_select_div_lft">
+					<b>Check #: </b>
+					<h:outputText value="#{checkViewModel.check.identificatonNo}"></h:outputText>
+				</div>
+				<div id="check_select_div_rgt">
+					<b>Amount: </b>
+					<h:outputText value="#{check.paymentAmount}">
+						<f:convertNumber currencySymbol="$" type="currency"
+							minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</div>
+			</div>
+			<p:spacer height="10" width="100%" />
+			<div id="check_select_div_tr">
+				<div id="check_select_div_td">
+					<div id="buttonsection">
+						Would you like to:&nbsp;&nbsp;
+						<p:commandButton id="void" action="void" immediate="true"
+							oncomplete="confirmationVoid.show()" ajax="false" value="Void"
+							disabled="#{!sec:canVoidCheck()}"
+							rendered="#{check.isStoppable()}" />
+						<p:commandButton id="stop" action="stop" immediate="true"
+							oncomplete="confirmationStop.show()" value="Stop" ajax="false"
+							disabled="#{!sec:canStopCheck()}"
+							rendered="#{check.isStoppable()}" />
+						<p:commandButton id="stopReplace" action="stopReplace"
+							immediate="true" oncomplete="confirmationStop.show()"
+							value="Stop/Replace" ajax="false"
+							disabled="#{!sec:canStopReplaceCheck()}"
+							rendered="#{check.isStoppable()}" />
+						<p:commandButton id="reissue" action="reissue" immediate="true"
+							oncomplete="confirmationStop.show()" value="Reissue" ajax="false"
+							disabled="#{!sec:canReissueCheck()}"
+							rendered="#{check.isReissueable()}" />
+						<p:commandButton id="returnOfFunding" action="returnOfFunding"
+							immediate="true" oncomplete="confirmationStop.show()"
+							value="Return Of Funding" ajax="false"
+							disabled="#{!sec:canDoROF()}"
+							rendered="#{check.canDoReturnOfFunding()}" />
+						<p:commandButton id="changeCheckToWire" action="changeCheckToWire"
+							ajax="false" immediate="true" value="Wire"
+							disabled="#{!sec:canDoWire()}"
+							rendered="#{check.canChangeToWire()}" />
+						<p:commandButton id="updateWireInfo" action="updateWireInfo"
+							ajax="false" immediate="true" value="Update Wire"
+							disabled="#{!sec:canDoWire()}"
+							rendered="#{check.canUpdateWireInfo()}" />
+						<p:commandButton id="splitPayment" action="splitPayment"
+							ajax="false" immediate="true" value="Split Payment"
+							disabled="#{!sec:canAddAlternatePayees()}"
+							rendered="#{check.canSplit()}">
+							<f:param name="paymentId" value="#{checkViewModel.check.id}" />
+						</p:commandButton>
+						<p:commandButton id="taxProcess" action="taxProcess" ajax="false"
+							immediate="true" value="Tax Processing"
+							disabled="#{!sec:canProcessTax()}"
+							rendered="#{check.canProcessTax()}">
+							<f:param name="paymentId" value="#{checkViewModel.check.id}" />
+						</p:commandButton>
+					</div>
+				</div>
+			</div>
+		</div>
+	</p:panel>
+
+	<div id="buttonsection">
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+
+	<p:confirmDialog id="exitMessage" message="Are you sure you want to exit ?"
+		header="Exit" severity="alert" widgetVar="confirmationExit"
+		modal="true">
+		<p:commandButton id="exitYesButton" value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" immediate="true" action="exit" />
+		<p:commandButton id="exitNoButton" value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+
+</ui:composition>
+</html>

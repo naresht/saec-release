@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	
+<!-- 	<bean id="persistenceUnitPostProcessor" class="com.bfds.saec.infrastructure.jpa.MergingPersistenceUnitPostProcessor" /> -->
+	
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:packagesToScan-ref="packagesToScan"
+		p:dataSource-ref="dataSource"
+		p:jpaPropertyMap-ref="jpaPropertyMap"
+		p:jpaVendorAdapter-ref="hibernateVendor"
+		p:jpaDialect-ref="hibernateJpaDialect">
+	</bean>
+	
+	<bean id="hibernateJpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"></bean>
+	<bean id="hibernateVendor" 
+	      class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" p:generateDdl="false"
+	      p:showSql="false" />
+	      
+	<util:list id="packagesToScan">
+		<value>com.bfds.saec.domain</value>
+		<value>com.bfds.wss.domain</value>
+		<value>com.bfds.scheduling</value>
+		<value>com.bfds.saec.encorr</value>
+		<value>com.bfds.saec.batch.domain</value>
+		<value>com.bfds.saec.rip.domain</value>
+		<value>com.bfds.validation.message</value>
+	</util:list>
+	
+	<util:map id="jpaPropertyMap">
+		<entry key="hibernate.dialect" value="${hibernate.dialect}" />
+		<entry key="jpaDialect" value="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+		<entry key="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" />
+		<entry key="hibernate.show_sql" value="${hibernate.show_sql}" />
+		<entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}" />
+		
+		<entry key="javax.persistence.validation.mode" value="none" />
+		<!-- <entry key="hibernate.ejb.cfgfile" value="hibernate.cfg.xml" /> -->
+		<entry key="hibernate.ejb.event.post-insert" value="com.bfds.saec.domain.listener.ActivityEventListener" />
+		<entry key="hibernate.ejb.event.post-update" value="com.bfds.saec.domain.listener.ActivityEventListener" />
+		<entry key="hibernate.ejb.event.post-delete" value="com.bfds.saec.domain.listener.ActivityEventListener" />
+		<entry key="hibernate.ejb.event.pre-collection-update" value="com.bfds.saec.domain.listener.ActivityEventListener" />
+		<entry key="hibernate.ejb.event.pre-collection-remove" value="com.bfds.saec.domain.listener.ActivityEventListener" />
+		<entry key="hibernate.ejb.event.post-collection-recreate" value="com.bfds.saec.domain.listener.ActivityEventListener" />
+		<!-- L2 Cache -->
+		<entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
+		<entry key="hibernate.cache.use_second_level_cache" value="true" />
+		<entry key="hibernate.cache.use_query_cache" value="true" />
+	</util:map>
+
+</beans>

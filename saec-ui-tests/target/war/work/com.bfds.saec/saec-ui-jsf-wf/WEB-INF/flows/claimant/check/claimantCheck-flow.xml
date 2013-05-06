@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="checkViewModel" class="com.bfds.saec.web.model.CheckViewModel" />
+	<input name="claimantViewModel" required="true"
+		type="com.bfds.saec.web.model.ClaimantViewModel" />
+	<input name="check" required="true" type="com.bfds.saec.domain.Payment" />
+	<on-start>
+		<evaluate expression="checkViewModel.setCheck(check)" />
+		<set name="flowScope.claimant" value="claimantViewModel"></set>
+	</on-start>
+
+	<action-state id="chooseView">
+		<evaluate expression="checkViewModel.canEdit()" />
+		<transition on="yes" to="checkVoidStopSelection" />
+		<transition on="no" to="checkInfo" />
+	</action-state>
+
+	<view-state id="checkVoidStopSelection">
+		<transition on="void" to="voidCheck"></transition>
+		<transition on="stop" to="stopCheck"></transition>
+		<transition on="stopReplace" to="stopReplaceCheck"></transition>
+		<transition on="reissue" to="reissueCheck"></transition>
+		<transition on="changeCheckToWire" to="changeCheckToWire"></transition>
+		<transition on="updateWireInfo" to="updateWireInfo"></transition>
+		<transition on="returnOfFunding" to="returnOfFunding"></transition>
+		<transition on="splitPayment" to="splitPayment"></transition>
+		<transition on="taxProcess" to="taxProcess"></transition>
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<subflow-state id="splitPayment" subflow="splitPayment">
+		<input name="paymentId" value="requestParameters.paymentId" />
+		<transition on="exit" to="checkVoidStopSelection" />
+	</subflow-state>
+	
+	<subflow-state id="taxProcess" subflow="taxProcess">
+		<input name="paymentId" value="requestParameters.paymentId" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</subflow-state>
+
+	<view-state id="voidCheck">
+		<!-- To disable the back arrow button in browser -->
+		<transition on="save" to="voidCheckConfirm" history="invalidate">
+			<evaluate expression="checkViewModel.voidCheck()"></evaluate>
+		</transition>
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<view-state id="voidCheckConfirm">
+		<transition on="save" to="reissueCheck" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<view-state id="stopCheck">
+		<transition on="save" to="stopCheckConfirm" history="invalidate">
+			<evaluate expression="checkViewModel.stopCheck()"></evaluate>
+		</transition>
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<view-state id="stopCheckConfirm">
+		<transition on="save" to="reissueCheck" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<view-state id="stopReplaceCheck">
+		<transition on="saveCheck" to="exitCheckProcessing">
+			<evaluate expression="checkViewModel.stopReplaceCheck()"></evaluate>
+		</transition>
+		<transition on="saveConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<view-state id="reissueCheck">
+		<var name="onetimeMailingAddressForReissue" class="com.bfds.saec.domain.MailObjectAddress" />
+		<on-entry>
+			<evaluate
+				expression="checkViewModel.setOnetimeMailingAddressForReissue(onetimeMailingAddressForReissue)" />
+		</on-entry>
+		<transition on="show">
+			<evaluate expression="checkViewModel.showAddressTable()"></evaluate>
+		</transition>
+		<transition on="changeCheckToWire" to="changeCheckToWire"></transition>
+		<transition on="saveReissue" to="exitCheckProcessing">
+			<evaluate expression="checkViewModel.reissueCheck()"></evaluate>
+		</transition>
+		<transition on="changeCheckToWire" to="changeCheckToWire" />
+		<transition on="saveConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<subflow-state id="returnOfFunding" subflow="returnOfFunding">
+		<on-entry>
+			<evaluate expression="checkViewModel.check.id" result="flowScope.checkId"></evaluate>
+		</on-entry>
+		<input name="paymentId" value="checkId" />
+		<transition on="endRof" to="exitCheckProcessing" />
+		<transition on="splitPayment" to="rofSplitPayment" />
+	</subflow-state>
+
+	<subflow-state id="rofSplitPayment" subflow="splitPayment">
+		<input name="paymentId" value="rofPaymentId" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</subflow-state>
+
+	<view-state id="changeCheckToWire" view="wire.xhtml">
+		<on-entry>
+			<evaluate expression="checkViewModel.prepareCheckReissueToWire()"></evaluate>
+			<evaluate expression="checkViewModel.getWireSendingBank()"
+				result="viewScope.sendingBank"></evaluate>
+		</on-entry>
+		<transition on="save" to="exitCheckProcessing">
+			<evaluate expression="checkViewModel.changeCheckToWire()"></evaluate>
+		</transition>
+		<transition on="saveConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<view-state id="updateWireInfo" view="wire.xhtml">
+		<on-entry>
+			<evaluate expression="checkViewModel.prepareCheckReissueToWire()"></evaluate>
+			<evaluate expression="checkViewModel.getWireSendingBank()"
+				result="viewScope.sendingBank"></evaluate>
+		</on-entry>
+		<transition on="save" to="exitCheckProcessing">
+			<evaluate expression="checkViewModel.updateWire()"></evaluate>
+		</transition>
+
+		<transition on="saveConfirm" />
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<view-state id="checkInfo">
+		<transition on="exitConfirm" />
+		<transition on="exit" to="exitCheckProcessing" />
+	</view-state>
+
+	<end-state id="exitCheckProcessing" />
+</flow>

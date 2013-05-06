@@ -1,0 +1,39 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/layouts/template1CH.xhtml">
+
+	<ui:define name="topmenu">
+			<ui:insert name="menu">
+			<ui:include src="/WEB-INF/incl/menu.xhtml" />
+		</ui:insert>
+	</ui:define>
+
+	<ui:define name="body">
+	
+			<p:messages id="msgs" showDetail="false" globalOnly="true"/>           		
+			<f:validateBean disabled="true">				
+				<p:focus />
+                <p:panel styleClass="standardContentPanel">
+				<p:ajaxStatus>
+					<f:facet name="start">
+						<h:graphicImage value="/resource/icons/ajaxloading.gif" />
+					</f:facet>
+					<f:facet name="complete">
+						<h:outputText value="" />
+					</f:facet>
+				</p:ajaxStatus>                
+				    <!-- <h2><h:outputText value="#{title}"/></h2>-->
+					<ui:insert />
+                </p:panel>
+			</f:validateBean>
+			<p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false">  
+    			<p:graphicImage value="/resource/icons/ajaxloading.gif" />  
+			</p:dialog>  
+		
+	</ui:define>
+</ui:composition>

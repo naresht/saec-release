@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:app="http://springfuse.jaxio.com/app"
+        >
+       
+<ui:composition>	
+<h:panelGroup id="claimant_new_fields">
+<p:growl id="growl" showDetail="false" globalOnly="true" life="20000"/>
+
+	<h:panelGroup id="formFields">
+		<p:fieldset legend="Details">
+			<p:dataTable id="formList"
+				value="#{eventViewModel.paymentConfigList}" var="paymentComponent" >
+
+				<p:column id="active">					
+					<f:facet name="header">
+						<h:outputText value="Active" />
+					</f:facet>
+					<h:selectBooleanCheckbox value="#{paymentComponent.active}" />
+				</p:column>
+				
+				<p:column id="paymentType">					
+					<f:facet name="header">
+						<h:outputText value="Payment Type" />
+					</f:facet>
+					<h:outputText value="#{paymentComponent.paymentComponentType.code}" />
+				</p:column>
+				<p:column id="defaultDescription" >
+					<f:facet name="header">
+						<h:outputText value="Default Description" />
+					</f:facet>
+					<h:outputText value="#{paymentComponent.defaultDescription}"  />
+				</p:column>
+				<p:column id="activeDescription">
+					<f:facet name="header">
+						<h:outputText value="Active Description" />
+					</f:facet>
+					<h:inputText value="#{paymentComponent.activeDescription}"  />
+				</p:column>
+				<p:column id="objectCode">
+					<f:facet name="header">
+						<h:outputText value="Object Code" />
+					</f:facet>
+					<h:inputText value="#{paymentComponent.objectCode}" />
+				</p:column>
+
+			</p:dataTable>
+			
+		</p:fieldset>
+	</h:panelGroup>
+	
+  </h:panelGroup>
+		<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm" immediate="true" oncomplete="confirmationSave.show()"  
+		value="Save"  />
+		<p:commandButton id="exitConfirm"  action="exitConfirm" immediate="true" oncomplete="confirmationExit.show()" 
+		value="Exit" />
+		<p:commandButton id="resetPayment" action="resetPayment" value="Clear"
+			ajax="true" update="@form" immediate="true" />		
+		</div>		
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>
+		
+

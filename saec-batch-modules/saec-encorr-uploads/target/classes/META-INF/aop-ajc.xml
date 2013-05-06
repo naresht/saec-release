@@ -1,0 +1,14 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.batch.domain.InRecord_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.batch.domain.InRecord_Roo_Configurable"/>
+<aspect name="com.bfds.saec.encorr.dao.EncorrItem_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.encorr.dao.EncorrItem_Roo_Jpa_ActiveRecord"/>
+<aspect name="com.bfds.saec.batch.domain.InRecord_Roo_Jpa_Entity"/>
+<aspect name="com.bfds.saec.batch.domain.InRecord_Roo_ToString"/>
+<aspect name="com.bfds.saec.encorr.dao.EncorrItem_Roo_Jpa_Entity"/>
+<aspect name="com.bfds.saec.encorr.dao.EncorrItem_Roo_Configurable"/>
+<aspect name="com.bfds.saec.batch.domain.InRecord_Roo_Jpa_ActiveRecord"/>
+</aspects>
+</aspectj>
+

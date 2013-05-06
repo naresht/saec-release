@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:app="http://springfuse.jaxio.com/app">
+
+<ui:composition>
+	<p:fieldset legend="Details">
+		<div id="rpo_mail1_div_table">
+			<div id="rpo_mail1_div_tr">
+				<div id="rpo_mail1_div_lft">
+					<b>Reference #:</b><br />
+					<h:outputText
+						value="#{paymentRpoProcessViewModel.claimant.referenceNo}"></h:outputText>
+				</div>
+				<div id="rpo_mail1_div_rgt">
+					<b>Name:</b><br />
+					<h:outputText escape="false"
+						value="#{paymentRpoProcessViewModel.claimant.claimantRegistration.getRegistrationLinesAsString('&lt;br/&gt;')}"></h:outputText>
+					<br />
+					<h:outputText escape="false"
+						value="#{paymentRpoProcessViewModel.claimant.mailingAddress.getAddressAsString('&lt;br/&gt;')}"></h:outputText>
+				</div>
+			</div>
+		</div>
+		<br />
+		<h:panelGroup id="paymentRpoProcessPanel">
+			<center>
+				<p:panel header="Payment History">
+					<table border="0" class="fieldsetreissuetable" summary="">
+						<tr class="header">
+							<td>Payment Type</td>
+							<td>Check Number</td>
+							<td>Pay to:</td>
+							<td>Date:</td>
+							<td>Amount:</td>
+							<td>Payment Status</td>
+							<td>Status Date</td>
+							<td>Payment RPO Status</td>
+							<td>Letter Code</td>
+							<td>Audit</td>
+							<td>Special Pull</td>
+							<td>Group Mail Code</td>
+							<td>Comments</td>
+						</tr>
+						<tr class="row1">
+
+							<td style="white-space: nowrap;"><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.paymentType == 'ROF' ? '' : paymentRpoProcessViewModel.payment.paymentType}">
+									<!-- <f:convertDateTime pattern="MM/dd/yyyy KK:mm aa" /> -->
+								</h:outputText></td>
+							<td><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.rofOf == null ? paymentRpoProcessViewModel.payment.identificatonNo : paymentRpoProcessViewModel.payment.rofOf.identificatonNo}" />
+							</td>
+							<td><h:outputText id="paymentingControlNo"
+									value="#{paymentRpoProcessViewModel.payment.payToRegistration.registrationLinesAsString}"
+									escape="false" /></td>
+							<td><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.paymentDate}">
+									<f:converter converterId="dateConverter" />
+								</h:outputText></td>
+							<td><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.paymentAmount}">
+									<f:convertNumber currencySymbol="$" type="currency"
+										minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText></td>
+							<td><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.statusDescription}" />
+							</td>
+							<td><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.statusChangeDate}"
+									rendered="#{!(paymentRpoProcessViewModel.showDate)}">
+									<f:converter converterId="dateConverter" />
+								</h:outputText> <p:calendar
+									value="#{paymentRpoProcessViewModel.payment.statusChangeDate}"
+									rendered="#{paymentRpoProcessViewModel.showDate}" pattern="MM/dd/yyyy"/></td>
+							<td><h:selectOneMenu id="rpoType1"
+									value="#{paymentRpoProcessViewModel.payment.rpoType}"
+									maxlength="15"
+									rendered="#{paymentRpoProcessViewModel.isOutstandingOrVoidRPO()}">
+									<f:ajax render="addressPanel paymentRpoProcessPanel"
+										update="addressPanel" event="valueChange"
+										listener="#{paymentRpoProcessViewModel.onChangeRpoTypeOfSelectedPayment()}"
+										onevent="showProgress" />
+									<!-- Once a Payment is marked VOID_RPO it cannot be reset to empty. -->
+									<f:selectItem itemValue="" itemLabel=""
+										itemDisabled="#{paymentRpoProcessViewModel.payment.isVoidRPORequested()}" />
+									<f:selectItem itemValue="FORWARDABLE"
+										itemLabel="VOID FORWARDABLE" />
+									<f:selectItem itemValue="NONFORWARDABLE"
+										itemLabel="VOID NONFORWARDABLE" />
+								</h:selectOneMenu> <h:selectOneMenu id="rpoType"
+									value="#{paymentRpoProcessViewModel.payment.rpoType}"
+									maxlength="15"
+									rendered="#{!(paymentRpoProcessViewModel.isOutstandingOrVoidRPO())}">
+									<f:ajax render="addressPanel paymentRpoProcessPanel"
+										update="addressPanel" event="valueChange"
+										listener="#{paymentRpoProcessViewModel.onChangeRpoTypeOfSelectedPayment()}"
+										onevent="showProgress" />
+									<!-- Once a Payment is marked VOID_RPO it cannot be reset to empty. -->
+									<f:selectItem itemValue="" itemLabel=""
+										itemDisabled="#{paymentRpoProcessViewModel.payment.isVoidRPORequested()}" />
+									<f:selectItem itemValue="FORWARDABLE" itemLabel="FORWARDABLE" />
+									<f:selectItem itemValue="NONFORWARDABLE"
+										itemLabel="NONFORWARDABLE" />
+								</h:selectOneMenu></td>
+							<td><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.letterCode}"
+									maxlength="60" /></td>
+							<td><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.auditable == true ? 'A' : ''}" />
+							</td>
+							<td><h:outputText
+									value="#{payment.specialPullCode  == true ? 'S' : ''}" />
+							</td>
+							<td><h:outputText
+									value="#{paymentRpoProcessViewModel.payment.groupMailCode}"
+									maxlength="25" >
+										<f:converter converterId="groupMailCodeConverter" />
+									</h:outputText>
+									</td>
+							<td><p:inputTextarea
+									value="#{paymentRpoProcessViewModel.payment.comments}"
+									maxlength="255" autoResize="false">
+									<f:ajax event="change" process="@this" />
+								</p:inputTextarea></td>
+						</tr>
+					</table>
+				</p:panel>
+			</center>
+		</h:panelGroup>
+		<h:panelGroup id="addressPanel" layout="block">
+		<div style="display:#{paymentRpoProcessViewModel.showAddressDetails ? 'block' : 'none'}">
+				<p:spacer width="100%" height="20" rowIndexVar="rowIndex" />
+				<table border="0" class="fieldsetreissuetable" summary="">
+					<tr class="header">
+						<td>Type</td>
+						<td><font color="red">*</font>Address1</td>
+						<td>Address2</td>
+						<td>Address3</td>
+						<td>Address4</td>
+						<td>Address5</td>
+						<td>Address6</td>
+						<td><font color="red">*</font>City</td>
+						<td><font color="red">*</font>State</td>
+						<td><font color="red">*</font>Zip Code</td>
+						<td>Zip Code ext</td>
+						<td>Last Maint. Date</td>
+						<td>User ID</td>
+					</tr>
+					<tr class="row1">
+						<!-- 					<td><h:outputText -->
+						<!-- 							value="#{paymentRpoProcessViewModel.address.addressType}" maxlength="10" /> -->
+						<td><h:outputText
+								value="#{(rowIndex == 0) ? 'Prev' : 'Current'}" /></td>
+						<td><p:inputText id="address1"
+								value="#{paymentRpoProcessViewModel.address.address1}"
+								maxlength="60" required="true"
+								requiredMessage="Please, fill the Address1" /> <p:message
+								for="address1" /></td>
+						<td><p:inputText
+								value="#{paymentRpoProcessViewModel.address.address2}"
+								maxlength="60" /></td>
+						<td><p:inputText
+								value="#{paymentRpoProcessViewModel.address.address3}"
+								maxlength="60" /></td>
+						<td><p:inputText
+								value="#{paymentRpoProcessViewModel.address.address4}"
+								maxlength="60" /></td>
+						<td><p:inputText
+								value="#{paymentRpoProcessViewModel.address.address5}"
+								maxlength="60" /></td>
+						<td><p:inputText
+								value="#{paymentRpoProcessViewModel.address.address6}"
+								maxlength="60" /></td>
+						<td><p:inputText id="city"
+								value="#{paymentRpoProcessViewModel.address.city}"
+								maxlength="20" required="true"
+								requiredMessage="Please, fill the city" /> <p:message for="city" />
+						</td>
+						<td><p:inputText id="stateCode"
+								value="#{paymentRpoProcessViewModel.address.stateCode}"
+								maxlength="2" required="true"
+								requiredMessage="Please, fill the statecode" /> <p:message
+								for="stateCode" /></td>
+						<td><p:inputMask id="zipCode"
+								value="#{paymentRpoProcessViewModel.address.zipCode.zip}"
+								mask="99999" maxlength="5" required="true"
+								requiredMessage="Please, fill the Zipcode" /> <p:message
+								for="zipCode" /></td>
+						<td><p:inputMask
+								value="#{paymentRpoProcessViewModel.address.zipCode.ext}"
+								mask="9999" maxlength="4" /></td>
+						<td><h:outputText
+								value="#{paymentRpoProcessViewModel.addressRevisionInfo.revisionDate}" />
+						</td>
+						<td><h:outputText
+								value="#{paymentRpoProcessViewModel.addressRevisionInfo.userName}" />
+						</td>
+					</tr>
+				</table>
+				<div id="check_confirmation_div_td">Reissue Needed?</div>
+				&nbsp;
+				<h:selectOneMenu id="check_reissue"
+					value="#{paymentRpoProcessViewModel.rpoForwardableReissueRequired}">
+					<f:selectItem itemValue="" itemLabel="" />
+					<f:selectItem itemValue="true" itemLabel="Yes" />
+					<f:selectItem itemValue="false" itemLabel="No" />
+				</h:selectOneMenu>
+				<br />
+
+			</div>
+		</h:panelGroup>
+	</p:fieldset>
+	<div id="buttonsection">
+		<p:commandButton id="saveConfirm" action="saveConfirm"
+			immediate="true" oncomplete="confirmationSave.show()" value="Save" />
+		<p:commandButton id="exitConfirm" action="exitConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+
+	<ui:include src="/WEB-INF/incl/saveExit.xhtml"/>
+</ui:composition>
+</html>

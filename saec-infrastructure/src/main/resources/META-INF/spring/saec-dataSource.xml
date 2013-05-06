@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<description>
+		Provide data source for use across all modules, plus
+		handle any initialization
+	</description>
+
+	<!-- <bean id="sqlRecorder" class="org.sqlrecorder.SqlRecorder">
+		<constructor-arg value="${database.driverClassName}" />
+		<constructor-arg>
+			<util:list>
+				<bean id="consoleLogger"
+					class="org.sqlrecorder.events.listener.ConsoleOutputListener"></bean>
+				<bean id="fileLogger" class="org.sqlrecorder.events.listener.FileOutputListener">
+					<constructor-arg value="./saec-query.log" />
+					<constructor-arg ref="filterSql" />
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="filterSql" class="org.sqlrecorder.events.filter.ContainsSQLFilter">
+		<constructor-arg>
+			<util:list>
+				<value>SELECT 1</value>
+				<value>INFORMATION_SCHEMA</value>
+				<value>INT_MESSAGE</value>
+				<value>call identity</value>
+				<value>create </value>
+				<value>alter </value>
+				<value>drop </value>
+			</util:list>
+		</constructor-arg>
+	</bean>
+     -->
+	<!-- Use only for tests <bean class="org.apache.commons.dbcp.BasicDataSource" 
+		depends-on="sqlRecorder" destroy-method="close" id="dataSource"> <property 
+		name="driverClassName" value="org.sqlrecorder.SqlRecorder" /> <property name="url" 
+		value="${database.url}" /> <property name="username" value="${database.username}" 
+		/> <property name="password" value="${database.password}" /> <property name="validationQuery" 
+		value="${database.validationQuery}" /> <property name="testOnBorrow" value="true" 
+		/> </bean> -->
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close"> <!-- depends-on="sqlRecorder"> -->
+		<property name="driverClass" value="${database.driverClassName}" />
+		<!--<property name="driverClass" value="org.sqlrecorder.SqlRecorder" /> -->
+		<property name="jdbcUrl" value="${database.url}" />
+		<property name="user" value="${database.username}" />
+		<property name="password" value="${database.password}" />
+	</bean>
+
+	<bean id="awdDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${awd.database.driverClassName}" />
+		<property name="jdbcUrl" value="${awd.database.url}" />
+		<property name="user" value="${awd.database.username}" />
+		<property name="password" value="${awd.database.password}" />
+	</bean>
+	
+	<bean id="universalDbDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${database.driverClassName}" />
+		<property name="jdbcUrl" value="${universal.database.url}" />
+		<property name="user" value="${universal.database.username}" />
+		<property name="password" value="${universal.database.password}" />
+	</bean>		
+
+	<bean id="awdTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="awdDataSource" />
+	</bean>
+
+	<jdbc:initialize-database ignore-failures="DROPS" enabled="${infrastructure.schema.create}">
+		<jdbc:script
+			location="classpath:/org/springframework/integration/jdbc/schema-drop-${database.schema.suffix}.sql" />
+		<jdbc:script
+			location="classpath:/org/springframework/integration/jdbc/schema-${database.schema.suffix}.sql" />
+
+		<jdbc:script location="classpath:/org/springframework/batch/core/schema-drop-${database.schema.suffix}.sql" />
+		<jdbc:script location="classpath:/org/springframework/batch/core/schema-${database.schema.suffix}.sql" />
+
+		<jdbc:script location="classpath:/com/bfds/saec/schema-drop-${database.schema.suffix}.sql" />
+		<jdbc:script location="classpath:/com/bfds/saec/schema-${database.schema.suffix}.sql" />
+	</jdbc:initialize-database>
+
+
+	<bean class="org.springframework.orm.jpa.JpaTransactionManager"
+		id="transactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<tx:annotation-driven mode="aspectj"
+		transaction-manager="transactionManager" />
+
+	<bean id="mailingControlNoIncrementer" parent="incrementerParent">
+		<property name="incrementerName" value="MAILING_CONTROL_NO_SEQ" />
+	</bean>
+	
+	<bean id="claimIdentifierIncrementer" parent="incrementerParent">
+		<property name="incrementerName" value="CLAIM_IDENTIFIER_SEQ" />
+	</bean>		
+
+</beans>

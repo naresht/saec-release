@@ -1,0 +1,13 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.batch.in.infoage.AddressResearchStatus_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.batch.in.infoage.AddressResearchStatus_Roo_ToString"/>
+<aspect name="com.bfds.saec.batch.out.infoage_corporate.CorporateItemProcessor_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.batch.in.infoage_corporate.CorporateAddressResearch_Roo_ToString"/>
+<aspect name="com.bfds.saec.batch.in.infoage.AddressResearchNotification_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.batch.out.infoage.AddressResearchClaimantSelectionCriteria_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.batch.out.infoage.AddressResearchOutboundNotification_Roo_JavaBean"/>
+<aspect name="com.bfds.saec.batch.in.infoage_corporate.CorporateAddressResearch_Roo_JavaBean"/>
+</aspects>
+</aspectj>
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <var name="adminUserRolesViewModel" class="com.bfds.saec.web.model.AdminUserRolesViewModel"/>
+    
+    <input name="operation" type="string" />    
+    <decision-state id="chooseView">
+        <if test="operation=='users'" then="adminUserList" else="adminRole" />
+    </decision-state>	
+    
+    <view-state id="adminUserList">
+        <transition on="addNewUser" to="adminNewUser" />
+    </view-state>              
+    
+    <view-state id="adminNewUser">
+        <transition on="save" to="endEdit">
+            <evaluate expression="adminUserRolesViewModel.saveUser(messageContext)"></evaluate>
+        </transition>
+ 
+    </view-state> 
+    
+    <view-state id="adminRole">
+        <transition on="search" to="adminRole">
+            <evaluate expression="adminUserRolesViewModel.search(messageContext)"></evaluate>
+        </transition>
+        
+        <transition on="save" to="adminRole" >
+            <evaluate expression="adminUserRolesViewModel.addRoles(messageContext)"></evaluate>
+        </transition>   
+        
+        <transition on="clear" to="adminRole">
+            <evaluate expression="adminUserRolesViewModel.clear()"></evaluate>
+        </transition>       
+        
+    </view-state> 
+        
+    <end-state id="endEdit" view="externalRedirect:contextRelative:/app/home"/>
+
+</flow>

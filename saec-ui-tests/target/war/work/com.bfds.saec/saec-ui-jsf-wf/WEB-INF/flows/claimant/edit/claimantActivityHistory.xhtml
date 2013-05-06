@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+	<style>
+.bold {
+	font-weight: bold;
+}
+</style>
+	<p:fieldset legend="Account History (#{claimant.activityCount})"
+		toggleable="true" toggleSpeed="500" id="activityLogPanel"
+		collapsed="true">
+		<p:dataTable id="activityLog" var="activityLog" value="#{allActivity}"
+			scrollable="true" rowIndexVar="rowIndex" scrollWidth="975" scrollHeight="226"
+			rowStyleClass="#{ (activityLog.activityTypeDescription == 'Claim Form' || activityLog.activityTypeDescription == 'OptOut' || activityLog.activityTypeDescription == 'Correspondence Process' || empty activityLog.activityTypeDescription)  ? 'bold' : null }">
+			<p:column headerText="#" width="125">
+				<f:facet name="header">
+					<h:outputText value="#" />
+				</f:facet>
+				<h:outputText value="#{rowIndex+1}" style="align:center"/>
+			</p:column>
+
+			<p:column id="Date" width="125"
+				sortBy="#{activityLog.activityDate}"
+				filterBy="#{claimant.getFilterDateOfAccount(activityLog)}"
+				filterMatchMode="contains">
+				<f:facet name="header">
+					<h:outputText value="Date" />
+				</f:facet>
+				<h:outputText value="#{activityLog.activityDate}">
+					<!-- <f:convertDateTime pattern="MM/dd/yyyy KK:mm" /> -->
+				</h:outputText>
+			</p:column>
+
+			<p:column id="Type" width="250"
+				sortBy="#{activityLog.activityTypeDescription}"
+				filterBy="#{activityLog.activityTypeDescription}">
+				<f:facet name="header">
+					<h:outputText value="Type" />
+				</f:facet>
+				<h:outputText value="#{activityLog.activityTypeDescription}" />
+			</p:column>
+
+			<p:column id="accHistoryDesc" width="250">
+				<f:facet name="header">
+					<h:outputText value="Description" />
+				</f:facet>
+				<h:outputText id="activity_shortDescription"
+					value="#{activityLog.shortDescription}"
+					title="#{activityLog.description}"
+					style="word-wrap:break-word;width:10em;" escape="false" />
+				<p:tooltip global="true" for="activity_shortDescription" targetPosition="topRight" position="bottomLeft" showEffect="slide" hideEffect="slide"/>
+			</p:column>
+
+			<p:column id="accHistoryUserID" width="125" sortBy="#{activityLog.userId}"
+				filterBy="#{activityLog.userId}">
+				<f:facet name="header">
+					<h:outputText value="UserID" />
+				</f:facet>
+				<h:outputText value="#{activityLog.userId}" />
+			</p:column>
+		</p:dataTable>
+		<p:spacer height="10" width="0" />
+		<div class="exportlnk">
+			Export to
+			<h:commandLink>Excel<p:dataExporter type="xls" target="activityLog" fileName="account-activity-history" excludeColumns="0" /></h:commandLink>/
+			<h:commandLink>PDF<p:dataExporter type="pdf" target="activityLog" fileName="account-activity-history" excludeColumns="0" /> </h:commandLink> /
+			<h:commandLink>Csv<p:dataExporter type="csv" target="activityLog" fileName="account-activity-history" excludeColumns="0" /> </h:commandLink>	
+		</div>
+		<p:spacer height="10" width="0" />
+		<!--<p:separator /> -->
+		<!--<p:commandButton id="activityDisplayButton" value="Show all" update="activityLogPanel" actionListener="#{claimant.showAllActivity}"></p:commandButton> -->
+	</p:fieldset>
+</ui:composition>
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:claimants xmlns:p="http://saec.bfds.com/schema/util/claimant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://saec.bfds.com/schema/util/claimant util-claimants.xsd ">
+  <p:claimant country="US">
+    <p:referenceNo>100000001</p:referenceNo>
+    <p:firstName>Margarita</p:firstName>
+    <p:middleName></p:middleName>
+    <p:lastName>Barrington</p:lastName>
+    <p:registration1>Margarita</p:registration1>
+    <p:registration2>Barrington</p:registration2>
+<!--     <p:registration3>p:registration3</p:registration3> -->
+<!--     <p:registration4>p:registration4</p:registration4> -->
+<!--     <p:registration5>p:registration5</p:registration5> -->
+<!--     <p:registration6>p:registration6</p:registration6> -->
+    <p:fundAccountNo>100001</p:fundAccountNo>
+    <p:accountStatus>Open</p:accountStatus>
+    <p:accountType>Custodial</p:accountType>
+    <p:brokerId>100002</p:brokerId>
+    <p:bin>100003</p:bin>
+    <p:ssn>100004</p:ssn>
+    <p:isCorporate>false</p:isCorporate>
+    <p:address>
+      <p:addressType>ADDRESS_OF_RECORD</p:addressType>
+      <p:line1>Residence Inn</p:line1>
+      <p:line2>6 Cambridge Center</p:line2>
+<!--       <p:line3>p:line3</p:line3> -->
+<!--       <p:line4>p:line4</p:line4> -->
+<!--       <p:line5>p:line5</p:line5> -->
+<!--       <p:line6>p:line6</p:line6> -->
+      <p:city>Cambridge</p:city>
+      <p:stateCode>MA</p:stateCode>
+      <p:countryCode>US</p:countryCode>
+      <p:zip>02142</p:zip>
+<!--       <p:zipExt>p:zipExt</p:zipExt> -->
+<!--       <p:requiresAddressResearch>true</p:requiresAddressResearch> -->
+<!--       <p:requiresInfoAgePrescrub>true</p:requiresInfoAgePrescrub> -->
+    </p:address>
+    <p:address>
+      <p:addressType>SEASONAL_ADDRESS</p:addressType>
+      <p:line1>Boston Financial Data Services Inc</p:line1>
+      <p:line2>2000 Crown Colony Drive</p:line2>
+<!--       <p:line3>p:line3</p:line3> -->
+<!--       <p:line4>p:line4</p:line4> -->
+<!--       <p:line5>p:line5</p:line5> -->
+<!--       <p:line6>p:line6</p:line6> -->
+      <p:city>Boston</p:city>
+      <p:stateCode>MA</p:stateCode>
+      <p:countryCode>US</p:countryCode>
+      <p:zip>02145</p:zip>
+<!--       <p:zipExt>p:zipExt</p:zipExt> -->
+<!--       <p:requiresAddressResearch>true</p:requiresAddressResearch> -->
+<!--       <p:requiresInfoAgePrescrub>true</p:requiresInfoAgePrescrub> -->
+    </p:address>    
+    <p:payment>
+      <p:identificatonNo>100001</p:identificatonNo>
+      <p:paymentAmount>100</p:paymentAmount>
+<!--       <p:statusChangeDate>2001-01-01</p:statusChangeDate> -->
+      <p:paymentType>CHECK</p:paymentType>
+	  <p:paymentCode>FIRST_ISSUE_CASHED_C_FIC</p:paymentCode>
+	  <p:rpoType>FORWARDABLE</p:rpoType>
+    </p:payment>
+    <p:payment>
+      <p:identificatonNo>100002</p:identificatonNo>
+      <p:paymentAmount>200</p:paymentAmount>
+<!--       <p:statusChangeDate>2001-01-01</p:statusChangeDate> -->
+      <p:paymentType>CHECK</p:paymentType>
+	  <p:paymentCode>FIRST_ISSUE_CREATED_FI_FI</p:paymentCode>
+	  <p:rpoType>NONFORWARDABLE</p:rpoType>
+    </p:payment>    
+    <p:letter>
+      <p:description>xxxx</p:description>
+      <p:comments>yyyyy</p:comments>
+      <p:mailDate>2001-01-01</p:mailDate>
+      <p:rpoDate>2001-01-01</p:rpoDate>
+      <p:mailingControlNo>1000001</p:mailingControlNo>      
+      <p:mailType>OUTGOING</p:mailType>
+      <p:letterCode>712</p:letterCode>
+      <p:rpoType>FORWARDABLE</p:rpoType>
+      <p:letterStatus>IGO</p:letterStatus>
+    </p:letter>
+    <p:letter>
+      <p:description>xxxx</p:description>
+      <p:comments>yyyyy</p:comments>
+      <p:mailDate>2001-01-01</p:mailDate>
+      <p:rpoDate>2001-01-01</p:rpoDate>
+      <p:mailingControlNo>1000002</p:mailingControlNo>
+      <p:mailType>OUTGOING</p:mailType>
+      <p:letterCode>712</p:letterCode>
+      <p:rpoType>NONFORWARDABLE</p:rpoType>
+      <p:letterStatus>IGO</p:letterStatus>
+    </p:letter>
+  </p:claimant>
+</p:claimants>

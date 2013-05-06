@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="returnOfFundingViewModel" class="com.bfds.saec.web.model.ReturnOfFundingViewModel" />
+	<var name="paymentRpoProcessViewModel" class="com.bfds.saec.web.model.PaymentRpoProcessViewModel"/>
+	<var name="checkViewModel" class="com.bfds.saec.web.model.CheckViewModel" />
+	<var name="viewModel" class="com.bfds.saec.web.model.ClaimProofViewModel" />
+	<input name="id" required="true" type="long"/>
+
+	<!-- Menu variables -->
+	<on-start>
+		<evaluate expression="claimantSearchViewModel.getClaimantByPrimayKey(id)" result="flowScope.claimant" />		
+		<evaluate expression="claimant.startCallLog(currentUser.name)" result="flowScope.phoneCallModel" />
+	</on-start>
+
+	<view-state id="claimantEdit" model="claimant">
+		<on-entry>
+			<evaluate expression="claimant.claimant.getAllActivity()"
+				result="viewScope.allActivity" />
+			<evaluate expression="claimant.getAllCalls()" result="viewScope.allCalls" />
+			<evaluate expression="claimant.getAllPayments()" result="viewScope.allPayments" />
+			<evaluate expression="claimant.getAllMails()" result="viewScope.allMails" />
+			<evaluate expression="claimant.getAllClaims()" result="viewScope.allClaims" />
+			<evaluate expression="viewModel.getAllClaimProofs(claimant.claimant.id)" result="viewScope.allClaimProofs" />
+		</on-entry>
+		<transition on="save">
+			<evaluate expression="claimantSearchViewModel.save(flowScope.claimant)" />
+			<evaluate expression="messageUtil.info('status_saved_ok', messageContext)" />
+		</transition>
+		<transition on="contact" to="claimantContactEdit" validate="false" />
+		<transition on="address" to="claimantAddressEdit" validate="false" />
+		<transition on="registration" to="claimantRegistrationEdit"
+			validate="false" />
+		<transition on="tax" to="claimantTaxEdit" validate="false" />
+		<transition on="gam" to="GeneralAccountMaintenance"
+			validate="false" />
+		<transition on="addAlternatePayee" to="addAlternatePayee"
+			validate="false" />
+		<transition on="claimProcess" to="claimFormProcess"
+			validate="false" />
+		<transition on="claimDetails" to="claimDetails" validate="false" />
+		<transition on="eventSpecificQuestions" to="eventSpecificQuestions" validate="false" />
+		<transition on="claimantPosition" to="claimantPosition" validate="false" />
+		<transition on="claimantTransactions" to="claimantTransactions" validate="false" />
+		<transition on="followUpReminders" to="followUpReminders" validate="false" />
+		<transition on="optOutProcess" to="optOutFormProcess"
+			validate="false" />
+		<transition on="reissueProcess" to="ReissuePayment" validate="false" />
+		<transition on="rofProcess" to="returnOfFundingSelect"
+			validate="false" />
+		<transition on="paymentRpoProcess" to="paymentRpoProcessSelect"
+			validate="false" />
+		<transition on="correspondenceProcess" to="correspondenceProcess"
+			validate="false"/>
+		<transition on="sendSpecialhandling" to="sendSpecialhandling"
+			validate="false" />
+		<transition on="dailyPosition" to="dailyPosition"
+			validate="false" />
+		<transition on="logCall" to="logCall" validate="false" />
+		<transition on="processCheck" to="processCheck" validate="false" />
+		<transition on="saveAndClose" to="saveAndClose" />
+		<transition on="close" to="showAskForUpdateOrClose"
+			validate="false" />
+		<transition on="quit" to="showAskForUpdateOrClose"
+			validate="false">
+			<set name="conversationScope.endParam" value="'_cascadeQuit'" />
+		</transition>
+		<transition on="contactInfo">
+		</transition>
+		<transition on="exit" to="logCall" validate="false" />
+		<transition on="expand">
+			<evaluate expression="claimant.expand()"></evaluate>
+		</transition>
+		<transition on="collapse">
+			<evaluate expression="claimant.collapse()"></evaluate>
+		</transition>
+		<transition on="addNewClaimSupportingDoc" >
+			<evaluate expression="viewModel.addNewClaimProof()"></evaluate>
+		</transition>
+		<transition on="loadClaimProofById">
+			<evaluate expression="viewModel.loadClaimProofById(requestParameters.id)"></evaluate>
+		</transition>
+		<transition on="saveClaimProof" to="claimantEdit">
+			<evaluate expression="viewModel.saveClaimSupportingDocuments()" />
+			<evaluate expression="claimant.reloadClaimant()"></evaluate>
+		</transition>
+	</view-state>
+
+	<view-state id="claimantAddressEdit">
+		<on-entry>
+			<set name="viewScope.formState" value="'view'" />
+			<evaluate expression="claimant.getAddressVersions(claimantService)" />
+			<evaluate expression="claimant.prepareSeasonalAddress()" />
+		</on-entry>
+		<on-render>
+			<evaluate expression="claimant.claimant.hasAddressOfRecord()"
+				result="viewScope.hasAddressOfRecord" />
+		</on-render>
+		<transition on="addressEdit">
+			<set name="formState" value="'edit'" />
+			<evaluate expression="claimant.prepareForAddressEdit()" />
+		</transition>
+		<transition on="save">
+			<evaluate expression="claimant.saveAddress(claimantService,messageContext)" />
+			<set name="formState" value="'view'" />
+		</transition>
+		<transition on="exit" to="claimantEdit" >
+			<evaluate expression="claimant.reloadClaimant()"></evaluate>
+		</transition>
+		<transition on="exitAddressConfirm" />
+		<transition on="saveAddressConfirm" />
+	</view-state>
+
+	<view-state id="ReissuePayment">
+		<on-entry>
+			<evaluate expression="claimant.getReissuablePayments()"
+				result="viewScope.reissuablePayments" />
+		</on-entry>
+		<transition on="processCheck" to="processCheck" validate="false" />
+		<transition on="exitReissue" to="claimantEdit" />
+		<transition on="exitReissueConfirm" />
+	</view-state>
+
+	<view-state id="returnOfFundingSelect">
+		<on-entry>
+			<evaluate
+				expression="returnOfFundingViewModel.loadPaymentsForReturnOfFunding(claimant.claimant, messageContext)"
+				result="viewScope.loadPaymentsForReturnOfFunding" />
+		</on-entry>
+		<transition on="loadPaymentForROF" to="returnOfFundingProcess">
+			<evaluate
+				expression="returnOfFundingViewModel.loadSelectedPayment(requestParameters.id)"></evaluate>
+		</transition>
+		<transition on="exitRof" to="claimantEdit" />
+		<transition on="exitRofConfirm" />
+	</view-state>
+	
+	<view-state id="returnOfFundingProcess">
+		<on-entry>
+			<set name="viewScope.payment" value="returnOfFundingViewModel.selectedPayment" />
+		</on-entry>
+		<transition on="save" to="claimantEdit">
+			<evaluate expression="returnOfFundingViewModel.processReturnOfFunding(messageContext)" />
+			<evaluate expression="claimant.reloadClaimant()"></evaluate>
+		</transition>
+		<transition on="exit" to="returnOfFundingSelect" />
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	</view-state>
+	
+	<view-state id="paymentRpoProcessSelect">
+		<on-entry>
+			<evaluate
+				expression="paymentRpoProcessViewModel.loadClaimantPaymentsForRPO(claimant.claimant, messageContext)"
+				result="viewScope.loadPaymentsForReturnOfFunding" />
+		</on-entry>
+		<transition on="loadPaymentForRPO" to="paymentRpoProcess">
+			<evaluate
+				expression="paymentRpoProcessViewModel.loadSelectedPayment(requestParameters.id)"></evaluate>
+		</transition>
+		<transition on="exitRpo" to="claimantEdit" />
+		<transition on="exitRpoConfirm" />
+	</view-state>
+	
+	<view-state id="paymentRpoProcess">
+		<on-entry>
+			<set name="viewScope.payment" value="paymentRpoProcessViewModel.selectedPayment" />
+		</on-entry>
+		<transition on="save" to="claimantEdit">
+	  		<evaluate expression="paymentRpoProcessViewModel.saveSelectedPayment(messageContext)" />
+	  		<evaluate expression="claimant.reloadClaimant()" />
+		</transition> 
+		<transition on="exit" to="paymentRpoProcessSelect" />
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	</view-state>
+
+	<view-state id="claimantRegistrationEdit">
+		<on-render>
+			<evaluate
+				expression="claimant.loadClaimantRegistrationRevisionInfo(entityAuditDao)"
+				result="viewScope.claimantRegistrationRevisionInfo" />
+		</on-render>
+		<transition on="save" to="claimantEdit">
+			<evaluate expression="claimant.saveRegistration(claimantService)" />
+		</transition>
+		<transition on="exit" to="claimantEdit" />
+		<transition on="exitRegistrationConfirm" />
+		<transition on="saveRegistrationConfirm" />
+	</view-state>
+
+	<view-state id="claimantTaxEdit">
+		<transition on="save" to="claimantEdit">
+			<evaluate expression="claimant.saveTax(claimantService)" />
+		</transition>
+		<transition on="exit" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+		<transition on="exitTaxConfirm" />
+		<transition on="saveTaxConfirm" />
+	</view-state>
+
+	<view-state id="GeneralAccountMaintenance">
+		<transition on="save" to="claimantEdit">
+			<evaluate expression="claimant.saveGam(claimantService)" />
+		</transition>
+		<transition on="exit" to="claimantEdit" >
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+		<transition on="exitConfirm" />
+		<transition on="saveConfirm" />
+	</view-state>
+
+	<view-state id="logCall" view="claimantLogCall.xhtml">
+		<on-entry>
+			<evaluate expression="phoneCallModel.loadPhoneCall(messageContext)"></evaluate>
+		</on-entry>
+		<transition on="saveLogCall" to="endLogCallEdit">
+			<evaluate expression="phoneCallModel.save(messageContext, ripEventListener)" />
+		</transition>
+		<transition on="exitLogCall" to="endLogCallEdit" />
+		<transition on="cancelLogCall" to="claimantEdit" />
+		<transition on="exitLogCallConfirm" />
+		<transition on="saveLogCallConfirm" />
+	</view-state>
+	
+	<subflow-state id="claimantContactEdit" subflow="claimant/contact">
+		<input name="claimantViewModel" value="claimant" />
+		<transition on="exitContactProcessing" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+
+	<subflow-state id="processCheck" subflow="claimant/check">
+		<input name="check" value="claimant.selectedCheck" />
+		<input name="claimantViewModel" value="claimant" />
+		<transition on="exitCheckProcessing" to="claimantEdit">
+			<!-- We need to reload the Claimant to see check updates in the activity 
+				history. -->
+			<evaluate
+				expression="claimantSearchViewModel.getClaimantByPrimayKey(claimant.claimant.id)"
+				result="claimant" />
+		</transition>
+		<transition on="splitPayment" to="splitPayment"></transition>
+	</subflow-state>
+
+	<subflow-state id="addAlternatePayee" subflow="claimant/split">
+		<input name="parentClaimantViewModel" value="claimant" />
+		<transition on="exit" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()"></evaluate>
+		</transition>
+	</subflow-state>
+	<subflow-state id="claimFormProcess" subflow="claimant/claimFormProcess">
+		<input name="claimantViewModel" value="claimant" />
+		<transition on="exitClaimProcess" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+	<subflow-state id="claimDetails" subflow="claimant/claimFormProcess/claimDetails">
+		<input name="claimantId" value="claimant.claimant.id" />
+		<transition on="exitClaimProcess" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+	<subflow-state id="eventSpecificQuestions" subflow="claimant/claimFormProcess/eventSpecificQuestions">
+		<input name="claimantViewModel" value="claimant" />
+		<transition on="exitClaimProcess" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+	<subflow-state id="claimantPosition" subflow="claimant/claimFormProcess/claimantPosition">
+		<input name="claimantId" value="claimant.claimant.id"/>
+		<transition on="exitClaimantPosition" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+	<subflow-state id="claimantTransactions" subflow="claimant/claimFormProcess/claimantTransactions">
+		<input name="claimantId" value="claimant.claimant.id"/>
+		<transition on="exitProcess" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+	<subflow-state id="followUpReminders" subflow="claimant/followUpReminders">
+		<input name="claimantId" value="claimant.claimant.id" />
+		<transition on="exitProcess" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+	<subflow-state id="optOutFormProcess" subflow="claimant/optOutProcess">
+		<input name="claimantViewModel" value="claimant" />
+		<transition on="exitOptOutProcess" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+	<subflow-state id="correspondenceProcess" subflow="claimant/correspondenceProcess">
+		<input name="claimantViewModel" value="claimant" />
+		<transition on="exitCorrespondenceProcess" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()" />
+		</transition>
+	</subflow-state>
+	<subflow-state id="sendSpecialhandling" subflow="claimant/specialHandling">
+		<input name="claimantViewModel" value="claimant" />
+		<transition on="exit" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()"></evaluate>
+		</transition>
+	</subflow-state>	
+	<subflow-state id="dailyPosition" subflow="claimant/dailyPosition">
+		<input name="claimantViewModel" value="claimant" />
+		<transition on="exit" to="claimantEdit">
+			<evaluate expression="claimant.reloadClaimant()"></evaluate>
+		</transition>
+	</subflow-state>
+	<end-state id="endEdit" view="externalRedirect:contextRelative:/app/home" />
+	<end-state id="endLogCallEdit" view="externalRedirect:contextRelative:/app/claimant/select" />
+	<end-state id="splitPayment" view="externalRedirect:contextRelative:/app/splitPayment?paymentId=#{requestParameters.paymentId}" />
+</flow>

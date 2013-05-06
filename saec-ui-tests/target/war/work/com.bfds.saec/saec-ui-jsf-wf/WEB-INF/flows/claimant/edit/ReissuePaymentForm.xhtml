@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+<p:tooltip global="true" for="paymentsPanel" targetPosition="topLeft" position="bottomLeft" style="word-wrap:break-word;width:10em;" />
+	<p:fieldset legend="Reissue(#{claimant.reIssuePaymentCount})"
+		toggleable="true" toggleSpeed="500" id="paymentsPanel"
+		collapsed="true">
+		<p:dataTable id="payments" var="payment" value="#{reissuablePayments}"
+			scrollable="true" rowIndexVar="rowIndex" height="200">
+
+			
+			<p:column headerText="#" style="width:8px">
+						#{rowIndex+1}
+					</p:column>
+
+			<p:column id="PaymentType" style="width:50px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Payment Type:" />
+				</f:facet>
+				<h:outputText value="#{payment.paymentType}" />
+			</p:column>
+
+			<p:column id="CheckNumber" style="width:103px;"
+				sortBy="#{payment.identificatonNo}"
+				filterBy="#{payment.identificatonNo}">
+				<f:facet name="header">
+					<h:outputText value="Check/Wire Number" />
+				</f:facet>
+				<p:commandLink action="processCheck" ajax="false">
+					<h:outputText value="#{payment.identificatonNo}" />
+					<f:setPropertyActionListener value="#{payment}"
+						target="#{claimant.selectedCheck}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column id="Date" style="width:105px"
+				sortBy="#{payment.paymentDate}" filterBy="#{payment.paymentDate}">
+				<f:facet name="header">
+					<h:outputText value="Date Requested" />
+				</f:facet>
+				<h:outputText value="#{payment.paymentDate}">
+					<f:convertDateTime pattern="MM/dd/yyyy KK:mm" />
+				</h:outputText>
+			</p:column>
+
+			<p:column style="word-wrap:break-word;width:34em;">
+				<f:facet name="header">
+					<h:outputText value="Pay To" />
+				</f:facet>				
+				<h:outputText id="PayTo"
+					value="#{payment.payTo.claimantRegistration.lines.registration1}" title="#{payment.getPayToAsText('&lt;br/&gt;')}" escape="false" />
+			</p:column>
+
+			<p:column id="Amount" style="width:104px"
+				sortBy="#{payment.paymentAmount}"
+				filterBy="#{payment.paymentAmount}">
+				<f:facet name="header">
+					<h:outputText value="Amount" />
+				</f:facet>
+				<h:outputText value="#{payment.paymentAmount}">
+					<f:convertNumber currencySymbol="$" type="currency"
+						minFractionDigits="2" maxFractionDigits="2" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="PaymentStatus" style="width:104px"
+				sortBy="#{payment.statusDescription}"
+				filterBy="#{payment.statusDescription}">
+				<f:facet name="header">
+					<h:outputText value="Payment Status" />
+				</f:facet>
+				<h:outputText value="#{payment.statusDescription}" dateStyle="short" />
+			</p:column>
+
+			<p:column id="StatusDate" style="width:35px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Status Date" />
+				</f:facet>
+				<h:outputText value="#{payment.statusChangeDate}">
+					<f:convertDateTime pattern="MM/dd/yyyy KK:mm" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="LetterCode" style="width:32px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Letter Code" />
+				</f:facet>
+				<h:outputText value="#{payment.letterCode}" />
+			</p:column>
+
+			<p:column id="Audit" style="width:25px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Audit" />
+				</f:facet>
+				<h:outputText value="#{payment.auditable}" />
+			</p:column>
+
+			<p:column id="SpecialPull" style="width:40px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Special Pull" />
+				</f:facet>
+				<h:outputText value="#{payment.specialPullCode}" />
+			</p:column>
+
+			<p:column id="GroupMailCode" style="width:33px;white-space:normal;">
+				<f:facet name="header">
+					<h:outputText value="Group Mail Code" />
+				</f:facet>
+				<h:outputText value="#{payment.groupMailCode}" >
+					<f:converter converterId="groupMailCodeConverter" />
+				</h:outputText>
+			</p:column>
+
+			<p:column style="word-wrap:break-word;width:34em;"
+				sortBy="#{payment.comments}">
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>
+				<h:outputText id="Comments" title="#{payment.comments}" value="#{payment.comments}" />
+			</p:column>
+		</p:dataTable>
+		<p:spacer height="10" width="0" />
+		<div class="exportlnk">
+			Export to	
+			<h:commandLink>Excel<p:dataExporter type="xls" target="payments" fileName="account-payments" excludeColumns="0,1" /></h:commandLink> /
+			<h:commandLink>PDF<p:dataExporter type="pdf" target="payments" fileName="account-payments" excludeColumns="0,1" /></h:commandLink> /
+			<h:commandLink>Csv<p:dataExporter type="csv" target="payments" fileName="account-payments" excludeColumns="0,1" /></h:commandLink> /
+			<h:commandLink>Xml<p:dataExporter type="xml" target="payments" fileName="account-payments" excludeColumns="0,1" /></h:commandLink>
+		</div>
+		<!-- 				<p:separator /> -->
+		<!-- 				<p:commandButton id="activityDisplayButton" value="Show all" update="activityLogPanel"  -->
+		<!-- 					actionListener="#{claimant.showAllActivity}">						 -->
+		<!-- 					</p:commandButton> -->
+	</p:fieldset>
+	<div id="buttonsection">
+			<p:commandButton id="exitReissueConfirm" action="exitReissueConfirm"
+			immediate="true" oncomplete="confirmationExit.show()" value="Exit" />
+	</div>
+	<p:confirmDialog
+		message="Are you sure you want to exit without saving?" modal="true"
+		header="Exit" severity="alert" widgetVar="confirmationExit">
+		<p:commandButton value="Yes" ajax="false"
+			oncomplete="confirmationExit.hide()" action="exitReissue"
+			immediate="true" />
+		<p:commandButton value="No" onclick="confirmationExit.hide()"
+			type="button" />
+	</p:confirmDialog>
+</ui:composition>
+</html>

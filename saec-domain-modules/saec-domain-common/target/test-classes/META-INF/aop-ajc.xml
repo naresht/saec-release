@@ -1,0 +1,27 @@
+<aspectj>
+<aspects>
+<aspect name="com.bfds.saec.domain.ProcessErrorDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.EventIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.CorrespondenceDocumentIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.LetterCodeDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.ProcessErrorIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.ProcessErrorDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.EventDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.CorrespondenceDocumentDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.CorrespondenceDocumentDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.LetterCodeIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.RequestTypeIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.EventDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.RequestTypeDataOnDemand_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.ProcessErrorIntegrationTest_Roo_Configurable"/>
+<aspect name="com.bfds.saec.domain.CorrespondenceDocumentIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.EventIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.LetterCodeDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.RequestTypeIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.EventPaymentConfigDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.LetterCodeIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="com.bfds.saec.domain.RequestTypeDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="com.bfds.saec.domain.EventPaymentConfigDataOnDemand_Roo_Configurable"/>
+</aspects>
+</aspectj>
+

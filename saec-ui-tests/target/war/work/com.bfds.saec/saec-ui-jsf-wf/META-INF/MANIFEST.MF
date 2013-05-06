@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+saec-db-version-min: 
+Built-By: dt83019
+Build-Jdk: 1.6.0_23
+Created-By: Apache Maven
+saec-db-version-max: 
+Archiver-Version: Plexus Archiver
+

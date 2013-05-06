@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+	
+	<var name="optOutProcessViewModel" class="com.bfds.saec.web.model.OptOutProcessViewModel"/>
+	<input name="claimantViewModel" required="true" type="com.bfds.saec.web.model.ClaimantViewModel" />
+    
+	<!-- Opt Out Process View State -->
+	<view-state id="optOutProcess">		
+		<on-entry>
+			<evaluate expression="optOutProcessViewModel.loadOptOutForms(claimantViewModel.claimant.id)"></evaluate>
+		</on-entry>
+		<transition on="newOptOutForm">
+			<evaluate expression="optOutProcessViewModel.addNewOptOutForm()"></evaluate>
+		</transition>
+		<transition on="edit">
+			<evaluate expression="optOutProcessViewModel.editOptOutForm()"></evaluate>
+		</transition>
+		<transition on="lov" validate="false">
+			<evaluate expression="optOutProcessViewModel.addCureLetters()"></evaluate>
+		</transition>
+		<transition on="validateCureLetter">
+			<evaluate expression="optOutProcessViewModel.validateCureLettersSelected()"></evaluate>
+		</transition>		
+		<transition on="exitOptOutConfirm"/> 
+	    <transition on="saveOptOutConfirm"/>
+		<transition on="exit" to="exitOptOutProcess"/>
+	    <transition on="save" to="exitOptOutProcess">
+	    	<evaluate expression="optOutProcessViewModel.saveOptOutMailActivity(messageContext, claimantViewModel.claimant)" />
+	    </transition>		
+	</view-state>		
+  <end-state id="exitOptOutProcess"/>	
+</flow>                                                                 
